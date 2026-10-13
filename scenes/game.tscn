@@ -1,8 +1,9 @@
-[gd_scene load_steps=2 format=3 uid="uid://jem4ybiqp44h"]
+[gd_scene format=3 uid="uid://jem4ybiqp44h"]
 
-[ext_resource type="Script" path="res://scripts/slot_machine.gd" id="1_slot"]
+[ext_resource type="Script" uid="uid://7ep3ro0rasac" path="res://scripts/slot_machine.gd" id="1_slot"]
 
 [node name="game" type="Control" unique_id=1200433587]
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
