@@ -6,7 +6,7 @@
     python3 tools/gen_game_tscn.py
 Макет зеркалит константы scripts/slot_machine.gd и scripts/reel.gd.
 Кнопки интерфейса и бейджи выигрышей вырезаются атласами из спрайтшитов
-(img/buttons_spr, img/wins_spr) — только русские версии.
+(img/buttons_spr, img/win) — только русские версии.
 """
 import importlib.util
 import os
@@ -152,8 +152,8 @@ ext = ['[ext_resource type="Script" path="res://scripts/slot_machine.gd" '
        f'[ext_resource type="Texture2D" uid="{res_uid("img/buttons_spr/buttons_sprites.png")}" '
        'path="res://img/buttons/buttons_sprites.png" id="tex_buttons"]'.replace(
            "img/buttons/buttons_sprites.png", "img/buttons_spr/buttons_sprites.png"),
-       f'[ext_resource type="Texture2D" uid="{res_uid("img/wins_spr/wins_spritessheet.png")}" '
-       'path="res://img/wins_spr/wins_spritessheet.png" id="tex_wins"]']
+       f'[ext_resource type="Texture2D" uid="{res_uid("img/win/wins_spritessheet.png")}" '
+       'path="res://img/win/wins_spritessheet.png" id="tex_wins"]']
 for key in KEYS:
     ext.append(f'[ext_resource type="Texture2D" uid="{res_uid("img/slot_machine/" + key + ".png")}" '
                f'path="res://img/slot_machine/{key}.png" id="tex_{key}"]')

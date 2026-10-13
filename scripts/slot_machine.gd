@@ -23,7 +23,7 @@ const SYMBOL_KEYS: Array[String] = [
 	"moneysack", "bell", "1bar", "2bar", "3bar", "777", "wild", "chestbonus",
 ]
 
-## Бейджи img/wins_spr/wins_spritessheet.png (RU):
+## Бейджи img/win/wins_spritessheet.png (RU):
 ## 0 ВЫИГРЫШ, 1 БОЛЬШОЙ, 2 МЕГА, 3 ЭПИЧЕСКИЙ, 4 СУПЕР, 5 БОНУС,
 ## 6 ДЖЕКПОТ, 7 ФРИСПИН, 8 ВЫИГРЫШ В БОНУСНОЙ ИГРЕ.
 const WIN_REGIONS: Array[Rect2] = [
@@ -96,7 +96,7 @@ func _ready() -> void:
 	textures.resize(SlotData.SYMBOL_COUNT)
 	for sym in SlotData.SYMBOL_COUNT:
 		textures[sym] = load(SlotData.TEXTURES[sym])
-	_wins_tex = load("res://img/wins_spr/wins_spritessheet.png")
+	_wins_tex = load("res://img/win/wins_spritessheet.png")
 
 	for c in SlotData.COLS:
 		var reel: SlotReel = get_node("machine/grid_panel/Reel%d" % c)
