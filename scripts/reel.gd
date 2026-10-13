@@ -1,8 +1,9 @@
 class_name SlotReel
 extends Control
 ## Один барабан слота: колонка из ROWS видимых ячеек с бесконечной прокруткой.
-## Символы едут сверху вниз; при остановке лента подаёт заданные символы
-## и делает небольшой отскок, как настоящая механика барабана.
+## Ячейки (TextureRect Cell0..Cell3) лежат в сцене game.tscn; скрипт только
+## двигает ленту. Символы едут сверху вниз; при остановке лента подаёт заданные
+## символы и делает небольшой отскок, как настоящая механика барабана.
 
 signal stopped
 
@@ -26,31 +27,22 @@ var _final: Array[int] = []
 var _bounce_t := 0.0
 
 
-func setup(p_cell_size: Vector2, p_textures: Array[Texture2D],
-		p_rng: RandomNumberGenerator, initial: Array[int]) -> void:
-	cell_size = p_cell_size
-	textures = p_textures
-	rng = p_rng
-	size = Vector2(cell_size.x, cell_size.y * SlotData.ROWS)
-	clip_contents = true
-	# Лента: BUFFER скрытых ячеек сверху + ROWS видимых.
-	for i in (SlotData.ROWS + BUFFER):
-		var cell := TextureRect.new()
-		# Символ рисуется строго внутри уменьшенного прямоугольника ячейки:
-		# ничего не торчит из ячейки и не перекрывает соседей.
-		cell.size = cell_size - Vector2(CELL_INSET * 2, CELL_INSET * 2)
-		cell.stretch_mode = TextureRect.STRETCH_SCALE
-		cell.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-		cell.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		cell.texture = textures[initial[i]]
-		add_child(cell)
-		_cells.append(cell)
-	symbols.assign(initial.slice(BUFFER, BUFFER + SlotData.ROWS))
+func _ready() -> void:
+	for ch in get_children():
+		if ch is TextureRect:
+			_cells.append(ch)
+	cell_size = Vector2(size.x, size.y / float(SlotData.ROWS))
 	_offset = -cell_size.y * BUFFER
 	_apply()
 
 
-## Мгновенно показать символы (используется до первого спина).
+## Выдать барабану текстуры символов и генератор случайных чисел.
+func configure(p_textures: Array[Texture2D], p_rng: RandomNumberGenerator) -> void:
+	textures = p_textures
+	rng = p_rng
+
+
+## Мгновенно показать символы (3 штуки, сверху вниз).
 func set_symbols(final: Array[int]) -> void:
 	symbols = final.duplicate()
 	_cells[0].texture = textures[SlotData.random_symbol(rng)]
