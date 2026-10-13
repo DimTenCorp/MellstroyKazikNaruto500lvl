@@ -51,7 +51,7 @@ var _banner_tw: Tween
 @onready var lines_overlay: Node2D = $machine/grid_panel/lines_overlay
 @onready var paytable_popup: Control = $machine/paytable_popup
 @onready var popup_dim: ColorRect = $machine/paytable_popup/dim
-@onready var close_btn: Button = %close_btn
+@onready var close_btn: Button = $machine/paytable_popup/popup_panel/scroll/vbox/head/close_btn
 
 
 func _ready() -> void:
@@ -107,7 +107,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 ## Поддерживает тексты выплат в таблице актуальными по данным SlotData.
 func _refresh_paytable() -> void:
-	var vbox: VBoxContainer = %vbox
+	var vbox: VBoxContainer = $machine/paytable_popup/popup_panel/scroll/vbox
 	for sym in PAY_ORDER:
 		var row := vbox.get_node_or_null("row_%s" % SYMBOL_KEYS[sym])
 		if row == null:

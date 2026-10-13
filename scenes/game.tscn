@@ -1,6 +1,7 @@
-[gd_scene load_steps=26 format=3 uid="uid://jem4ybiqp44h"]
+[gd_scene load_steps=27 format=3 uid="uid://jem4ybiqp44h"]
 
 [ext_resource type="Script" path="res://scripts/slot_machine.gd" id="scr"]
+[ext_resource type="Script" path="res://scripts/reel.gd" id="scr_reel"]
 [ext_resource type="Texture2D" uid="uid://cs0j88w7gf0vi" path="res://img/slot_machine/cherry.png" id="tex_cherry"]
 [ext_resource type="Texture2D" uid="uid://dkqqa1uaw1ua1" path="res://img/slot_machine/lemon.png" id="tex_lemon"]
 [ext_resource type="Texture2D" uid="uid://ctn5brcnwuupa" path="res://img/slot_machine/orange.png" id="tex_orange"]
@@ -179,10 +180,11 @@ position = Vector2(101, 110)
 size = Vector2(798, 486)
 theme_override_styles/panel = SubResource("sb_grid")
 
-[node name="Reel0" type="SlotReel" parent="machine/grid_panel"]
+[node name="Reel0" type="Control" parent="machine/grid_panel"]
 position = Vector2(14, 14)
 size = Vector2(146, 438)
 clip_contents = true
+script = ExtResource("scr_reel")
 
 [node name="Cell0" type="TextureRect" parent="machine/grid_panel/Reel0"]
 texture = ExtResource("tex_star")
@@ -212,10 +214,11 @@ size = Vector2(138, 138)
 stretch_mode = 0
 mouse_filter = 2
 
-[node name="Reel1" type="SlotReel" parent="machine/grid_panel"]
+[node name="Reel1" type="Control" parent="machine/grid_panel"]
 position = Vector2(170, 14)
 size = Vector2(146, 438)
 clip_contents = true
+script = ExtResource("scr_reel")
 
 [node name="Cell0" type="TextureRect" parent="machine/grid_panel/Reel1"]
 texture = ExtResource("tex_cherry")
@@ -245,10 +248,11 @@ size = Vector2(138, 138)
 stretch_mode = 0
 mouse_filter = 2
 
-[node name="Reel2" type="SlotReel" parent="machine/grid_panel"]
+[node name="Reel2" type="Control" parent="machine/grid_panel"]
 position = Vector2(326, 14)
 size = Vector2(146, 438)
 clip_contents = true
+script = ExtResource("scr_reel")
 
 [node name="Cell0" type="TextureRect" parent="machine/grid_panel/Reel2"]
 texture = ExtResource("tex_chestbonus")
@@ -278,10 +282,11 @@ size = Vector2(138, 138)
 stretch_mode = 0
 mouse_filter = 2
 
-[node name="Reel3" type="SlotReel" parent="machine/grid_panel"]
+[node name="Reel3" type="Control" parent="machine/grid_panel"]
 position = Vector2(482, 14)
 size = Vector2(146, 438)
 clip_contents = true
+script = ExtResource("scr_reel")
 
 [node name="Cell0" type="TextureRect" parent="machine/grid_panel/Reel3"]
 texture = ExtResource("tex_plum")
@@ -311,10 +316,11 @@ size = Vector2(138, 138)
 stretch_mode = 0
 mouse_filter = 2
 
-[node name="Reel4" type="SlotReel" parent="machine/grid_panel"]
+[node name="Reel4" type="Control" parent="machine/grid_panel"]
 position = Vector2(638, 14)
 size = Vector2(146, 438)
 clip_contents = true
+script = ExtResource("scr_reel")
 
 [node name="Cell0" type="TextureRect" parent="machine/grid_panel/Reel4"]
 texture = ExtResource("tex_orange")
@@ -453,7 +459,7 @@ offset_top = 12
 offset_right = -16
 offset_bottom = -12
 
-[node name="vbox" type="VBoxContainer" parent="machine/paytable_popup/popup_panel/scroll" unique_name_in_owner=true]
+[node name="vbox" type="VBoxContainer" parent="machine/paytable_popup/popup_panel/scroll"]
 size_flags_horizontal = 3
 theme_override_constants/separation = 8
 
@@ -468,7 +474,7 @@ theme_override_colors/font_color = Color(1, 0.843137, 0.580392, 1)
 [node name="spacer5" type="Control" parent="machine/paytable_popup/popup_panel/scroll/vbox/head"]
 size_flags_horizontal = 3
 
-[node name="close_btn" type="Button" parent="machine/paytable_popup/popup_panel/scroll/vbox/head" unique_name_in_owner=true]
+[node name="close_btn" type="Button" parent="machine/paytable_popup/popup_panel/scroll/vbox/head"]
 text = "ЗАКРЫТЬ"
 custom_minimum_size = Vector2(180, 50)
 theme_override_font_sizes/font_size = 22
