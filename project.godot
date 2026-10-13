@@ -13,8 +13,16 @@ config_version=5
 config/name="MellstroyKazikNaruto500lvl"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 config/icon="res://icon.svg"
+run/main_scene="res://scenes/game.tscn"
+
+[autoload]
+
+YandexGames="*res://addons/yandex_games/yandex_games.gd"
 
 [display]
+
+window/size/viewport_width=1280
+window/size/viewport_height=720
 
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
@@ -25,7 +33,7 @@ project/assembly_name="MellstroyKazikNaruto500lvl"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/godot_git/plugin.cfg")
+enabled=PackedStringArray("res://addons/godot_git/plugin.cfg", "res://addons/yandex_games/plugin.cfg")
 
 [physics]
 
