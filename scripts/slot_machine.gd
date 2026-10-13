@@ -1,7 +1,13 @@
+@tool
 extends Control
 ## Главная сцена: слот-машина 3x5 (3 строки, 5 барабанов) для Яндекс.Игр.
 ## Правила: 9 линий выплат слева направо, WILD-замена, скаттер BONUS даёт
 ## выплату и фриспины. Баланс хранится в user://, игра без реальных денег.
+##
+## Скрипт помечен @tool: весь UI строится кодом, но благодаря этому его видно
+## в 2D-виде и в дереве узлов редактора сразу после открытия game.tscn.
+## Сгенерированные узлы не сохраняются в .tscn — макет правится константами
+## этого скрипта (VSIZE, CELL, GAP и т.д.).
 
 const VSIZE := Vector2(1000, 700)  ## виртуальный размер макета машины
 const CELL := 146.0                ## размер ячейки символа
@@ -66,6 +72,11 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _layout() -> void:
+	if Engine.is_editor_hint():
+		# В редакторе показываем макет 1:1 в начале координат.
+		machine.scale = Vector2.ONE
+		machine.position = Vector2.ZERO
+		return
 	var vs := get_viewport_rect().size
 	if vs.x <= 0 or vs.y <= 0:
 		return
