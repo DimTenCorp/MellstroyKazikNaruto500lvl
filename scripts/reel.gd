@@ -33,6 +33,14 @@ func _ready() -> void:
 		if ch is TextureRect:
 			_cells.append(ch)
 	cell_size = Vector2(size.x, size.y / float(SlotData.ROWS))
+	# Страховка: геометрия ячеек задаётся кодом и не зависит от того,
+	# что сохранено в tscn: символ ровно внутри слота, без наездов.
+	var cell_rect := cell_size - Vector2(CELL_INSET * 2, CELL_INSET * 2)
+	for cell in _cells:
+		cell.size = cell_rect
+		cell.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		cell.stretch_mode = TextureRect.STRETCH_SCALE
+		cell.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_offset = -cell_size.y * BUFFER
 	_apply()
 

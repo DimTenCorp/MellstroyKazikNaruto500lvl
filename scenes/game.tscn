@@ -176,6 +176,7 @@ texture = ExtResource("tex_star")
 position = Vector2(4, -142)
 size = Vector2(138, 138)
 stretch_mode = 0
+expand_mode = 0
 mouse_filter = 2
 
 [node name="Cell1" type="TextureRect" parent="machine/grid_panel/Reel0"]
@@ -183,6 +184,7 @@ texture = ExtResource("tex_wild")
 position = Vector2(4, 4)
 size = Vector2(138, 138)
 stretch_mode = 0
+expand_mode = 0
 mouse_filter = 2
 
 [node name="Cell2" type="TextureRect" parent="machine/grid_panel/Reel0"]
@@ -190,6 +192,7 @@ texture = ExtResource("tex_cherry")
 position = Vector2(4, 150)
 size = Vector2(138, 138)
 stretch_mode = 0
+expand_mode = 0
 mouse_filter = 2
 
 [node name="Cell3" type="TextureRect" parent="machine/grid_panel/Reel0"]
@@ -197,6 +200,7 @@ texture = ExtResource("tex_lemon")
 position = Vector2(4, 296)
 size = Vector2(138, 138)
 stretch_mode = 0
+expand_mode = 0
 mouse_filter = 2
 
 [node name="Reel1" type="Control" parent="machine/grid_panel"]
@@ -210,6 +214,7 @@ texture = ExtResource("tex_cherry")
 position = Vector2(4, -142)
 size = Vector2(138, 138)
 stretch_mode = 0
+expand_mode = 0
 mouse_filter = 2
 
 [node name="Cell1" type="TextureRect" parent="machine/grid_panel/Reel1"]
@@ -217,6 +222,7 @@ texture = ExtResource("tex_wild")
 position = Vector2(4, 4)
 size = Vector2(138, 138)
 stretch_mode = 0
+expand_mode = 0
 mouse_filter = 2
 
 [node name="Cell2" type="TextureRect" parent="machine/grid_panel/Reel1"]
@@ -224,6 +230,7 @@ texture = ExtResource("tex_bell")
 position = Vector2(4, 150)
 size = Vector2(138, 138)
 stretch_mode = 0
+expand_mode = 0
 mouse_filter = 2
 
 [node name="Cell3" type="TextureRect" parent="machine/grid_panel/Reel1"]
@@ -231,6 +238,7 @@ texture = ExtResource("tex_orange")
 position = Vector2(4, 296)
 size = Vector2(138, 138)
 stretch_mode = 0
+expand_mode = 0
 mouse_filter = 2
 
 [node name="Reel2" type="Control" parent="machine/grid_panel"]
@@ -244,6 +252,7 @@ texture = ExtResource("tex_chestbonus")
 position = Vector2(4, -142)
 size = Vector2(138, 138)
 stretch_mode = 0
+expand_mode = 0
 mouse_filter = 2
 
 [node name="Cell1" type="TextureRect" parent="machine/grid_panel/Reel2"]
@@ -251,6 +260,7 @@ texture = ExtResource("tex_lemon")
 position = Vector2(4, 4)
 size = Vector2(138, 138)
 stretch_mode = 0
+expand_mode = 0
 mouse_filter = 2
 
 [node name="Cell2" type="TextureRect" parent="machine/grid_panel/Reel2"]
@@ -258,6 +268,7 @@ texture = ExtResource("tex_cherry")
 position = Vector2(4, 150)
 size = Vector2(138, 138)
 stretch_mode = 0
+expand_mode = 0
 mouse_filter = 2
 
 [node name="Cell3" type="TextureRect" parent="machine/grid_panel/Reel2"]
@@ -265,6 +276,7 @@ texture = ExtResource("tex_orange")
 position = Vector2(4, 296)
 size = Vector2(138, 138)
 stretch_mode = 0
+expand_mode = 0
 mouse_filter = 2
 
 [node name="Reel3" type="Control" parent="machine/grid_panel"]
@@ -278,6 +290,7 @@ texture = ExtResource("tex_plum")
 position = Vector2(4, -142)
 size = Vector2(138, 138)
 stretch_mode = 0
+expand_mode = 0
 mouse_filter = 2
 
 [node name="Cell1" type="TextureRect" parent="machine/grid_panel/Reel3"]
@@ -285,6 +298,7 @@ texture = ExtResource("tex_watermelon")
 position = Vector2(4, 4)
 size = Vector2(138, 138)
 stretch_mode = 0
+expand_mode = 0
 mouse_filter = 2
 
 [node name="Cell2" type="TextureRect" parent="machine/grid_panel/Reel3"]
@@ -292,6 +306,7 @@ texture = ExtResource("tex_plum")
 position = Vector2(4, 150)
 size = Vector2(138, 138)
 stretch_mode = 0
+expand_mode = 0
 mouse_filter = 2
 
 [node name="Cell3" type="TextureRect" parent="machine/grid_panel/Reel3"]
@@ -299,6 +314,7 @@ texture = ExtResource("tex_horseshoe")
 position = Vector2(4, 296)
 size = Vector2(138, 138)
 stretch_mode = 0
+expand_mode = 0
 mouse_filter = 2
 
 [node name="Reel4" type="Control" parent="machine/grid_panel"]
@@ -312,6 +328,7 @@ texture = ExtResource("tex_orange")
 position = Vector2(4, -142)
 size = Vector2(138, 138)
 stretch_mode = 0
+expand_mode = 0
 mouse_filter = 2
 
 [node name="Cell1" type="TextureRect" parent="machine/grid_panel/Reel4"]
@@ -319,6 +336,7 @@ texture = ExtResource("tex_star")
 position = Vector2(4, 4)
 size = Vector2(138, 138)
 stretch_mode = 0
+expand_mode = 0
 mouse_filter = 2
 
 [node name="Cell2" type="TextureRect" parent="machine/grid_panel/Reel4"]
@@ -326,6 +344,7 @@ texture = ExtResource("tex_lemon")
 position = Vector2(4, 150)
 size = Vector2(138, 138)
 stretch_mode = 0
+expand_mode = 0
 mouse_filter = 2
 
 [node name="Cell3" type="TextureRect" parent="machine/grid_panel/Reel4"]
@@ -333,6 +352,7 @@ texture = ExtResource("tex_cherry")
 position = Vector2(4, 296)
 size = Vector2(138, 138)
 stretch_mode = 0
+expand_mode = 0
 mouse_filter = 2
 
 [node name="fx_layer" type="Control" parent="machine/grid_panel"]

@@ -214,7 +214,7 @@ for c in range(COLS):
              texture=f'ExtResource("tex_{key}")',
              position=f"Vector2({INSET:g}, {i * CELL - CELL + INSET:g})",
              size=f"Vector2({CELL - INSET * 2:g}, {CELL - INSET * 2:g})",
-             stretch_mode=0, mouse_filter=2)
+             stretch_mode=0, expand_mode=0, mouse_filter=2)
 
 node("fx_layer", "Control", "grid_panel",
      position=f"Vector2({GRID_PAD:g}, {GRID_PAD:g})",
