@@ -14,6 +14,7 @@ const BOUNCE_DEPTH := 0.32 ## отскок в долях высоты ячейк
 const BUFFER := 1          ## скрытых ячеек над видимой областью
 
 var cell_size := Vector2.ZERO
+var speed_scale := 1.0  ## 2.0 = ускоренный спин
 var textures: Array[Texture2D] = []
 var rng: RandomNumberGenerator
 ## Три видимых символа (сверху вниз) в состоянии покоя.
@@ -73,7 +74,7 @@ func stop_at(final: Array[int]) -> void:
 func _process(delta: float) -> void:
 	match _state:
 		"spin":
-			_offset += (cell_size.y / STEP_TIME) * delta
+			_offset += (cell_size.y / STEP_TIME) * speed_scale * delta
 			while _offset >= 0.0:
 				_offset -= cell_size.y
 				_shift()

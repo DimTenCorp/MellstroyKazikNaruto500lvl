@@ -5,6 +5,8 @@
 не редактировали сцену руками в редакторе (или хотите сбросить правки):
     python3 tools/gen_game_tscn.py
 Макет зеркалит константы scripts/slot_machine.gd и scripts/reel.gd.
+Кнопки интерфейса и бейджи выигрышей вырезаются атласами из спрайтшитов
+(img/buttons_spr, img/wins_spr) — только русские версии.
 """
 import importlib.util
 import os
@@ -38,7 +40,6 @@ NAMES_RU = {
 }
 LINE_HEX = ["ffd794", "5b8cff", "6ee06e", "ff6b6b", "c77bff",
             "4dd7ff", "ffa24d", "ff7bd5", "b8ff6b"]
-# Текстуры ячеек барабанов в превью редактора (buffer + 3 видимых), по колонкам.
 REEL_PREVIEW = [
     ["star", "wild", "cherry", "lemon"],
     ["cherry", "wild", "bell", "orange"],
@@ -46,6 +47,19 @@ REEL_PREVIEW = [
     ["plum", "watermelon", "plum", "horseshoe"],
     ["orange", "star", "lemon", "cherry"],
 ]
+
+# Прямоугольники кнопок в img/buttons_spr/buttons_sprites.png (RU).
+BTN_REGIONS = {
+    "spin": (12, 8, 270, 293),        # ПУСК
+    "auto": (338, 8, 319, 293),       # АВТОИГРА
+    "max": (716, 8, 266, 293),        # МАКС. СТАВКА
+    "bet": (1062, 8, 265, 293),       # СТАВКА
+    "denom": (1385, 8, 319, 293),     # НОМИНАЛ МОНЕТЫ
+    "speed": (19, 330, 265, 283),     # УСКОРЕНИЕ
+    "paytable": (369, 330, 256, 283), # ТАБЛИЦА ВЫПЛАТ
+    "collect": (712, 330, 266, 283),  # ЗАБРАТЬ
+    "sound": (1069, 330, 266, 283),   # ЗВУК
+}
 
 OUT = []
 REG = {}  # имя узла -> последний созданный полный путь (порядок обхода DFS)
@@ -56,9 +70,8 @@ def hx(h: str, a: float = 1.0) -> str:
     return f"Color({r:g}, {g:g}, {b:g}, {a:g})"
 
 
-def tex_uid(key: str) -> str:
-    path = os.path.join(ROOT, "img", "slot_machine", key + ".png.import")
-    m = re.search(r'uid="(uid://[^"]+)"', open(path).read())
+def res_uid(path: str) -> str:
+    m = re.search(r'uid="(uid://[^"]+)"', open(os.path.join(ROOT, path) + ".import").read())
     return m.group(1)
 
 
@@ -71,14 +84,11 @@ def prop_name(k: str) -> str:
 
 
 def node(name, ntype, parent, uniq=False, **props):
-    # В .tscn parent — полный путь от корня; резолвим по реестру создания.
     if parent == ".":
-        path = name
-        parent_attr = "."
+        path, parent_attr = name, "."
     else:
         base = REG[parent]
-        path = base + "/" + name
-        parent_attr = base
+        path, parent_attr = base + "/" + name, base
     REG[name] = path
     u = " unique_name_in_owner=true" if uniq else ""
     OUT.append(f'\n[node name="{name}" type="{ntype}" '
@@ -93,25 +103,6 @@ def label(name, parent, text, fs, color, **kw):
              "theme_override_colors_font_color": hx(color)}
     props.update(kw)
     node(name, "Label", parent, **props)
-
-
-def btn(name, parent, text, size, styles="btn", fs=22, **kw):
-    props = {"text": '"' + text + '"',
-             "custom_minimum_size": f"Vector2({size[0]}, {size[1]})",
-             "theme_override_font_sizes_font_size": fs}
-    if styles == "btn":
-        props["theme_override_styles_normal"] = 'SubResource("sb_btn_n")'
-        props["theme_override_styles_hover"] = 'SubResource("sb_btn_h")'
-        props["theme_override_styles_pressed"] = 'SubResource("sb_btn_p")'
-    else:
-        props["theme_override_styles_normal"] = 'SubResource("sb_gold_n")'
-        props["theme_override_styles_hover"] = 'SubResource("sb_gold_h")'
-        props["theme_override_styles_pressed"] = 'SubResource("sb_gold_p")'
-        props["theme_override_styles_disabled"] = 'SubResource("sb_gold_d")'
-        props["theme_override_colors_font_color"] = hx("2a1a08")
-        props["theme_override_colors_font_disabled_color"] = hx("2a1a08")
-    props.update(kw)
-    node(name, "Button", parent, **props)
 
 
 def spacer(name, parent):
@@ -135,24 +126,43 @@ def stylebox(sid, bg, border=None, width=0, radius=10):
         OUT.append(f"corner_radius_{c} = {radius}")
 
 
+def atlassub(sid, ext_id, rect):
+    OUT.append(f'\n[sub_resource type="AtlasTexture" id="{sid}"]')
+    OUT.append(f'atlas = ExtResource("{ext_id}")')
+    OUT.append(f"region = Rect2({rect[0]}, {rect[1]}, {rect[2]}, {rect[3]})")
+
+
+def tbtn(name, parent, sid, pos, size):
+    node(name, "TextureButton", parent,
+         texture_normal=f'SubResource("{sid}")',
+         stretch_mode=5,
+         position=f"Vector2({pos[0]}, {pos[1]})",
+         size=f"Vector2({size[0]}, {size[1]})")
+
+
 # ------------------------------------------------------------------ ресурсы
 ext = ['[ext_resource type="Script" path="res://scripts/slot_machine.gd" '
        'id="scr"]',
        '[ext_resource type="Script" path="res://scripts/reel.gd" '
-       'id="scr_reel"]']
+       'id="scr_reel"]',
+       f'[ext_resource type="Texture2D" uid="{res_uid("img/background/back1.jpg")}" '
+       'path="res://img/background/back1.jpg" id="tex_back1"]',
+       f'[ext_resource type="Texture2D" uid="{res_uid("img/background/back2.jpg")}" '
+       'path="res://img/background/back2.jpg" id="tex_back2"]',
+       f'[ext_resource type="Texture2D" uid="{res_uid("img/buttons_spr/buttons_sprites.png")}" '
+       'path="res://img/buttons/buttons_sprites.png" id="tex_buttons"]'.replace(
+           "img/buttons/buttons_sprites.png", "img/buttons_spr/buttons_sprites.png"),
+       f'[ext_resource type="Texture2D" uid="{res_uid("img/wins_spr/wins_spritessheet.png")}" '
+       'path="res://img/wins_spr/wins_spritessheet.png" id="tex_wins"]']
 for key in KEYS:
-    ext.append(f'[ext_resource type="Texture2D" uid="{tex_uid(key)}" '
+    ext.append(f'[ext_resource type="Texture2D" uid="{res_uid("img/slot_machine/" + key + ".png")}" '
                f'path="res://img/slot_machine/{key}.png" id="tex_{key}"]')
 
 stylebox("sb_grid", "221730", "d8b45e", 4, 14)
 stylebox("sb_popup", "241a31", "d8b45e", 2, 14)
-stylebox("sb_gold_n", "e8c06a", "8a6a20", 3, 12)
-stylebox("sb_gold_h", "ffd98a", "8a6a20", 3, 12)
-stylebox("sb_gold_p", "c79b45", "8a6a20", 3, 12)
-stylebox("sb_gold_d", "5a5164", "3c3545", 0, 12)
 stylebox("sb_btn_n", "3a2c4d", "7a6399", 2, 10)
-stylebox("sb_btn_h", "4a3a61", "9a80bd", 2, 10)
-stylebox("sb_btn_p", "2c2139", "7a6399", 2, 10)
+for key in BTN_REGIONS:
+    atlassub("at_" + key, "tex_buttons", BTN_REGIONS[key])
 
 # ------------------------------------------------------------------ узлы
 OUT.append('\n[node name="game" type="Control" unique_id=1200433587]')
@@ -162,13 +172,19 @@ OUT.append("grow_horizontal = 2")
 OUT.append("grow_vertical = 2")
 OUT.append('script = ExtResource("scr")')
 
-node("bg", "ColorRect", ".", color=hx("150e1d"),
-     anchor_right=1.0, anchor_bottom=1.0, grow_horizontal=2, grow_vertical=2)
+node("bg", "TextureRect", ".", texture='ExtResource("tex_back1")',
+     anchor_right=1.0, anchor_bottom=1.0, grow_horizontal=2, grow_vertical=2,
+     stretch_mode=6, mouse_filter=2)
+node("bg_dim", "ColorRect", ".", color=hx("140a20", 0.52),
+     anchor_right=1.0, anchor_bottom=1.0, grow_horizontal=2, grow_vertical=2,
+     mouse_filter=2)
 node("machine", "Control", ".", size=f"Vector2({VSIZE[0]}, {VSIZE[1]})")
 
-label("title", "machine", "ЗОЛОТЫЕ БАРАБАНЫ 3×5", 36, "ffd794",
-      position="Vector2(0, 2)", size=f"Vector2({VSIZE[0]}, 48)",
-      horizontal_alignment=1)
+label("title", "machine", "ЗОЛОТЫЕ БАРАБАНЫ 3×5", 34, "ffd794",
+      position="Vector2(150, 6)", size="Vector2(700, 46)",
+      horizontal_alignment=1,
+      theme_override_constants_outline_size=8,
+      theme_override_colors_font_outline_color=hx("2a1608"))
 
 hbox("top_bar", "machine", 12, position="Vector2(30, 56)",
      size=f"Vector2({VSIZE[0] - 60}, 46)")
@@ -211,19 +227,42 @@ label("msg_label", "grid_panel", "", 42, "ffffff", horizontal_alignment=1,
       theme_override_constants_outline_size=10,
       theme_override_colors_font_outline_color=hx("3a1d6e"), visible="false")
 
-hbox("bottom_bar", "machine", 10, position="Vector2(20, 614)",
-     size=f"Vector2({VSIZE[0] - 40}, 72)")
-btn("bet_minus", "bottom_bar", "−", (52, 56))
-label("bet_label", "bottom_bar", "Ставка/линия: 1", 24, "ffe9b8",
-      vertical_alignment=1)
-btn("bet_plus", "bottom_bar", "+", (52, 56))
-label("total_label", "bottom_bar", "Всего: 9", 24, "c9b6e2",
-      vertical_alignment=1)
-spacer("spacer3", "bottom_bar")
-btn("spin_btn", "bottom_bar", "СПИН", (210, 68), styles="gold", fs=30)
-spacer("spacer4", "bottom_bar")
-btn("paytable_btn", "bottom_bar", "ТАБЛИЦА", (150, 56))
-btn("bonus_btn", "bottom_bar", "+1000 МОНЕТ", (190, 56), visible="false")
+# ---------------------------------------------------------- нижняя панель
+node("bottom_bar", "Control", "machine",
+     position="Vector2(0, 0)", size=f"Vector2({VSIZE[0]}, {VSIZE[1] - 596})",
+     mouse_filter=2)
+tbtn("denom_btn", "bottom_bar", "at_denom", (16, 12), (96, 86))
+tbtn("bet_btn", "bottom_bar", "at_bet", (118, 12), (96, 86))
+tbtn("max_btn", "bottom_bar", "at_max", (220, 12), (96, 86))
+label("bet_label", "bottom_bar", "Ставка/линия: 1", 20, "ffe9b8",
+      position="Vector2(322, 16)")
+label("total_label", "bottom_bar", "Всего: 9", 20, "c9b6e2",
+      position="Vector2(322, 52)")
+tbtn("spin_btn", "bottom_bar", "at_spin", (430, -40), (140, 140))
+tbtn("auto_btn", "bottom_bar", "at_auto", (600, 12), (96, 86))
+tbtn("speed_btn", "bottom_bar", "at_speed", (700, 12), (96, 86))
+tbtn("sound_btn", "bottom_bar", "at_sound", (800, 12), (96, 86))
+tbtn("paytable_btn", "bottom_bar", "at_paytable", (896, 4), (92, 100))
+node("bonus_btn", "Button", "bottom_bar", text='"БОНУС +1000"',
+     position="Vector2(600, -36)", size="Vector2(190, 40)",
+     theme_override_font_sizes_font_size=18,
+     theme_override_styles_normal='SubResource("sb_btn_n")',
+     theme_override_styles_hover='SubResource("sb_btn_n")',
+     theme_override_styles_pressed='SubResource("sb_btn_n")',
+     visible="false")
+tbtn("collect_btn", "machine", "at_collect", (858, 4), (130, 104))
+
+# ---------------------------------------------------------- попап выигрыша
+node("win_popup", "Control", "machine", position="Vector2(250, 168)",
+     size="Vector2(500, 330)", visible="false", mouse_filter=2)
+node("win_badge", "TextureRect", "win_popup",
+     position="Vector2(0, 0)", size="Vector2(500, 260)",
+     stretch_mode=5, mouse_filter=2)
+label("win_popup_label", "win_popup", "", 44, "ffe9b8",
+      horizontal_alignment=1, position="Vector2(0, 252)",
+      size="Vector2(500, 66)",
+      theme_override_constants_outline_size=10,
+      theme_override_colors_font_outline_color=hx("402008"))
 
 # ------------------------------------------------------- попап таблицы выплат
 node("paytable_popup", "Control", "machine", visible="false",
@@ -233,6 +272,11 @@ node("dim", "ColorRect", "paytable_popup", color=hx("000000", 0.78),
 node("popup_panel", "Panel", "paytable_popup", position="Vector2(70, 40)",
      size=f"Vector2({VSIZE[0] - 140}, {VSIZE[1] - 80})",
      theme_override_styles_panel='SubResource("sb_popup")')
+node("panel_bg", "TextureRect", "popup_panel",
+     texture='ExtResource("tex_back2")',
+     anchor_right=1.0, anchor_bottom=1.0, stretch_mode=6, mouse_filter=2)
+node("panel_dim", "ColorRect", "popup_panel", color=hx("12081c", 0.86),
+     anchor_right=1.0, anchor_bottom=1.0, mouse_filter=2)
 node("scroll", "ScrollContainer", "popup_panel",
      anchor_right=1.0, anchor_bottom=1.0,
      offset_left=16, offset_top=12, offset_right=-16, offset_bottom=-12)
@@ -242,7 +286,12 @@ node("vbox", "VBoxContainer", "scroll", size_flags_horizontal=3,
 hbox("head", "vbox", 0)
 label("head_title", "head", "ТАБЛИЦА ВЫПЛАТ", 30, "ffd794")
 spacer("spacer5", "head")
-btn("close_btn", "head", "ЗАКРЫТЬ", (180, 50))
+node("close_btn", "Button", "head", text='"ЗАКРЫТЬ"',
+     custom_minimum_size="Vector2(180, 50)",
+     theme_override_font_sizes_font_size=22,
+     theme_override_styles_normal='SubResource("sb_btn_n")',
+     theme_override_styles_hover='SubResource("sb_btn_n")',
+     theme_override_styles_pressed='SubResource("sb_btn_n")')
 
 rules = ("Линии платят слева направо, начиная с первого барабана. Выплата = "
          "ставка на линию × коэффициент. WILD заменяет любой символ, кроме "
