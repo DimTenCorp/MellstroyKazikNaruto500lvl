@@ -137,7 +137,9 @@ def stylebox(sid, bg, border=None, width=0, radius=10):
 
 # ------------------------------------------------------------------ ресурсы
 ext = ['[ext_resource type="Script" path="res://scripts/slot_machine.gd" '
-       'id="scr"]']
+       'id="scr"]',
+       '[ext_resource type="Script" path="res://scripts/reel.gd" '
+       'id="scr_reel"]']
 for key in KEYS:
     ext.append(f'[ext_resource type="Texture2D" uid="{tex_uid(key)}" '
                f'path="res://img/slot_machine/{key}.png" id="tex_{key}"]')
@@ -187,9 +189,10 @@ node("grid_panel", "Panel", "machine",
      theme_override_styles_panel='SubResource("sb_grid")')
 
 for c in range(COLS):
-    node(f"Reel{c}", "SlotReel", "grid_panel",
+    node(f"Reel{c}", "Control", "grid_panel",
          position=f"Vector2({GRID_PAD + c * (CELL + GAP):g}, {GRID_PAD:g})",
-         size=f"Vector2({CELL:g}, {CELL * ROWS:g})", clip_contents="true")
+         size=f"Vector2({CELL:g}, {CELL * ROWS:g})", clip_contents="true",
+         script='ExtResource("scr_reel")')
     for i, key in enumerate(REEL_PREVIEW[c]):
         node(f"Cell{i}", "TextureRect", f"Reel{c}",
              texture=f'ExtResource("tex_{key}")',
@@ -234,12 +237,12 @@ node("scroll", "ScrollContainer", "popup_panel",
      anchor_right=1.0, anchor_bottom=1.0,
      offset_left=16, offset_top=12, offset_right=-16, offset_bottom=-12)
 node("vbox", "VBoxContainer", "scroll", size_flags_horizontal=3,
-     theme_override_constants_separation=8, uniq=True)
+     theme_override_constants_separation=8)
 
 hbox("head", "vbox", 0)
 label("head_title", "head", "ТАБЛИЦА ВЫПЛАТ", 30, "ffd794")
 spacer("spacer5", "head")
-btn("close_btn", "head", "ЗАКРЫТЬ", (180, 50), uniq=True)
+btn("close_btn", "head", "ЗАКРЫТЬ", (180, 50))
 
 rules = ("Линии платят слева направо, начиная с первого барабана. Выплата = "
          "ставка на линию × коэффициент. WILD заменяет любой символ, кроме "
