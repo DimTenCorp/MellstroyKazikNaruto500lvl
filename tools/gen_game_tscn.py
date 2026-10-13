@@ -19,7 +19,7 @@ SIM = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(SIM)
 
 # ------------------------------------------------------------------ константы
-VSIZE = (1000, 700)
+VSIZE = (1280, 720)
 CELL = 146.0
 GAP = 10.0
 GRID_PAD = 14.0
@@ -60,6 +60,8 @@ BTN_REGIONS = {
     "collect": (712, 330, 266, 283),  # ЗАБРАТЬ
     "sound": (1069, 330, 266, 283),   # ЗВУК
 }
+
+BETS_LIST = [1, 2, 5, 10, 25, 50]
 
 OUT = []
 REG = {}  # имя узла -> последний созданный полный путь (порядок обхода DFS)
@@ -180,12 +182,6 @@ node("bg_dim", "ColorRect", ".", color=hx("140a20", 0.52),
      mouse_filter=2)
 node("machine", "Control", ".", size=f"Vector2({VSIZE[0]}, {VSIZE[1]})")
 
-label("title", "machine", "ЗОЛОТЫЕ БАРАБАНЫ 3×5", 34, "ffd794",
-      position="Vector2(150, 6)", size="Vector2(700, 46)",
-      horizontal_alignment=1,
-      theme_override_constants_outline_size=8,
-      theme_override_colors_font_outline_color=hx("2a1608"))
-
 hbox("top_bar", "machine", 12, position="Vector2(30, 56)",
      size=f"Vector2({VSIZE[0] - 60}, 46)")
 label("balance_label", "top_bar", "Баланс: 0", 26, "ffe9b8")
@@ -229,31 +225,29 @@ label("msg_label", "grid_panel", "", 42, "ffffff", horizontal_alignment=1,
 
 # ---------------------------------------------------------- нижняя панель
 node("bottom_bar", "Control", "machine",
-     position="Vector2(0, 0)", size=f"Vector2({VSIZE[0]}, {VSIZE[1] - 596})",
+     position="Vector2(0, 0)", size=f"Vector2({VSIZE[0]}, {VSIZE[1]})",
      mouse_filter=2)
-tbtn("denom_btn", "bottom_bar", "at_denom", (16, 12), (96, 86))
-tbtn("bet_btn", "bottom_bar", "at_bet", (118, 12), (96, 86))
-tbtn("max_btn", "bottom_bar", "at_max", (220, 12), (96, 86))
+# Раскладка кнопок перенесена из правки заказчика (91dc2e5): позиции те же,
+# но размеры заданы через Size (без Scale), чтобы хитбокс совпадал со спрайтом.
+tbtn("bet_btn", "bottom_bar", "at_bet", (24, 568), (122, 135))
+tbtn("max_btn", "bottom_bar", "at_max", (152, 616), (72, 79))
 label("bet_label", "bottom_bar", "Ставка/линия: 1", 20, "ffe9b8",
-      position="Vector2(322, 16)")
-label("total_label", "bottom_bar", "Всего: 9", 20, "c9b6e2",
-      position="Vector2(322, 52)")
-tbtn("spin_btn", "bottom_bar", "at_spin", (430, -40), (140, 140))
-tbtn("auto_btn", "bottom_bar", "at_auto", (600, 12), (96, 86))
-tbtn("speed_btn", "bottom_bar", "at_speed", (700, 12), (96, 86))
-tbtn("sound_btn", "bottom_bar", "at_sound", (800, 12), (96, 86))
-tbtn("paytable_btn", "bottom_bar", "at_paytable", (896, 4), (92, 100))
+      position="Vector2(264, 48)")
+tbtn("auto_btn", "bottom_bar", "at_auto", (720, 576), (179, 142))
+tbtn("speed_btn", "bottom_bar", "at_speed", (912, 568), (127, 136))
+tbtn("spin_btn", "bottom_bar", "at_spin", (1056, 488), (204, 221))
+tbtn("paytable_btn", "bottom_bar", "at_paytable", (960, 8), (138, 153))
+tbtn("sound_btn", "bottom_bar", "at_sound", (1137, 1), (113, 120))
 node("bonus_btn", "Button", "bottom_bar", text='"БОНУС +1000"',
-     position="Vector2(600, -36)", size="Vector2(190, 40)",
+     position="Vector2(360, 608)", size="Vector2(190, 40)",
      theme_override_font_sizes_font_size=18,
      theme_override_styles_normal='SubResource("sb_btn_n")',
      theme_override_styles_hover='SubResource("sb_btn_n")',
      theme_override_styles_pressed='SubResource("sb_btn_n")',
      visible="false")
-tbtn("collect_btn", "machine", "at_collect", (858, 4), (130, 104))
 
 # ---------------------------------------------------------- попап выигрыша
-node("win_popup", "Control", "machine", position="Vector2(250, 168)",
+node("win_popup", "Control", "machine", position="Vector2(390, 168)",
      size="Vector2(500, 330)", visible="false", mouse_filter=2)
 node("win_badge", "TextureRect", "win_popup",
      position="Vector2(0, 0)", size="Vector2(500, 260)",
@@ -263,6 +257,115 @@ label("win_popup_label", "win_popup", "", 44, "ffe9b8",
       size="Vector2(500, 66)",
       theme_override_constants_outline_size=10,
       theme_override_colors_font_outline_color=hx("402008"))
+
+# ---------------------------------------------------------- меню ставок
+node("bet_menu", "Control", "machine", visible="false",
+     anchor_right=1.0, anchor_bottom=1.0)
+node("dim", "ColorRect", "bet_menu", color=hx("000000", 0.7),
+     anchor_right=1.0, anchor_bottom=1.0)
+node("panel", "Panel", "bet_menu", position="Vector2(470, 170)",
+     size="Vector2(340, 360)",
+     theme_override_styles_panel='SubResource("sb_popup")')
+node("vbox", "VBoxContainer", "panel",
+     anchor_right=1.0, anchor_bottom=1.0,
+     offset_left=16, offset_top=12, offset_right=-16, offset_bottom=-12,
+     theme_override_constants_separation=12)
+hbox("head", "vbox", 0)
+label("head_title", "head", "СТАВКА НА ЛИНИЮ", 26, "ffd794")
+spacer("spacer_bet", "head")
+node("close_btn", "Button", "head", text='"ЗАКРЫТЬ"',
+     custom_minimum_size="Vector2(140, 42)",
+     theme_override_font_sizes_font_size=18,
+     theme_override_styles_normal='SubResource("sb_btn_n")',
+     theme_override_styles_hover='SubResource("sb_btn_n")',
+     theme_override_styles_pressed='SubResource("sb_btn_n")')
+node("grid", "GridContainer", "vbox", columns=3,
+     theme_override_constants_h_separation=10,
+     theme_override_constants_v_separation=10)
+for i, b in enumerate(BETS_LIST):
+    node(f"bet_opt{i}", "Button", "grid", text=f'"{b}"',
+         custom_minimum_size="Vector2(96, 56)",
+         theme_override_font_sizes_font_size=24,
+         theme_override_styles_normal='SubResource("sb_btn_n")',
+         theme_override_styles_hover='SubResource("sb_btn_h")',
+         theme_override_styles_pressed='SubResource("sb_btn_p")')
+label("bet_total", "vbox", "Полная ставка: 9", 20, "c9b6e2",
+      horizontal_alignment=1)
+
+# ---------------------------------------------------------- меню автоигры
+node("auto_menu", "Control", "machine", visible="false",
+     anchor_right=1.0, anchor_bottom=1.0)
+node("dim", "ColorRect", "auto_menu", color=hx("000000", 0.7),
+     anchor_right=1.0, anchor_bottom=1.0)
+node("panel", "Panel", "auto_menu", position="Vector2(470, 190)",
+     size="Vector2(340, 320)",
+     theme_override_styles_panel='SubResource("sb_popup")')
+node("vbox", "VBoxContainer", "panel",
+     anchor_right=1.0, anchor_bottom=1.0,
+     offset_left=16, offset_top=12, offset_right=-16, offset_bottom=-12,
+     theme_override_constants_separation=12)
+hbox("head", "vbox", 0)
+label("head_title", "head", "АВТОИГРА", 26, "ffd794")
+spacer("spacer_auto", "head")
+node("close_btn", "Button", "head", text='"ЗАКРЫТЬ"',
+     custom_minimum_size="Vector2(140, 42)",
+     theme_override_font_sizes_font_size=18,
+     theme_override_styles_normal='SubResource("sb_btn_n")',
+     theme_override_styles_hover='SubResource("sb_btn_n")',
+     theme_override_styles_pressed='SubResource("sb_btn_n")')
+node("grid", "GridContainer", "vbox", columns=3,
+     theme_override_constants_h_separation=10,
+     theme_override_constants_v_separation=10)
+for i, t in enumerate(["10", "25", "50", "100", "∞"]):
+    node(f"auto_opt{i}", "Button", "grid", text=f'"{t}"',
+         custom_minimum_size="Vector2(96, 56)",
+         theme_override_font_sizes_font_size=24,
+         theme_override_styles_normal='SubResource("sb_btn_n")',
+         theme_override_styles_hover='SubResource("sb_btn_h")',
+         theme_override_styles_pressed='SubResource("sb_btn_p")')
+node("auto_cancel", "Button", "grid", text='"ОТМЕНА"',
+     custom_minimum_size="Vector2(96, 56)",
+     theme_override_font_sizes_font_size=20,
+     theme_override_styles_normal='SubResource("sb_btn_n")',
+     theme_override_styles_hover='SubResource("sb_btn_h")',
+     theme_override_styles_pressed='SubResource("sb_btn_p")')
+label("auto_hint", "vbox",
+      "ПУСК во время автоигры останавливает серию", 18, "9d8fb8",
+      horizontal_alignment=1)
+
+# ---------------------------------------------------------- меню звука
+node("sound_menu", "Control", "machine", visible="false",
+     anchor_right=1.0, anchor_bottom=1.0)
+node("dim", "ColorRect", "sound_menu", color=hx("000000", 0.7),
+     anchor_right=1.0, anchor_bottom=1.0)
+node("panel", "Panel", "sound_menu", position="Vector2(430, 220)",
+     size="Vector2(420, 260)",
+     theme_override_styles_panel='SubResource("sb_popup")')
+node("vbox", "VBoxContainer", "panel",
+     anchor_right=1.0, anchor_bottom=1.0,
+     offset_left=16, offset_top=12, offset_right=-16, offset_bottom=-12,
+     theme_override_constants_separation=14)
+hbox("head", "vbox", 0)
+label("head_title", "head", "ЗВУК", 26, "ffd794")
+spacer("spacer_sound", "head")
+node("close_btn", "Button", "head", text='"ЗАКРЫТЬ"',
+     custom_minimum_size="Vector2(140, 42)",
+     theme_override_font_sizes_font_size=18,
+     theme_override_styles_normal='SubResource("sb_btn_n")',
+     theme_override_styles_hover='SubResource("sb_btn_n")',
+     theme_override_styles_pressed='SubResource("sb_btn_n")')
+for row_id, row_name in (("sfx", "ЭФФЕКТЫ"), ("music", "МУЗЫКА")):
+    hbox(f"row_{row_id}", "vbox", 12)
+    label(f"{row_id}_name", f"row_{row_id}", row_name,
+          20, "ffffff", custom_minimum_size="Vector2(110, 0)",
+          vertical_alignment=1)
+    node(f"{row_id}_slider", "HSlider", f"row_{row_id}",
+         min_value=0, max_value=100, value=80,
+         custom_minimum_size="Vector2(190, 36)",
+         size_flags_vertical=8)
+    label(f"{row_id}_val", f"row_{row_id}", "80", 20,
+          "8dffa0", custom_minimum_size="Vector2(44, 0)",
+          horizontal_alignment=2, vertical_alignment=1)
 
 # ------------------------------------------------------- попап таблицы выплат
 node("paytable_popup", "Control", "machine", visible="false",

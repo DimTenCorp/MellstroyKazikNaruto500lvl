@@ -3,15 +3,16 @@ extends Control
 ## Правила: 9 линий выплат слева направо, WILD-замена, скаттер BONUS даёт
 ## выплату и фриспины. Баланс хранится в user://, игра без реальных денег.
 ##
-## ВЕСЬ UI лежит узлами в scenes/game.tscn (редактируется в редакторе):
-## фон back1, кнопки вырезаны атласами из img/buttons_spr (RU), бейджи
-## больших выигрышей — из img/wins_spr (RU). Динамика (подсветка линий,
-## попап выигрыша) создаётся/управляется кодом.
+## ВЕСЬ UI лежит узлами в scenes/game.tscn: фон back1, кнопки-спрайты из
+## img/buttons_spr (RU), бейджи выигрышей из img/win (RU), меню ставок,
+## автоигры и звука. Динамика (подсветка линий, попап выигрыша) — кодом.
 
-const VSIZE := Vector2(1000, 700)  ## виртуальный размер макета машины
+const VSIZE := Vector2(1280, 720)  ## виртуальный размер макета машины
 const CELL := 146.0                ## размер ячейки символа
 const GAP := 10.0                  ## зазор между ячейками
 const BETS := [1, 2, 5, 10, 25, 50]
+const AUTO_OPTIONS := [10, 25, 50, 100, -1]  ## -1 = без лимита
+const SPEEDS := [1.0, 2.0, 5.0]
 const START_BALANCE := 1000
 const BONUS_TOPUP := 1000
 const SAVE_PATH := "user://slot_save.cfg"
@@ -52,11 +53,13 @@ var reels: Array[SlotReel] = []
 
 var balance := START_BALANCE
 var bet_idx := 0
+var speed_idx := 0
+var vol_sfx := 80
+var vol_music := 80
 var _fs_left := 0
 var _spinning := false
 var autospin := false
-var fast := false
-var muted := false
+var _auto_left := 0  ## 0 = не активна, -1 = без лимита
 
 var _fx_nodes: Array[Node] = []
 var _win_tween: Tween
@@ -69,17 +72,14 @@ var _wins_tex: Texture2D
 @onready var win_label: Label = $machine/top_bar/win_label
 @onready var fs_label: Label = $machine/top_bar/fs_label
 @onready var bet_label: Label = $machine/bottom_bar/bet_label
-@onready var total_label: Label = $machine/bottom_bar/total_label
 @onready var msg_label: Label = $machine/grid_panel/msg_label
 @onready var spin_btn: TextureButton = $machine/bottom_bar/spin_btn
 @onready var bet_btn: TextureButton = $machine/bottom_bar/bet_btn
-@onready var denom_btn: TextureButton = $machine/bottom_bar/denom_btn
 @onready var max_btn: TextureButton = $machine/bottom_bar/max_btn
 @onready var auto_btn: TextureButton = $machine/bottom_bar/auto_btn
 @onready var speed_btn: TextureButton = $machine/bottom_bar/speed_btn
 @onready var sound_btn: TextureButton = $machine/bottom_bar/sound_btn
 @onready var paytable_btn: TextureButton = $machine/bottom_bar/paytable_btn
-@onready var collect_btn: TextureButton = $machine/collect_btn
 @onready var bonus_btn: Button = $machine/bottom_bar/bonus_btn
 @onready var fx_layer: Control = $machine/grid_panel/fx_layer
 @onready var lines_overlay: Node2D = $machine/grid_panel/lines_overlay
@@ -87,8 +87,14 @@ var _wins_tex: Texture2D
 @onready var win_badge: TextureRect = $machine/win_popup/win_badge
 @onready var win_popup_label: Label = $machine/win_popup/win_popup_label
 @onready var paytable_popup: Control = $machine/paytable_popup
-@onready var popup_dim: ColorRect = $machine/paytable_popup/dim
-@onready var close_btn: Button = $machine/paytable_popup/popup_panel/scroll/vbox/head/close_btn
+@onready var bet_menu: Control = $machine/bet_menu
+@onready var bet_total_label: Label = $machine/bet_menu/panel/vbox/bet_total
+@onready var auto_menu: Control = $machine/auto_menu
+@onready var sound_menu: Control = $machine/sound_menu
+@onready var sfx_slider: HSlider = $machine/sound_menu/panel/vbox/row_sfx/sfx_slider
+@onready var music_slider: HSlider = $machine/sound_menu/panel/vbox/row_music/music_slider
+@onready var sfx_val: Label = $machine/sound_menu/panel/vbox/row_sfx/sfx_val
+@onready var music_val: Label = $machine/sound_menu/panel/vbox/row_music/music_val
 
 
 func _ready() -> void:
@@ -108,28 +114,58 @@ func _ready() -> void:
 		])
 		reels.append(reel)
 
+	# Аудио-шины заводим сразу: звуки и музыка появятся позже, громкости готовы.
+	for bus_name in ["SFX", "Music"]:
+		if AudioServer.get_bus_index(bus_name) == -1:
+			AudioServer.add_bus()
+			AudioServer.set_bus_name(AudioServer.bus_count - 1, bus_name)
+			AudioServer.set_bus_send(AudioServer.get_bus_index(bus_name), "Master")
+
 	spin_btn.pressed.connect(_on_spin_pressed)
-	bet_btn.pressed.connect(func() -> void: _change_bet(1))
-	denom_btn.pressed.connect(func() -> void: _change_bet(-1))
-	max_btn.pressed.connect(func() -> void:
-		if not _spinning:
-			bet_idx = BETS.size() - 1
-			_update_labels()
-	)
+	bet_btn.pressed.connect(func() -> void: _open_bet_menu())
+	max_btn.pressed.connect(_on_max_bet)
 	auto_btn.pressed.connect(_on_auto_pressed)
 	speed_btn.pressed.connect(_on_speed_pressed)
-	sound_btn.pressed.connect(_on_sound_pressed)
-	collect_btn.pressed.connect(_on_collect_pressed)
+	sound_btn.pressed.connect(func() -> void: _open_menu(sound_menu))
 	bonus_btn.pressed.connect(_on_bonus_pressed)
-	paytable_btn.pressed.connect(func() -> void: paytable_popup.show())
-	close_btn.pressed.connect(func() -> void: paytable_popup.hide())
-	popup_dim.gui_input.connect(func(ev: InputEvent) -> void:
-		if ev is InputEventMouseButton and ev.pressed \
-				and ev.button_index == MOUSE_BUTTON_LEFT:
-			paytable_popup.hide()
+	paytable_btn.pressed.connect(func() -> void: _open_menu(paytable_popup))
+
+	_connect_menu($machine/paytable_popup)
+	_connect_menu(bet_menu)
+	_connect_menu(auto_menu)
+	_connect_menu(sound_menu)
+	for i in BETS.size():
+		var opt: Button = get_node("machine/bet_menu/panel/vbox/grid/bet_opt%d" % i)
+		opt.pressed.connect(func() -> void:
+			bet_idx = i
+			_close_menus()
+			_update_labels()
+		)
+	for i in AUTO_OPTIONS.size():
+		var opt: Button = get_node("machine/auto_menu/panel/vbox/grid/auto_opt%d" % i)
+		opt.pressed.connect(func() -> void: _start_autospin(int(AUTO_OPTIONS[i])))
+	get_node("machine/auto_menu/panel/vbox/grid/auto_cancel").pressed.connect(
+		func() -> void: _close_menus())
+
+	sfx_slider.value_changed.connect(func(v: float) -> void:
+		vol_sfx = int(v)
+		sfx_val.text = str(vol_sfx)
+		_apply_volumes()
+		_save()
+	)
+	music_slider.value_changed.connect(func(v: float) -> void:
+		vol_music = int(v)
+		music_val.text = str(vol_music)
+		_apply_volumes()
+		_save()
 	)
 
 	_load_save()
+	sfx_slider.value = vol_sfx
+	music_slider.value = vol_music
+	sfx_val.text = str(vol_sfx)
+	music_val.text = str(vol_music)
+	_apply_volumes()
 	_apply_toggles()
 	_refresh_paytable()
 	_update_labels()
@@ -147,10 +183,12 @@ func _layout() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if paytable_popup != null and paytable_popup.visible \
-			and event.is_action_pressed("ui_cancel"):
-		paytable_popup.hide()
-		get_viewport().set_input_as_handled()
+	if event.is_action_pressed("ui_cancel"):
+		for m in [paytable_popup, bet_menu, auto_menu, sound_menu]:
+			if m.visible:
+				_close_menus()
+				get_viewport().set_input_as_handled()
+				return
 
 
 ## Поддерживает тексты выплат в таблице актуальными по данным SlotData.
@@ -172,26 +210,70 @@ func _refresh_paytable() -> void:
 			p2.visible = int(pays[0]) > 0
 
 
+# ------------------------------------------------------------------- меню
+
+func _connect_menu(menu: Control) -> void:
+	menu.get_node("dim").gui_input.connect(func(ev: InputEvent) -> void:
+		if ev is InputEventMouseButton and ev.pressed \
+				and ev.button_index == MOUSE_BUTTON_LEFT:
+			_close_menus()
+	)
+	menu.get_node("panel/vbox/head/close_btn").pressed.connect(_close_menus)
+
+
+func _open_menu(menu: Control) -> void:
+	if _spinning and menu != paytable_popup:
+		return  # настройки ставки/автоигры не меняются посреди спина
+	_close_menus()
+	menu.show()
+
+
+func _open_bet_menu() -> void:
+	if _spinning:
+		return
+	bet_total_label.text = "Полная ставка: %s" % _fmt(total_bet())
+	_open_menu(bet_menu)
+
+
+func _close_menus() -> void:
+	paytable_popup.hide()
+	bet_menu.hide()
+	auto_menu.hide()
+	sound_menu.hide()
+
+
 # ------------------------------------------------------------------- хелперы UI
 
 func _update_labels() -> void:
 	balance_label.text = "Баланс: %s" % _fmt(balance)
 	bet_label.text = "Ставка/линия: %d" % BETS[bet_idx]
-	total_label.text = "Всего: %s" % _fmt(total_bet())
 	bonus_btn.visible = not _spinning and balance < total_bet()
 	if _fs_left > 0:
 		fs_label.show()
 		fs_label.text = "ФРИСПИНЫ: %d" % _fs_left
+	elif autospin:
+		fs_label.show()
+		fs_label.text = "АВТО: %s" % ("∞" if _auto_left < 0 else str(_auto_left))
 	else:
 		fs_label.hide()
 
 
 func _apply_toggles() -> void:
 	auto_btn.modulate = Color(1.35, 1.35, 1.35) if autospin else Color(1, 1, 1)
-	speed_btn.modulate = Color(1.35, 1.35, 1.35) if fast else Color(1, 1, 1)
-	sound_btn.modulate = Color(0.45, 0.45, 0.45) if muted else Color(1, 1, 1)
+	speed_btn.modulate = Color(1.35, 1.35, 1.35) if speed_idx > 0 else Color(1, 1, 1)
 	for r in reels:
-		r.speed_scale = 2.0 if fast else 1.0
+		r.speed_scale = SPEEDS[speed_idx]
+
+
+func _apply_volumes() -> void:
+	for bus_name in ["SFX", "Music"]:
+		var idx := AudioServer.get_bus_index(bus_name)
+		if idx == -1:
+			continue
+		var v := vol_sfx if bus_name == "SFX" else vol_music
+		AudioServer.set_bus_mute(idx, v <= 0)
+		if v > 0:
+			AudioServer.set_bus_volume_db(idx, linear_to_db(v / 100.0))
 
 
 func _fmt(v: int) -> String:
@@ -210,11 +292,12 @@ func total_bet() -> int:
 	return int(BETS[bet_idx]) * SlotData.PAYLINES.size()
 
 
-func _change_bet(d: int) -> void:
+func _on_max_bet() -> void:
 	if _spinning:
 		return
-	bet_idx = clampi(bet_idx + d, 0, BETS.size() - 1)
+	bet_idx = BETS.size() - 1
 	_update_labels()
+	_banner("МАКС. СТАВКА: %s" % _fmt(total_bet()), Color("#ffe9b8"))
 
 
 func _on_bonus_pressed() -> void:
@@ -228,34 +311,36 @@ func _on_bonus_pressed() -> void:
 
 func _on_auto_pressed() -> void:
 	if autospin:
-		autospin = false
-		_apply_toggles()
+		_stop_autospin("АВТОИГРА ОСТАНОВЛЕНА")
 		return
+	if _spinning:
+		return
+	_open_menu(auto_menu)
+
+
+func _start_autospin(count: int) -> void:
+	_close_menus()
 	autospin = true
+	_auto_left = count
 	_apply_toggles()
+	_update_labels()
 	if not _spinning:
 		_run_session()
 
 
+func _stop_autospin(text: String) -> void:
+	autospin = false
+	_auto_left = 0
+	_apply_toggles()
+	_update_labels()
+	_banner(text, Color("#7ef3ff"))
+
+
 func _on_speed_pressed() -> void:
-	fast = not fast
+	speed_idx = (speed_idx + 1) % SPEEDS.size()
 	_save()
 	_apply_toggles()
-
-
-func _on_sound_pressed() -> void:
-	muted = not muted
-	_save()
-	_apply_toggles()
-	# Звуков пока нет: флаг пригодится, когда появятся (AudioStreamPlayer).
-
-
-func _on_collect_pressed() -> void:
-	if autospin:
-		autospin = false
-		_apply_toggles()
-	if not _spinning:
-		_banner("ЗАБРАНО: %s" % _fmt(balance), Color("#8dffa0"))
+	_banner("СКОРОСТЬ ×%d" % int(SPEEDS[speed_idx]), Color("#ffd794"))
 
 
 # ------------------------------------------------------------------- сейв
@@ -265,16 +350,18 @@ func _load_save() -> void:
 	if cfg.load(SAVE_PATH) == OK:
 		balance = int(cfg.get_value("save", "balance", START_BALANCE))
 		bet_idx = clampi(int(cfg.get_value("save", "bet", 0)), 0, BETS.size() - 1)
-		fast = bool(cfg.get_value("save", "fast", false))
-		muted = bool(cfg.get_value("save", "muted", false))
+		speed_idx = clampi(int(cfg.get_value("save", "speed", 0)), 0, SPEEDS.size() - 1)
+		vol_sfx = clampi(int(cfg.get_value("save", "vol_sfx", 80)), 0, 100)
+		vol_music = clampi(int(cfg.get_value("save", "vol_music", 80)), 0, 100)
 
 
 func _save() -> void:
 	var cfg := ConfigFile.new()
 	cfg.set_value("save", "balance", balance)
 	cfg.set_value("save", "bet", bet_idx)
-	cfg.set_value("save", "fast", fast)
-	cfg.set_value("save", "muted", muted)
+	cfg.set_value("save", "speed", speed_idx)
+	cfg.set_value("save", "vol_sfx", vol_sfx)
+	cfg.set_value("save", "vol_music", vol_music)
 	cfg.save(SAVE_PATH)
 
 
@@ -283,15 +370,14 @@ func _save() -> void:
 func _on_spin_pressed() -> void:
 	if _spinning:
 		return
-	if autospin:  # повторное нажатие ПУСК останавливает автоигру
-		autospin = false
-		_apply_toggles()
+	if autospin:  # ПУСК во время автоигры останавливает серию
+		_stop_autospin("АВТОИГРА ОСТАНОВЛЕНА")
 		return
 	_run_session()
 
 
-## Серия спинов: один обычный спин + цепочка фриспинов; в режиме автоигры
-## повторяется, пока хватает баланса или игрок не выключил автоигру.
+## Серия спинов: спин + цепочка фриспинов; в автоигре повторяется,
+## пока не кончится лимит, баланс или игрок не остановил серию.
 func _run_session() -> void:
 	if _spinning:
 		return
@@ -307,17 +393,21 @@ func _run_session() -> void:
 				_update_labels()
 				await _spin(true)
 				if _fs_left > 0:
-					await get_tree().create_timer(0.5 if fast else 0.9).timeout
+					await get_tree().create_timer(0.5 if SPEEDS[speed_idx] > 1.0 else 0.9).timeout
 			_banner("ФРИСПИНЫ ЗАВЕРШЕНЫ", Color("#7ef3ff"))
 			await get_tree().create_timer(0.8).timeout
 		if not autospin:
 			break
+		if _auto_left > 0:
+			_auto_left -= 1
+			_update_labels()
+			if _auto_left == 0:
+				_stop_autospin("АВТОИГРА ЗАВЕРШЕНА")
+				break
 		if balance < total_bet():
-			autospin = false
-			_apply_toggles()
-			_banner("НЕДОСТАТОЧНО МОНЕТ!", Color("#ff7b7b"))
+			_stop_autospin("НЕДОСТАТОЧНО МОНЕТ!")
 			break
-		await get_tree().create_timer(0.3 if fast else 0.6).timeout
+		await get_tree().create_timer(0.3 if SPEEDS[speed_idx] > 1.0 else 0.6).timeout
 	_spinning = false
 	_update_labels()
 	_yk_call("gameplay_stop")
@@ -339,7 +429,7 @@ func _spin(is_free: bool) -> void:
 	var grid := SlotData.make_grid(rng)
 	for reel in reels:
 		reel.start_spin()
-	var sf := 2.0 if fast else 1.0
+	var sf := SPEEDS[speed_idx]
 	for c in reels.size():
 		var delay := (0.85 + c * 0.3 + rng.randf() * 0.15) / sf
 		get_tree().create_timer(delay).timeout.connect(
@@ -398,7 +488,7 @@ func _popup(badge_idx: int, text: String) -> void:
 	_popup_tw.tween_property(win_popup, "scale", Vector2(1, 1), 0.35) \
 		.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 	_popup_tw.tween_property(win_popup, "modulate", Color(1, 1, 1, 1), 0.25)
-	_popup_tw.chain().tween_interval(0.45 if fast else 1.1)
+	_popup_tw.chain().tween_interval(0.45 if SPEEDS[speed_idx] > 1.0 else 1.1)
 	_popup_tw.set_parallel(false)
 	_popup_tw.chain().tween_property(win_popup, "modulate", Color(1, 1, 1, 0), 0.35)
 	_popup_tw.chain().tween_callback(win_popup.hide)
