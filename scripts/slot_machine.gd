@@ -58,6 +58,13 @@ func _ready() -> void:
 	get_viewport().size_changed.connect(_layout)
 
 
+func _unhandled_input(event: InputEvent) -> void:
+	if paytable_popup != null and paytable_popup.visible \
+			and event.is_action_pressed("ui_cancel"):
+		paytable_popup.hide()
+		get_viewport().set_input_as_handled()
+
+
 func _layout() -> void:
 	var vs := get_viewport_rect().size
 	if vs.x <= 0 or vs.y <= 0:
@@ -205,6 +212,11 @@ func _build_paytable_popup() -> void:
 	var dim := ColorRect.new()
 	dim.color = Color(0, 0, 0, 0.78)
 	dim.set_anchors_preset(PRESET_FULL_RECT)
+	dim.gui_input.connect(func(ev: InputEvent) -> void:
+		if ev is InputEventMouseButton and ev.pressed \
+				and ev.button_index == MOUSE_BUTTON_LEFT:
+			paytable_popup.hide()
+	)
 	paytable_popup.add_child(dim)
 
 	var panel := Panel.new()
@@ -231,7 +243,7 @@ func _build_paytable_popup() -> void:
 	var h := _label("ТАБЛИЦА ВЫПЛАТ", 30, Color("#ffd794"))
 	head.add_child(h)
 	head.add_child(_spacer())
-	var close := _button("✕", Vector2(48, 44))
+	var close := _button("ЗАКРЫТЬ", Vector2(180, 50))
 	close.pressed.connect(func() -> void: paytable_popup.hide())
 	head.add_child(close)
 

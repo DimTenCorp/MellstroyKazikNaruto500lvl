@@ -6,6 +6,7 @@ extends Control
 
 signal stopped
 
+const CELL_INSET := 4.0    ## отступ символа от краёв ячейки (символы не слипаются)
 const STEP_TIME := 0.075   ## секунды на один шаг ленты (скорость прокрутки)
 const BOUNCE_TIME := 0.32  ## длительность отскока при остановке
 const BOUNCE_DEPTH := 0.32 ## отскок в долях высоты ячейки
@@ -35,8 +36,12 @@ func setup(p_cell_size: Vector2, p_textures: Array[Texture2D],
 	# Лента: BUFFER скрытых ячеек сверху + ROWS видимых.
 	for i in (SlotData.ROWS + BUFFER):
 		var cell := TextureRect.new()
-		cell.size = cell_size
-		cell.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		# Символ рисуется строго внутри уменьшенного прямоугольника ячейки:
+		# ничего не торчит из ячейки и не перекрывает соседей.
+		cell.size = cell_size - Vector2(CELL_INSET * 2, CELL_INSET * 2)
+		cell.stretch_mode = TextureRect.STRETCH_SCALE
+		cell.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		cell.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		cell.texture = textures[initial[i]]
 		add_child(cell)
 		_cells.append(cell)
@@ -116,4 +121,4 @@ func _shift() -> void:
 
 func _apply() -> void:
 	for i in _cells.size():
-		_cells[i].position = Vector2(0.0, i * cell_size.y + _offset)
+		_cells[i].position = Vector2(CELL_INSET, i * cell_size.y + _offset + CELL_INSET)
