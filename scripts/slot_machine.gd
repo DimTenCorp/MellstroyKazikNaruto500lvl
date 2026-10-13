@@ -429,9 +429,9 @@ func _spin(is_free: bool) -> void:
 	var grid := SlotData.make_grid(rng)
 	for reel in reels:
 		reel.start_spin()
-	var sf := SPEEDS[speed_idx]
+	var sf: float = SPEEDS[speed_idx]
 	for c in reels.size():
-		var delay := (0.85 + c * 0.3 + rng.randf() * 0.15) / sf
+		var delay: float = (0.85 + c * 0.3 + rng.randf() * 0.15) / sf
 		get_tree().create_timer(delay).timeout.connect(
 			func() -> void: reels[c].stop_at(grid[c]))
 	for reel in reels:

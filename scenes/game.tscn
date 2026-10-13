@@ -1,11 +1,10 @@
-[gd_scene load_steps=34 format=3 uid="uid://jem4ybiqp44h"]
+[gd_scene load_steps=33 format=3 uid="uid://jem4ybiqp44h"]
 
 [ext_resource type="Script" path="res://scripts/slot_machine.gd" id="scr"]
 [ext_resource type="Script" path="res://scripts/reel.gd" id="scr_reel"]
 [ext_resource type="Texture2D" uid="uid://caapsar1k8jmj" path="res://img/background/back1.jpg" id="tex_back1"]
 [ext_resource type="Texture2D" uid="uid://bjvofqj1cb0a6" path="res://img/background/back2.jpg" id="tex_back2"]
 [ext_resource type="Texture2D" uid="uid://c8c74mus4cvcu" path="res://img/buttons_spr/buttons_sprites.png" id="tex_buttons"]
-[ext_resource type="Texture2D" uid="uid://coqw0sh7lglgc" path="res://img/win/wins_spritessheet.png" id="tex_wins"]
 [ext_resource type="Texture2D" uid="uid://cs0j88w7gf0vi" path="res://img/slot_machine/cherry.png" id="tex_cherry"]
 [ext_resource type="Texture2D" uid="uid://dkqqa1uaw1ua1" path="res://img/slot_machine/lemon.png" id="tex_lemon"]
 [ext_resource type="Texture2D" uid="uid://ctn5brcnwuupa" path="res://img/slot_machine/orange.png" id="tex_orange"]
@@ -58,6 +57,30 @@ corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 
+[sub_resource type="StyleBoxFlat" id="sb_btn_h"]
+bg_color = Color(0.290196, 0.227451, 0.388235, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.615686, 0.52549, 0.768627, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="sb_btn_p"]
+bg_color = Color(0.164706, 0.121569, 0.227451, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.364706, 0.290196, 0.501961, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
 [sub_resource type="AtlasTexture" id="at_spin"]
 atlas = ExtResource("tex_buttons")
 region = Rect2(12, 8, 270, 293)
@@ -74,10 +97,6 @@ region = Rect2(716, 8, 266, 293)
 atlas = ExtResource("tex_buttons")
 region = Rect2(1062, 8, 265, 293)
 
-[sub_resource type="AtlasTexture" id="at_denom"]
-atlas = ExtResource("tex_buttons")
-region = Rect2(1385, 8, 319, 293)
-
 [sub_resource type="AtlasTexture" id="at_speed"]
 atlas = ExtResource("tex_buttons")
 region = Rect2(19, 330, 265, 283)
@@ -85,10 +104,6 @@ region = Rect2(19, 330, 265, 283)
 [sub_resource type="AtlasTexture" id="at_paytable"]
 atlas = ExtResource("tex_buttons")
 region = Rect2(369, 330, 256, 283)
-
-[sub_resource type="AtlasTexture" id="at_collect"]
-atlas = ExtResource("tex_buttons")
-region = Rect2(712, 330, 266, 283)
 
 [sub_resource type="AtlasTexture" id="at_sound"]
 atlas = ExtResource("tex_buttons")

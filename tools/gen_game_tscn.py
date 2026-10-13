@@ -154,8 +154,7 @@ ext = ['[ext_resource type="Script" path="res://scripts/slot_machine.gd" '
        f'[ext_resource type="Texture2D" uid="{res_uid("img/buttons_spr/buttons_sprites.png")}" '
        'path="res://img/buttons/buttons_sprites.png" id="tex_buttons"]'.replace(
            "img/buttons/buttons_sprites.png", "img/buttons_spr/buttons_sprites.png"),
-       f'[ext_resource type="Texture2D" uid="{res_uid("img/win/wins_spritessheet.png")}" '
-       'path="res://img/win/wins_spritessheet.png" id="tex_wins"]']
+       ]
 for key in KEYS:
     ext.append(f'[ext_resource type="Texture2D" uid="{res_uid("img/slot_machine/" + key + ".png")}" '
                f'path="res://img/slot_machine/{key}.png" id="tex_{key}"]')
@@ -163,7 +162,11 @@ for key in KEYS:
 stylebox("sb_grid", "221730", "d8b45e", 4, 14)
 stylebox("sb_popup", "241a31", "d8b45e", 2, 14)
 stylebox("sb_btn_n", "3a2c4d", "7a6399", 2, 10)
+stylebox("sb_btn_h", "4a3a63", "9d86c4", 2, 10)
+stylebox("sb_btn_p", "2a1f3a", "5d4a80", 2, 10)
 for key in BTN_REGIONS:
+    if key in ("collect", "denom"):
+        continue  # кнопки ЗАБРАТЬ/НОМИНАЛ удалены заказчиком
     atlassub("at_" + key, "tex_buttons", BTN_REGIONS[key])
 
 # ------------------------------------------------------------------ узлы
