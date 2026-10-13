@@ -130,7 +130,8 @@ func _ready() -> void:
 	bonus_btn.pressed.connect(_on_bonus_pressed)
 	paytable_btn.pressed.connect(func() -> void: _open_menu(paytable_popup))
 
-	_connect_menu($machine/paytable_popup)
+	_connect_menu($machine/paytable_popup,
+			"popup_panel/scroll/vbox/head/close_btn")
 	_connect_menu(bet_menu)
 	_connect_menu(auto_menu)
 	_connect_menu(sound_menu)
@@ -212,13 +213,14 @@ func _refresh_paytable() -> void:
 
 # ------------------------------------------------------------------- меню
 
-func _connect_menu(menu: Control) -> void:
+func _connect_menu(menu: Control,
+		close_path: String = "panel/vbox/head/close_btn") -> void:
 	menu.get_node("dim").gui_input.connect(func(ev: InputEvent) -> void:
 		if ev is InputEventMouseButton and ev.pressed \
 				and ev.button_index == MOUSE_BUTTON_LEFT:
 			_close_menus()
 	)
-	menu.get_node("panel/vbox/head/close_btn").pressed.connect(_close_menus)
+	menu.get_node(close_path).pressed.connect(_close_menus)
 
 
 func _open_menu(menu: Control) -> void:
