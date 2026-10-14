@@ -47,6 +47,19 @@ const WIN_TIERS: Array[Array] = [
 	[10, 1],   # БОЛЬШОЙ ВЫИГРЫШ
 ]
 
+## Визуальный размер кнопок (хитбокс = он же, через click_mask):
+## в сцене кнопки лежат в родном размере спрайта, т.к. TextureButton
+## не позволяет Size меньше текстуры.
+const BTN_VISUAL := {
+	"bet_btn": Vector2(150, 166),
+	"max_btn": Vector2(129, 142),
+	"auto_btn": Vector2(163, 144),
+	"speed_btn": Vector2(113, 120),
+	"spin_btn": Vector2(177, 192),
+	"paytable_btn": Vector2(115, 127),
+	"sound_btn": Vector2(130, 139),
+}
+
 var rng := RandomNumberGenerator.new()
 var textures: Array[Texture2D] = []
 var reels: Array[SlotReel] = []
@@ -162,6 +175,7 @@ func _ready() -> void:
 		_save()
 	)
 
+	_apply_button_visuals()
 	_load_save()
 	sfx_slider.value = vol_sfx
 	music_slider.value = vol_music
@@ -173,6 +187,20 @@ func _ready() -> void:
 	_update_labels()
 	_layout()
 	get_viewport().size_changed.connect(_layout)
+
+
+## Рисует кнопки в задуманном размере и сужает хитбокс до него же.
+func _apply_button_visuals() -> void:
+	for name in BTN_VISUAL:
+		var btn: TextureButton = get_node("machine/bottom_bar/" + name)
+		var vis: Vector2 = BTN_VISUAL[name]
+		btn.pivot_offset = Vector2.ZERO
+		btn.scale = vis / btn.size
+		var img := Image.create(int(vis.x), int(vis.y), false, Image.FORMAT_RGBA8)
+		img.fill(Color(1, 1, 1, 1))
+		var mask := BitMap.new()
+		mask.create_from_image_alpha(img)
+		btn.click_mask = mask
 
 
 func _layout() -> void:

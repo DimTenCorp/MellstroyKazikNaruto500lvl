@@ -151,6 +151,8 @@ ext = ['[ext_resource type="Script" path="res://scripts/slot_machine.gd" '
        'path="res://img/background/back1.jpg" id="tex_back1"]',
        f'[ext_resource type="Texture2D" uid="{res_uid("img/background/back2.jpg")}" '
        'path="res://img/background/back2.jpg" id="tex_back2"]',
+       f'[ext_resource type="Texture2D" uid="{res_uid("img/money_icon.png")}" '
+       'path="res://img/money_icon.png" id="tex_money"]',
        f'[ext_resource type="Texture2D" uid="{res_uid("img/buttons_spr/buttons_sprites.png")}" '
        'path="res://img/buttons/buttons_sprites.png" id="tex_buttons"]'.replace(
            "img/buttons/buttons_sprites.png", "img/buttons_spr/buttons_sprites.png"),
@@ -188,8 +190,8 @@ node("machine", "Control", ".", size=f"Vector2({VSIZE[0]}, {VSIZE[1]})")
 hbox("top_bar", "machine", 12, position="Vector2(30, 56)",
      size=f"Vector2({VSIZE[0] - 60}, 46)")
 node("balance_icon", "TextureRect", "top_bar",
-     texture='ExtResource("tex_moneysack")',
-     custom_minimum_size="Vector2(42, 42)", expand_mode=1,
+     texture='ExtResource("tex_money")',
+     custom_minimum_size="Vector2(46, 40)", expand_mode=1,
      stretch_mode=5, mouse_filter=2)
 label("balance_label", "top_bar", "0", 26, "ffe9b8",
       vertical_alignment=1)
@@ -239,8 +241,8 @@ node("bottom_bar", "Control", "machine",
      mouse_filter=2)
 # Раскладка кнопок перенесена из правки заказчика (91dc2e5): позиции те же,
 # но размеры заданы через Size (без Scale), чтобы хитбокс совпадал со спрайтом.
-tbtn("bet_btn", "bottom_bar", "at_bet", (8, 544), (150, 166))
-tbtn("max_btn", "bottom_bar", "at_max", (168, 568), (129, 142))
+tbtn("bet_btn", "bottom_bar", "at_bet", (8, 544), (265, 293))
+tbtn("max_btn", "bottom_bar", "at_max", (168, 568), (266, 293))
 label("bet_label", "bottom_bar", "Ставка/линия: 1", 20, "ffe9b8",
       position="Vector2(264, 48)", size="Vector2(220, 28)")
 label("auto_label", "bottom_bar", "", 26, "7ef3ff",
@@ -248,11 +250,11 @@ label("auto_label", "bottom_bar", "", 26, "7ef3ff",
       theme_override_constants_outline_size=8,
       theme_override_colors_font_outline_color=hx("1d3a6e"),
       visible="false")
-tbtn("auto_btn", "bottom_bar", "at_auto", (800, 576), (163, 144))
-tbtn("speed_btn", "bottom_bar", "at_speed", (968, 592), (113, 120))
-tbtn("spin_btn", "bottom_bar", "at_spin", (1088, 520), (177, 192))
-tbtn("paytable_btn", "bottom_bar", "at_paytable", (1152, 152), (115, 127))
-tbtn("sound_btn", "bottom_bar", "at_sound", (1144, 0), (130, 139))
+tbtn("auto_btn", "bottom_bar", "at_auto", (800, 576), (319, 293))
+tbtn("speed_btn", "bottom_bar", "at_speed", (968, 592), (265, 283))
+tbtn("spin_btn", "bottom_bar", "at_spin", (1088, 520), (270, 293))
+tbtn("paytable_btn", "bottom_bar", "at_paytable", (1152, 152), (256, 283))
+tbtn("sound_btn", "bottom_bar", "at_sound", (1144, 0), (266, 283))
 node("bonus_btn", "Button", "bottom_bar", text='"БОНУС +1000"',
      position="Vector2(360, 608)", size="Vector2(190, 40)",
      theme_override_font_sizes_font_size=18,
