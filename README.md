@@ -6,8 +6,9 @@
 ## Запуск
 
 Открой проект в Godot 4.7 (GL Compatibility) и нажми F5 — главная сцена `scenes/game.tscn`.
-Для веба используй экспорт-пресет Web, который создаёт плагин Yandex Games SDK
-(автолоад `YandexGames` уже прописан в `project.godot`).
+Для веба используй экспорт-пресет «Web (Playgama Bridge)»: он кладёт рядом
+с `index.html` файл `web/bridge.js` (include_filter), который autoload `Bridge`
+подхватывает сам. См. раздел «Playgama Bridge» ниже.
 
 ### Как менять размер кнопок
 
@@ -80,15 +81,38 @@
 * **Фон** — `img/background/back1.jpg` (под таблицей выплат — back2.jpg).
 * **Баланс** хранится в `user://slot_save.cfg`; если монеты кончились — кнопка «БОНУС +1000».
 
+## Playgama Bridge (публикация на любых площадках)
+
+Игра больше не привязана к Yandex SDK: весь платформенный код идёт через
+[Playgama Bridge](https://github.com/playgama/browser-games-bridge) — единый
+мост к SDK площадок (Yandex Games, VK, Poki, CrazyGames, GameDistribution и др.).
+
+* `scripts/bridge.gd` — autoload `Bridge`: обёртка над `window.bridge`.
+  В веб-сборке сам инжектит `bridge.js` в страницу и ждёт готовности,
+  в редакторе — мок (реклама «досмотрена»).
+* `web/bridge.js` — вендорный бандл `@playgama/bridge` v2.3.1 (IIFE, ставит
+  `window.bridge`). Экспорт-пресет «Web (Playgama Bridge)» копирует его рядом
+  с `index.html` через `include_filter="web/bridge.js"`; кастомный HTML-шелл
+  не нужен.
+* API в коде игры: `await Bridge.show_rewarded()` → `{success, rewarded, mock,
+  error}`, `Bridge.show_interstitial()`, `Bridge.gameplay_start()/stop()`
+  (пауза геймплея площадки на время рекламы/меню), `Bridge.platform_id()`.
+* Слот-машина шлёт `gameplay_start/stop` в начале и конце спин-сессии;
+  кликер — `show_rewarded()` по кнопке play.
+* Чтобы обновить bridge.js: `npm pack @playgama/bridge` и заменить
+  `web/bridge.js` файлом `package/dist/playgama-bridge.js`.
+* Аддон `addons/yandex_games` удалён из проекта (и из включённых плагинов).
+
 ## Кликер «Бабло» (вторая сцена)
 
 * Кнопка-мешок денег внизу по центру слот-сцены (`clicker_btn`) открывает
   `scenes/clicker.tscn`; кнопка «← К СЛОТАМ» возвращает обратно.
 * Монета «БАБЛО» (`coin_btn`) даёт **+5 монет за клик** (константа
   `CLICK_VALUE` в `scripts/clicker.gd`), с отскоком монеты и всплывающим «+5».
-* Кнопка play (`play_btn`) смотрит рекламу через Yandex SDK:
-  `await YandexGames.show_rewarded()` → при `rewarded = true` начисляет
-  **+500** (`AD_REWARD`). В редакторе работает мок аддона, награда приходит.
+* Кнопка play (`play_btn`) смотрит рекламу через Playgama Bridge:
+  `await Bridge.show_rewarded()` → при `rewarded = true` начисляет
+  **+500** (`AD_REWARD`). В редакторе Bridge работает в моке: награда приходит
+  через секунду, чтобы механику можно было тестировать.
 * Баланс общий со слот-машиной: оба пишут ключ `save/balance`
   в `user://slot_save.cfg`.
 * Сцену кликера пересобирает `python3 tools/gen_clicker_tscn.py`

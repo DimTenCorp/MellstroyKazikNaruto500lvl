@@ -1,7 +1,8 @@
 extends Control
 ## Сцена кликера «Бабло»: монета даёт монеты за клики, кнопка play —
-## награду за рекламу через Yandex SDK (autoload YandexGames, метод
-## show_rewarded()). Баланс общий со слот-машиной (user://slot_save.cfg).
+## награду за рекламу через Playgama Bridge (autoload Bridge, метод
+## show_rewarded()): работает на Yandex Games, Poki, CrazyGames и др.
+## Баланс общий со слот-машиной (user://slot_save.cfg).
 ## Весь UI лежит узлами в scenes/clicker.tscn.
 
 const VSIZE := Vector2(1280, 720)
@@ -156,11 +157,11 @@ func _on_play() -> void:
 	_watching = true
 	play_btn.disabled = true
 	_banner("СМОТРИМ РЕКЛАМУ...", Color("#ffd794"))
-	var yk := get_node_or_null("/root/YandexGames")
+	var br := get_node_or_null("/root/Bridge")
 	var rewarded := false
-	var sdk_found := yk != null and yk.has_method("show_rewarded")
+	var sdk_found := br != null and br.has_method("show_rewarded")
 	if sdk_found:
-		var res: Dictionary = await yk.show_rewarded()
+		var res: Dictionary = await br.show_rewarded()
 		rewarded = bool(res.get("rewarded", false))
 	if rewarded:
 		balance += AD_REWARD
@@ -172,7 +173,7 @@ func _on_play() -> void:
 	elif sdk_found:
 		_banner("РЕКЛАМА НЕ ДОСМОТРЕНА — НЕТ НАГРАДЫ", Color("#ff7b7b"))
 	else:
-		_banner("YANDEX SDK НЕ ПОДКЛЮЧЁН", Color("#ff7b7b"))
+		_banner("BRIDGE НЕ ПОДКЛЮЧЁН", Color("#ff7b7b"))
 	_watching = false
 	play_btn.disabled = false
 
