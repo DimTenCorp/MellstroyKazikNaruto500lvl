@@ -14,7 +14,7 @@ const SAVE_PATH := "user://slot_save.cfg"
 ## (TextureButton не даёт Size меньше текстуры), масштаб ставим здесь.
 const VISUAL := {
 	"coin_btn": Vector2(320, 330),
-	"play_btn": Vector2(150, 148),
+	"play_btn": Vector2(200, 197),
 }
 
 const DEBUG := true  ## отладочные логи в консоль (print)

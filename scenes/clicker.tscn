@@ -1,17 +1,9 @@
-[gd_scene format=3 uid="uid://cpkkdr77qsj4v"]
+[gd_scene load_steps=9 format=3 uid="uid://cpkkdr77qsj4v"]
 
-[ext_resource type="Script" uid="uid://25lagv7rgenr" path="res://scripts/clicker.gd" id="scr"]
+[ext_resource type="Script" path="res://scripts/clicker.gd" id="scr"]
 [ext_resource type="Texture2D" uid="uid://bjvofqj1cb0a6" path="res://img/background/back2.jpg" id="tex_back2"]
 [ext_resource type="Texture2D" uid="uid://b45p0biosgnhx" path="res://img/buttons_clicker.png" id="tex_clicker"]
 [ext_resource type="Texture2D" uid="uid://cbbspveqsxiel" path="res://img/money_icon.png" id="tex_money"]
-
-[sub_resource type="AtlasTexture" id="at_coin"]
-atlas = ExtResource("tex_clicker")
-region = Rect2(20, 323, 278, 287)
-
-[sub_resource type="AtlasTexture" id="at_play"]
-atlas = ExtResource("tex_clicker")
-region = Rect2(375, 25, 280, 276)
 
 [sub_resource type="StyleBoxFlat" id="sb_btn_n"]
 bg_color = Color(0.227451, 0.172549, 0.301961, 1)
@@ -22,131 +14,114 @@ border_width_bottom = 2
 border_color = Color(0.478431, 0.388235, 0.6, 1)
 corner_radius_top_left = 10
 corner_radius_top_right = 10
-corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
+corner_radius_bottom_right = 10
 
-[node name="clicker" type="Control" unique_id=881274892]
-layout_mode = 3
-anchors_preset = 15
+[sub_resource type="AtlasTexture" id="at_coin"]
+atlas = ExtResource("tex_clicker")
+region = Rect2(20, 323, 278, 287)
+
+[sub_resource type="AtlasTexture" id="at_play"]
+atlas = ExtResource("tex_clicker")
+region = Rect2(375, 25, 280, 276)
+
+[sub_resource type="AtlasTexture" id="at_bag"]
+atlas = ExtResource("tex_clicker")
+region = Rect2(726, 17, 274, 284)
+
+[node name="clicker" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("scr")
 
-[node name="bg" type="TextureRect" parent="." unique_id=1757339965]
-layout_mode = 0
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
+[node name="bg" type="TextureRect" parent="."]
 texture = ExtResource("tex_back2")
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 stretch_mode = 6
+mouse_filter = 2
 
-[node name="bg_dim" type="ColorRect" parent="." unique_id=2140832381]
-layout_mode = 0
+[node name="bg_dim" type="ColorRect" parent="."]
+color = Color(0.0784314, 0.0392157, 0.12549, 0.55)
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-color = Color(0.0784314, 0.0392157, 0.12549, 0.55)
 
-[node name="machine" type="Control" parent="." unique_id=717170053]
-anchors_preset = 0
-offset_right = 1280.0
-offset_bottom = 720.0
+[node name="machine" type="Control" parent="."]
+size = Vector2(1280, 720)
 
-[node name="hud_icon" type="TextureRect" parent="machine" unique_id=58709221]
-layout_mode = 0
-offset_left = 30.0
-offset_top = 14.0
-offset_right = 96.31439
-offset_bottom = 75.0
-mouse_filter = 2
+[node name="hud_icon" type="TextureRect" parent="machine"]
 texture = ExtResource("tex_money")
+position = Vector2(30, 14)
+size = Vector2(66, 61)
 expand_mode = 1
 stretch_mode = 5
+mouse_filter = 2
 
-[node name="hud_balance" type="Label" parent="machine" unique_id=999996519]
-layout_mode = 0
-offset_left = 104.0
-offset_top = 24.0
-offset_right = 424.0
-offset_bottom = 62.0
-theme_override_colors/font_color = Color(1, 0.913725, 0.721569, 1)
-theme_override_colors/font_outline_color = Color(0.25098, 0.12549, 0.0313725, 1)
-theme_override_constants/outline_size = 8
-theme_override_font_sizes/font_size = 28
+[node name="hud_balance" type="Label" parent="machine"]
 text = "0"
+theme_override_font_sizes/font_size = 28
+theme_override_colors/font_color = Color(1, 0.913725, 0.721569, 1)
+position = Vector2(104, 24)
+size = Vector2(320, 38)
+theme_override_constants/outline_size = 8
+theme_override_colors/font_outline_color = Color(0.25098, 0.12549, 0.0313725, 1)
 
-[node name="coin_btn" type="TextureButton" parent="machine" unique_id=1678346266]
-layout_mode = 0
-offset_left = 480.0
-offset_top = 165.0
-offset_right = 758.0
-offset_bottom = 452.0
+[node name="coin_btn" type="TextureButton" parent="machine"]
 texture_normal = SubResource("at_coin")
 stretch_mode = 5
+position = Vector2(480, 165)
+size = Vector2(278, 287)
 
-[node name="click_hint" type="Label" parent="machine" unique_id=462080652]
-layout_mode = 0
-offset_left = 480.0
-offset_top = 508.0
-offset_right = 800.0
-offset_bottom = 538.0
-theme_override_colors/font_color = Color(0.615686, 0.560784, 0.721569, 1)
-theme_override_font_sizes/font_size = 22
+[node name="click_hint" type="Label" parent="machine"]
 text = "+5 за клик"
+theme_override_font_sizes/font_size = 22
+theme_override_colors/font_color = Color(0.615686, 0.560784, 0.721569, 1)
+position = Vector2(480, 508)
+size = Vector2(320, 30)
 horizontal_alignment = 1
 
-[node name="play_btn" type="TextureButton" parent="machine" unique_id=1137379654]
-layout_mode = 0
-offset_left = 1060.0
-offset_top = 520.0
-offset_right = 1340.0
-offset_bottom = 796.0
+[node name="play_btn" type="TextureButton" parent="machine"]
 texture_normal = SubResource("at_play")
 stretch_mode = 5
+position = Vector2(1060, 462)
+size = Vector2(200, 197)
 
-[node name="play_caption" type="Label" parent="machine" unique_id=1011743112]
-layout_mode = 0
-offset_left = 1000.0
-offset_top = 674.0
-offset_right = 1270.0
-offset_bottom = 702.0
-theme_override_colors/font_color = Color(0.552941, 1, 0.627451, 1)
-theme_override_font_sizes/font_size = 20
+[node name="play_caption" type="Label" parent="machine"]
 text = "РЕКЛАМА: +500"
+theme_override_font_sizes/font_size = 20
+theme_override_colors/font_color = Color(0.552941, 1, 0.627451, 1)
+position = Vector2(1000, 674)
+size = Vector2(270, 28)
 horizontal_alignment = 1
 
-[node name="back_btn" type="Button" parent="machine" unique_id=236165877]
-layout_mode = 0
-offset_left = 30.0
-offset_top = 640.0
-offset_right = 260.0
-offset_bottom = 696.0
+[node name="back_btn" type="Button" parent="machine"]
+text = "← К СЛОТАМ"
+position = Vector2(30, 640)
+size = Vector2(230, 56)
 theme_override_font_sizes/font_size = 20
 theme_override_styles/normal = SubResource("sb_btn_n")
-theme_override_styles/pressed = SubResource("sb_btn_n")
 theme_override_styles/hover = SubResource("sb_btn_n")
-text = "← К СЛОТАМ"
+theme_override_styles/pressed = SubResource("sb_btn_n")
 
-[node name="msg_label" type="Label" parent="machine" unique_id=554409205]
-visible = false
-layout_mode = 0
-offset_top = 86.0
-offset_right = 1280.0
-offset_bottom = 146.0
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_colors/font_outline_color = Color(0.227451, 0.113725, 0.431373, 1)
-theme_override_constants/outline_size = 10
+[node name="msg_label" type="Label" parent="machine"]
+text = ""
 theme_override_font_sizes/font_size = 40
+theme_override_colors/font_color = Color(1, 1, 1, 1)
 horizontal_alignment = 1
+position = Vector2(0, 86)
+size = Vector2(1280, 60)
+theme_override_constants/outline_size = 10
+theme_override_colors/font_outline_color = Color(0.227451, 0.113725, 0.431373, 1)
+visible = false
 
-[node name="float_layer" type="Control" parent="machine" unique_id=2045729272]
-anchors_preset = 0
-offset_right = 1280.0
-offset_bottom = 720.0
+[node name="float_layer" type="Control" parent="machine"]
+position = Vector2(0, 0)
+size = Vector2(1280, 720)
 mouse_filter = 2

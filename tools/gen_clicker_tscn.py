@@ -123,7 +123,7 @@ node("machine", "Control", ".", size=f"Vector2({VSIZE[0]}, {VSIZE[1]})")
 # верх: иконка денег + баланс
 node("hud_icon", "TextureRect", "machine",
      texture='ExtResource("tex_money")',
-     position="Vector2(30, 14)", size="Vector2(65, 60)",
+     position="Vector2(30, 14)", size="Vector2(66, 61)",
      expand_mode=1, stretch_mode=5, mouse_filter=2)
 label("hud_balance", "machine", "0", 28, "ffe9b8",
       position="Vector2(104, 24)", size="Vector2(320, 38)",
@@ -137,7 +137,7 @@ label("click_hint", "machine", "+5 за клик", 22, "9d8fb8",
       horizontal_alignment=1)
 
 # play = реклама с наградой
-tbtn("play_btn", "machine", "at_play", (1060, 520), CLICKER_REGIONS["play"][2:])
+tbtn("play_btn", "machine", "at_play", (1060, 462), (200, 197))
 label("play_caption", "machine", "РЕКЛАМА: +500", 20, "8dffa0",
       position="Vector2(1000, 674)", size="Vector2(270, 28)",
       horizontal_alignment=1)
