@@ -157,6 +157,15 @@ node("upg1_btn", "TextureButton", "machine",
      position="Vector2(905, 175)", size="Vector2(98, 91)")
 label("upg1_info", "machine", "", 14, "9d8fb8",
       position="Vector2(1040, 188)", size="Vector2(230, 68)")
+# строки статуса заработка слева под балансом (разметка заказчика)
+label("auto_stat", "machine", "авт. бабло: 0/с", 20, "ffe9b8",
+      position="Vector2(30, 91)", size="Vector2(300, 24)",
+      theme_override_constants_outline_size=6,
+      theme_override_colors_font_outline_color=hx("402008"))
+label("click_stat", "machine", "бабло за клик: 5", 20, "ffe9b8",
+      position="Vector2(26, 127)", size="Vector2(300, 24)",
+      theme_override_constants_outline_size=6,
+      theme_override_colors_font_outline_color=hx("402008"))
 
 # возврат к слот-машине
 node("back_btn", "Button", "machine", text='"← К СЛОТАМ"',
