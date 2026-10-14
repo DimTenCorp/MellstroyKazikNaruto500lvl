@@ -214,7 +214,7 @@ func _platform_name(br: Node) -> String:
 	if not OS.has_feature("web"):
 		return "editor"
 	if br.platform != null:
-		return str(br.platform.platform_id)
+		return str(br.platform.id)
 	return "web"
 
 
