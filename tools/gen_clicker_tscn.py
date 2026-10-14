@@ -123,10 +123,10 @@ node("machine", "Control", ".", size=f"Vector2({VSIZE[0]}, {VSIZE[1]})")
 # верх: иконка денег + баланс
 node("hud_icon", "TextureRect", "machine",
      texture='ExtResource("tex_money")',
-     position="Vector2(30, 16)", size="Vector2(46, 40)",
+     position="Vector2(30, 14)", size="Vector2(65, 60)",
      expand_mode=1, stretch_mode=5, mouse_filter=2)
 label("hud_balance", "machine", "0", 28, "ffe9b8",
-      position="Vector2(86, 20)", size="Vector2(320, 38)",
+      position="Vector2(104, 24)", size="Vector2(320, 38)",
       theme_override_constants_outline_size=8,
       theme_override_colors_font_outline_color=hx("402008"))
 

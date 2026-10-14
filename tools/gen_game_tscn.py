@@ -190,15 +190,18 @@ node("bg_dim", "ColorRect", ".", color=hx("140a20", 0.52),
      anchor_right=1.0, anchor_bottom=1.0, grow_horizontal=2, grow_vertical=2,
      mouse_filter=2)
 node("machine", "Control", ".", size=f"Vector2({VSIZE[0]}, {VSIZE[1]})")
+# Иконка денег и число баланса лежат ОТДЕЛЬНО от контейнеров,
+# чтобы их можно было перетаскивать в редакторе.
+node("balance_icon", "TextureRect", "machine",
+     texture='ExtResource("tex_money")',
+     position="Vector2(24, 34)", size="Vector2(65, 60)",
+     expand_mode=1, stretch_mode=5, mouse_filter=2)
+label("balance_label", "machine", "0", 26, "ffe9b8",
+      position="Vector2(98, 44)", size="Vector2(240, 36)",
+      vertical_alignment=1)
 
 hbox("top_bar", "machine", 12, position="Vector2(30, 56)",
      size=f"Vector2({VSIZE[0] - 60}, 46)")
-node("balance_icon", "TextureRect", "top_bar",
-     texture='ExtResource("tex_money")',
-     custom_minimum_size="Vector2(46, 40)", expand_mode=1,
-     stretch_mode=5, mouse_filter=2)
-label("balance_label", "top_bar", "0", 26, "ffe9b8",
-      vertical_alignment=1)
 spacer("spacer1", "top_bar")
 label("win_label", "top_bar", "", 26, "8dffa0", horizontal_alignment=1)
 spacer("spacer2", "top_bar")

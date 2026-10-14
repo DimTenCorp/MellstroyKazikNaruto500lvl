@@ -82,7 +82,7 @@ var _popup_tw: Tween
 var _wins_tex: Texture2D
 
 @onready var machine: Control = $machine
-@onready var balance_label: Label = $machine/top_bar/balance_label
+@onready var balance_label: Label = $machine/balance_label
 @onready var win_label: Label = $machine/top_bar/win_label
 @onready var fs_label: Label = $machine/top_bar/fs_label
 @onready var bet_label: Label = $machine/bottom_bar/bet_label

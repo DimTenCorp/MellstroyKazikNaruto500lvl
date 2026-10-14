@@ -58,8 +58,8 @@ size = Vector2(1280, 720)
 
 [node name="hud_icon" type="TextureRect" parent="machine"]
 texture = ExtResource("tex_money")
-position = Vector2(30, 16)
-size = Vector2(46, 40)
+position = Vector2(30, 14)
+size = Vector2(65, 60)
 expand_mode = 1
 stretch_mode = 5
 mouse_filter = 2
@@ -68,7 +68,7 @@ mouse_filter = 2
 text = "0"
 theme_override_font_sizes/font_size = 28
 theme_override_colors/font_color = Color(1, 0.913725, 0.721569, 1)
-position = Vector2(86, 20)
+position = Vector2(104, 24)
 size = Vector2(320, 38)
 theme_override_constants/outline_size = 8
 theme_override_colors/font_outline_color = Color(0.25098, 0.12549, 0.0313725, 1)
