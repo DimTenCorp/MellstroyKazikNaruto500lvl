@@ -197,7 +197,7 @@ node("machine", "Control", ".", size=f"Vector2({VSIZE[0]}, {VSIZE[1]})")
 # Остаток фриспинов (узел добавлен заказчиком, перенесён под machine,
 # чтобы масштабироваться вместе с макетом).
 label("freespin_label", "machine", "", 22, "7ef3ff",
-      position="Vector2(32, 140)", size="Vector2(160, 34)",
+      position="Vector2(10, 140)", size="Vector2(160, 34)",
       theme_override_constants_outline_size=8,
       theme_override_colors_font_outline_color=hx("1d3a6e"),
       visible="false")

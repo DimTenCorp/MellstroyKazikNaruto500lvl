@@ -94,6 +94,8 @@ def tbtn(name, parent, sid, pos, size):
 # ------------------------------------------------------------------ ресурсы
 ext = ['[ext_resource type="Script" path="res://scripts/clicker.gd" '
        'id="scr"]',
+       f'[ext_resource type="Texture2D" uid="{res_uid("img/upgrades/upgrades.png")}" '
+       'path="res://img/upgrades/upgrades.png" id="tex_upgrades"]',
        f'[ext_resource type="Texture2D" uid="{res_uid("img/background/back2.jpg")}" '
        'path="res://img/background/back2.jpg" id="tex_back2"]',
        f'[ext_resource type="Texture2D" uid="{res_uid("img/buttons_clicker.png")}" '
@@ -143,32 +145,18 @@ label("play_caption", "machine", "РЕКЛАМА: +500", 20, "8dffa0",
       position="Vector2(1000, 674)", size="Vector2(270, 28)",
       horizontal_alignment=1)
 
-# прокачка заработка: разметка заказчика (317589f) — белые квадраты справа
-node("up_auto_btn", "Button", "machine", text='"АВТО\\nур.0"',
-     position="Vector2(906, 31)", size="Vector2(98, 91)",
-     theme_override_font_sizes_font_size=16,
-     theme_override_styles_normal='SubResource("sb_btn_n")',
-     theme_override_styles_pressed='SubResource("sb_btn_n")',
-     theme_override_styles_hover='SubResource("sb_btn_n")')
-label("auto_info", "machine", "автоматическое бабло", 15, "9d8fb8",
+# витрина улучшений (2 слота): иконку и тексты ставит скрипт в рантайме,
+# сюда после полной прокачки приходит следующее улучшение из очереди
+node("upg0_btn", "TextureButton", "machine",
+     ignore_texture_size="true", stretch_mode=5,
+     position="Vector2(906, 31)", size="Vector2(98, 91)")
+label("upg0_info", "machine", "", 14, "9d8fb8",
       position="Vector2(1041, 44)", size="Vector2(229, 68)")
-node("up_click_btn", "Button", "machine", text='"КЛИК\\nур.0"',
-     position="Vector2(905, 175)", size="Vector2(98, 91)",
-     theme_override_font_sizes_font_size=16,
-     theme_override_styles_normal='SubResource("sb_btn_n")',
-     theme_override_styles_pressed='SubResource("sb_btn_n")',
-     theme_override_styles_hover='SubResource("sb_btn_n")')
-label("click_info", "machine", "бабло за клик", 15, "9d8fb8",
+node("upg1_btn", "TextureButton", "machine",
+     ignore_texture_size="true", stretch_mode=5,
+     position="Vector2(905, 175)", size="Vector2(98, 91)")
+label("upg1_info", "machine", "", 14, "9d8fb8",
       position="Vector2(1040, 188)", size="Vector2(230, 68)")
-# строки статуса заработка слева под балансом (разметка заказчика)
-label("auto_stat", "machine", "авт. бабло: 0/с", 20, "ffe9b8",
-      position="Vector2(30, 91)", size="Vector2(300, 24)",
-      theme_override_constants_outline_size=6,
-      theme_override_colors_font_outline_color=hx("402008"))
-label("click_stat", "machine", "бабло за клик: 5", 20, "ffe9b8",
-      position="Vector2(26, 127)", size="Vector2(300, 24)",
-      theme_override_constants_outline_size=6,
-      theme_override_colors_font_outline_color=hx("402008"))
 
 # возврат к слот-машине
 node("back_btn", "Button", "machine", text='"← К СЛОТАМ"',

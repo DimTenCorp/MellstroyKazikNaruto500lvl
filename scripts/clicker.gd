@@ -7,12 +7,48 @@ extends Control
 
 const VSIZE := Vector2(1280, 720)
 const AD_REWARD := 500
-const CLICK_BASE := 5        ## базовый заработок за клик
-const CLICK_STEP := 5        ## прибавка к клику за уровень прокачки
-const AUTO_STEP := 10        ## прибавка авто-заработка (в секунду) за уровень
-const COST_CLICK_BASE := 100 ## цена первого уровня прокачки клика
-const COST_AUTO_BASE := 200  ## цена первого уровня авто-заработка
-const COST_MULT := 1.7       ## множитель цены за каждый купленный уровень     ## монет за досмотренную рекламу
+const CLICK_BASE := 5        ## базовый заработок за клик без улучшений
+
+## Очередь улучшений (порядок = порядок появления в витрине).
+## click/auto — прибавка к статом за один уровень, max — потолок уровней,
+## cost/mult — цена первого уровня и рост цены за уровень.
+const UPGRADES := [
+	{"name": "Смазка контактов", "icon": 0, "click": 2, "auto": 0,
+	 "max": 5, "cost": 50, "mult": 1.6},
+	{"name": "Механический переключатель", "icon": 1, "click": 5, "auto": 0,
+	 "max": 5, "cost": 120, "mult": 1.6},
+	{"name": "Турбо-скрипт", "icon": 2, "click": 0, "auto": 5,
+	 "max": 5, "cost": 150, "mult": 1.6},
+	{"name": "Макрос на клик", "icon": 3, "click": 10, "auto": 0,
+	 "max": 5, "cost": 300, "mult": 1.7},
+	{"name": "Обход антикликера", "icon": 4, "click": 25, "auto": 0,
+	 "max": 3, "cost": 800, "mult": 1.8},
+	{"name": "Разгон процессора", "icon": 5, "click": 0, "auto": 15,
+	 "max": 5, "cost": 600, "mult": 1.7},
+	{"name": "Усилитель импульса", "icon": 6, "click": 15, "auto": 5,
+	 "max": 5, "cost": 900, "mult": 1.7},
+	{"name": "Инъекция кода", "icon": 7, "click": 0, "auto": 40,
+	 "max": 5, "cost": 2000, "mult": 1.8},
+	{"name": "Взлом реестра", "icon": 8, "click": 50, "auto": 0,
+	 "max": 3, "cost": 3500, "mult": 1.8},
+	{"name": "Теневой сервер", "icon": 9, "click": 0, "auto": 100,
+	 "max": 3, "cost": 8000, "mult": 1.9},
+	{"name": "Драйвер подмены", "icon": 10, "click": 40, "auto": 40,
+	 "max": 3, "cost": 12000, "mult": 1.9},
+	{"name": "Нейросетевой кликер", "icon": 11, "click": 150, "auto": 50,
+	 "max": 2, "cost": 30000, "mult": 2.0},
+	{"name": "Квантовый контроллер", "icon": 12, "click": 200, "auto": 200,
+	 "max": 1, "cost": 100000, "mult": 2.0},
+]
+
+## Регионы иконок в img/upgrades/upgrades.png (1344x717, сетка 5x3).
+const UPGRADE_REGIONS := [
+	Rect2(4, 2, 213, 211), Rect2(283, 2, 214, 211), Rect2(562, 2, 214, 211),
+	Rect2(841, 2, 214, 211), Rect2(1121, 2, 213, 211),
+	Rect2(4, 255, 213, 212), Rect2(283, 255, 214, 212), Rect2(562, 255, 214, 212),
+	Rect2(841, 255, 214, 212), Rect2(1121, 255, 213, 212),
+	Rect2(4, 499, 213, 211), Rect2(283, 499, 214, 211), Rect2(562, 499, 214, 211),
+]     ## монет за досмотренную рекламу
 const SAVE_PATH := "user://slot_save.cfg"
 
 ## Визуальный размер кнопок: в сцене спрайты лежат в родном размере региона
@@ -20,8 +56,8 @@ const SAVE_PATH := "user://slot_save.cfg"
 const DEBUG := true  ## отладочные логи в консоль (print)
 
 var balance := 1000
-var click_lvl := 0           ## уровень прокачки «бабло за клик»
-var auto_lvl := 0            ## уровень прокачки «автоматическое бабло»
+var upg_levels: Array[int] = []   ## уровни улучшений (индекс = номер в UPGRADES)
+var _icons: Array[AtlasTexture] = []
 var _auto_acc := 0.0         ## накопитель секунд для авто-заработка
 var _cfg := ConfigFile.new()
 var _watching := false
@@ -35,34 +71,91 @@ var _banner_tw: Tween
 @onready var play_caption: Label = $machine/play_caption
 @onready var back_btn: Button = $machine/back_btn
 @onready var msg_label: Label = $machine/msg_label
-@onready var up_auto_btn: Button = $machine/up_auto_btn
-@onready var up_click_btn: Button = $machine/up_click_btn
-@onready var auto_info: Label = $machine/auto_info
-@onready var click_info: Label = $machine/click_info
+@onready var upg_btns: Array = [$machine/upg0_btn, $machine/upg1_btn]
+@onready var upg_infos: Array = [$machine/upg0_info, $machine/upg1_info]
 @onready var auto_stat: Label = $machine/auto_stat
 @onready var click_stat: Label = $machine/click_stat
 @onready var float_layer: Control = $machine/float_layer
 
 
 func click_gain() -> int:
-	return CLICK_BASE + CLICK_STEP * click_lvl
+	var v := CLICK_BASE
+	for i in UPGRADES.size():
+		v += int(UPGRADES[i].click) * upg_levels[i]
+	return v
 
 
 func auto_gain() -> int:
-	return AUTO_STEP * auto_lvl
+	var v := 0
+	for i in UPGRADES.size():
+		v += int(UPGRADES[i].auto) * upg_levels[i]
+	return v
 
 
-func click_cost() -> int:
-	return _cost(COST_CLICK_BASE, click_lvl)
+func _upg_cost(i: int) -> int:
+	var u: Dictionary = UPGRADES[i]
+	return int(round(float(u.cost) * pow(float(u.mult), upg_levels[i]) / 10.0)) * 10
 
 
-func auto_cost() -> int:
-	return _cost(COST_AUTO_BASE, auto_lvl)
+## Первые два непрокачанных до упора улучшения очереди — они в витрине.
+func _shop_slots() -> Array[int]:
+	var out: Array[int] = []
+	for i in UPGRADES.size():
+		if upg_levels[i] < int(UPGRADES[i].max):
+			out.append(i)
+			if out.size() == 2:
+				break
+	return out
 
 
-## Цена растёт с каждой прокачкой: base * COST_MULT^уровень, округление до 10.
-func _cost(base: int, lvl: int) -> int:
-	return int(round(base * pow(COST_MULT, lvl) / 10.0)) * 10
+func _upg_effect_text(u: Dictionary) -> String:
+	var parts: Array[String] = []
+	if int(u.click) > 0:
+		parts.append("+%d/клик" % u.click)
+	if int(u.auto) > 0:
+		parts.append("+%d/с" % u.auto)
+	return " ".join(parts)
+
+
+## Витрина: два слота, после полной прокачки улучшение уступает место следующему.
+func _refresh_shop() -> void:
+	var slots := _shop_slots()
+	for s in upg_btns.size():
+		if s >= slots.size():
+			upg_btns[s].visible = false
+			upg_infos[s].visible = false
+			continue
+		var i: int = slots[s]
+		var u: Dictionary = UPGRADES[i]
+		upg_btns[s].visible = true
+		upg_infos[s].visible = true
+		upg_btns[s].texture_normal = _icons[int(u.icon)]
+		upg_infos[s].text = "%s\n%s\nур.%d/%d — цена %d" % [
+				u.name, _upg_effect_text(u), upg_levels[i], u.max, _upg_cost(i)]
+
+
+func _on_upg(slot: int) -> void:
+	var slots := _shop_slots()
+	if slot >= slots.size():
+		return
+	var i: int = slots[slot]
+	var u: Dictionary = UPGRADES[i]
+	var c := _upg_cost(i)
+	if balance < c:
+		_dbg("улучшение %s: не хватает бабла (нужно %d, есть %d)" % [u.name, c, balance])
+		_banner("НЕ ХВАТАЕТ БАБЛА: НУЖНО %d" % c, Color("#ff7b7b"))
+		return
+	balance -= c
+	upg_levels[i] += 1
+	_dbg("улучшение %s: ур.%d/%d, след. цена %d (клик %d, авто %d)" % [
+			u.name, upg_levels[i], u.max, _upg_cost(i), click_gain(), auto_gain()])
+	if upg_levels[i] >= int(u.max):
+		_dbg("улучшение %s прокачано полностью — в витрину придёт следующее" % u.name)
+	_save()
+	_refresh_shop()
+	_update()
+	_float(_upg_effect_text(u), upg_btns[slot].position + upg_btns[slot].size * 0.5,
+			Color("#8dffa0"))
 
 
 func _process(delta: float) -> void:
@@ -79,38 +172,6 @@ func _process(delta: float) -> void:
 		_update()
 
 
-func _on_up_click() -> void:
-	var c := click_cost()
-	if balance < c:
-		_dbg("прокачка клика: не хватает бабла (нужно %d, есть %d)" % [c, balance])
-		_banner("НЕ ХВАТАЕТ БАБЛА: НУЖНО %d" % c, Color("#ff7b7b"))
-		return
-	balance -= c
-	click_lvl += 1
-	_dbg("прокачка клика: ур.%d, за клик %d, след. цена %d" % [
-			click_lvl, click_gain(), click_cost()])
-	_save()
-	_update()
-	_float("КЛИК +%d" % CLICK_STEP,
-			up_click_btn.position + up_click_btn.size * 0.5, Color("#8dffa0"))
-
-
-func _on_up_auto() -> void:
-	var c := auto_cost()
-	if balance < c:
-		_dbg("прокачка авто: не хватает бабла (нужно %d, есть %d)" % [c, balance])
-		_banner("НЕ ХВАТАЕТ БАБЛА: НУЖНО %d" % c, Color("#ff7b7b"))
-		return
-	balance -= c
-	auto_lvl += 1
-	_dbg("прокачка авто: ур.%d, авто %d/с, след. цена %d" % [
-			auto_lvl, auto_gain(), auto_cost()])
-	_save()
-	_update()
-	_float("АВТО +%d/с" % AUTO_STEP,
-			up_auto_btn.position + up_auto_btn.size * 0.5, Color("#8dffa0"))
-
-
 func _dbg(msg: String) -> void:
 	if DEBUG:
 		print("[clicker] " + msg)
@@ -122,8 +183,15 @@ func _ready() -> void:
 	coin_btn.pressed.connect(_on_coin)
 	play_btn.pressed.connect(_on_play)
 	back_btn.pressed.connect(_on_back)
-	up_auto_btn.pressed.connect(_on_up_auto)
-	up_click_btn.pressed.connect(_on_up_click)
+	var sheet: Texture2D = load("res://img/upgrades/upgrades.png")
+	for r in UPGRADE_REGIONS:
+		var at := AtlasTexture.new()
+		at.atlas = sheet
+		at.region = r
+		_icons.append(at)
+	for s in upg_btns.size():
+		upg_btns[s].pressed.connect(_on_upg.bind(s))
+	_refresh_shop()
 	for btn in _find_buttons(self):
 		_bind_press_anim(btn)
 	play_caption.text = "РЕКЛАМА: +%d" % AD_REWARD
@@ -146,16 +214,21 @@ func _layout() -> void:
 func _load() -> void:
 	if _cfg.load(SAVE_PATH) == OK:
 		balance = int(_cfg.get_value("save", "balance", balance))
-		click_lvl = int(_cfg.get_value("save", "click_lvl", click_lvl))
-		auto_lvl = int(_cfg.get_value("save", "auto_lvl", auto_lvl))
+		var arr: Array = _cfg.get_value("save", "upg_levels", [])
+		upg_levels.clear()
+		for k in UPGRADES.size():
+			upg_levels.append(int(arr[k]) if k < arr.size() else 0)
+	if upg_levels.size() != UPGRADES.size():
+		upg_levels.clear()
+		for k in UPGRADES.size():
+			upg_levels.append(0)
 
 
 ## Пишем баланс в общий сейв, остальные ключи (ставка, скорость,
 ## громкости) сохраняем как есть.
 func _save() -> void:
 	_cfg.set_value("save", "balance", balance)
-	_cfg.set_value("save", "click_lvl", click_lvl)
-	_cfg.set_value("save", "auto_lvl", auto_lvl)
+	_cfg.set_value("save", "upg_levels", upg_levels)
 	_cfg.save(SAVE_PATH)
 
 
@@ -164,11 +237,6 @@ func _update() -> void:
 	click_hint.text = "+%d за клик" % click_gain()
 	click_stat.text = "бабло за клик: %d" % click_gain()
 	auto_stat.text = "авт. бабло: %d/с" % auto_gain()
-	up_click_btn.text = "КЛИК\nур.%d" % click_lvl
-	up_auto_btn.text = "АВТО\nур.%d" % auto_lvl
-	click_info.text = "бабло за клик\n+%d, цена %d" % [CLICK_STEP, click_cost()]
-	auto_info.text = "автоматическое бабло\n+%d/с, цена %d" % [
-			AUTO_STEP, auto_cost()]
 
 
 func _fmt(v: int) -> String:
