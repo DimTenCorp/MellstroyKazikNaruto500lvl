@@ -68,6 +68,7 @@ var _auto_left := 0  ## 0 = не активна, -1 = без лимита
 var _fx_nodes: Array[Node] = []
 var _win_tween: Tween
 var _banner_tw: Tween
+var _glow_tw: Tween
 var _popup_tw: Tween
 var _wins_tex: Texture2D
 
@@ -87,7 +88,8 @@ var _wins_tex: Texture2D
 @onready var paytable_btn: TextureButton = $machine/bottom_bar/paytable_btn
 @onready var intro_popup: Control = $machine/intro_popup
 @onready var intro_btn: Button = $machine/intro_popup/intro_btn
-@onready var clicker_glow: Panel = $machine/bottom_bar/clicker_glow@onready var clicker_btn: TextureButton = $machine/bottom_bar/clicker_btn
+@onready var clicker_glow: Panel = $machine/bottom_bar/clicker_glow
+@onready var clicker_btn: TextureButton = $machine/bottom_bar/clicker_btn
 @onready var fx_layer: Control = $machine/grid_panel/fx_layer
 @onready var lines_overlay: Node2D = $machine/grid_panel/lines_overlay
 @onready var win_popup: Control = $machine/win_popup
