@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://cpkkdr77qsj4v"]
+
+[ext_resource type="Texture2D" uid="uid://bjvofqj1cb0a6" path="res://img/background/back2.jpg" id="1_ecl7i"]
+
+[node name="Clicker" type="Node2D" unique_id=1611081251]
+
+[node name="Back2" type="Sprite2D" parent="." unique_id=635766365]
+position = Vector2(571, 339)
+texture = ExtResource("1_ecl7i")
