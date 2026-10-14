@@ -6,8 +6,13 @@ extends Control
 ## Весь UI лежит узлами в scenes/clicker.tscn.
 
 const VSIZE := Vector2(1280, 720)
-const CLICK_VALUE := 5     ## монет за клик по монете
-const AD_REWARD := 500     ## монет за досмотренную рекламу
+const AD_REWARD := 500
+const CLICK_BASE := 5        ## базовый заработок за клик
+const CLICK_STEP := 5        ## прибавка к клику за уровень прокачки
+const AUTO_STEP := 10        ## прибавка авто-заработка (в секунду) за уровень
+const COST_CLICK_BASE := 100 ## цена первого уровня прокачки клика
+const COST_AUTO_BASE := 200  ## цена первого уровня авто-заработка
+const COST_MULT := 1.7       ## множитель цены за каждый купленный уровень     ## монет за досмотренную рекламу
 const SAVE_PATH := "user://slot_save.cfg"
 
 ## Визуальный размер кнопок: в сцене спрайты лежат в родном размере региона
@@ -15,6 +20,9 @@ const SAVE_PATH := "user://slot_save.cfg"
 const DEBUG := true  ## отладочные логи в консоль (print)
 
 var balance := 1000
+var click_lvl := 0           ## уровень прокачки «бабло за клик»
+var auto_lvl := 0            ## уровень прокачки «автоматическое бабло»
+var _auto_acc := 0.0         ## накопитель секунд для авто-заработка
 var _cfg := ConfigFile.new()
 var _watching := false
 var _banner_tw: Tween
@@ -27,7 +35,80 @@ var _banner_tw: Tween
 @onready var play_caption: Label = $machine/play_caption
 @onready var back_btn: Button = $machine/back_btn
 @onready var msg_label: Label = $machine/msg_label
+@onready var up_auto_btn: Button = $machine/up_auto_btn
+@onready var up_click_btn: Button = $machine/up_click_btn
+@onready var auto_info: Label = $machine/auto_info
+@onready var click_info: Label = $machine/click_info
+@onready var auto_stat: Label = $machine/auto_stat
+@onready var click_stat: Label = $machine/click_stat
 @onready var float_layer: Control = $machine/float_layer
+
+
+func click_gain() -> int:
+	return CLICK_BASE + CLICK_STEP * click_lvl
+
+
+func auto_gain() -> int:
+	return AUTO_STEP * auto_lvl
+
+
+func click_cost() -> int:
+	return _cost(COST_CLICK_BASE, click_lvl)
+
+
+func auto_cost() -> int:
+	return _cost(COST_AUTO_BASE, auto_lvl)
+
+
+## Цена растёт с каждой прокачкой: base * COST_MULT^уровень, округление до 10.
+func _cost(base: int, lvl: int) -> int:
+	return int(round(base * pow(COST_MULT, lvl) / 10.0)) * 10
+
+
+func _process(delta: float) -> void:
+	var g := auto_gain()
+	if g <= 0:
+		return
+	_auto_acc += delta
+	var add := 0
+	while _auto_acc >= 1.0:
+		_auto_acc -= 1.0
+		add += g
+	if add > 0:
+		balance += add
+		_update()
+
+
+func _on_up_click() -> void:
+	var c := click_cost()
+	if balance < c:
+		_dbg("прокачка клика: не хватает бабла (нужно %d, есть %d)" % [c, balance])
+		_banner("НЕ ХВАТАЕТ БАБЛА: НУЖНО %d" % c, Color("#ff7b7b"))
+		return
+	balance -= c
+	click_lvl += 1
+	_dbg("прокачка клика: ур.%d, за клик %d, след. цена %d" % [
+			click_lvl, click_gain(), click_cost()])
+	_save()
+	_update()
+	_float("КЛИК +%d" % CLICK_STEP,
+			up_click_btn.position + up_click_btn.size * 0.5, Color("#8dffa0"))
+
+
+func _on_up_auto() -> void:
+	var c := auto_cost()
+	if balance < c:
+		_dbg("прокачка авто: не хватает бабла (нужно %d, есть %d)" % [c, balance])
+		_banner("НЕ ХВАТАЕТ БАБЛА: НУЖНО %d" % c, Color("#ff7b7b"))
+		return
+	balance -= c
+	auto_lvl += 1
+	_dbg("прокачка авто: ур.%d, авто %d/с, след. цена %d" % [
+			auto_lvl, auto_gain(), auto_cost()])
+	_save()
+	_update()
+	_float("АВТО +%d/с" % AUTO_STEP,
+			up_auto_btn.position + up_auto_btn.size * 0.5, Color("#8dffa0"))
 
 
 func _dbg(msg: String) -> void:
@@ -41,9 +122,10 @@ func _ready() -> void:
 	coin_btn.pressed.connect(_on_coin)
 	play_btn.pressed.connect(_on_play)
 	back_btn.pressed.connect(_on_back)
+	up_auto_btn.pressed.connect(_on_up_auto)
+	up_click_btn.pressed.connect(_on_up_click)
 	for btn in _find_buttons(self):
 		_bind_press_anim(btn)
-	click_hint.text = "+%d за клик" % CLICK_VALUE
 	play_caption.text = "РЕКЛАМА: +%d" % AD_REWARD
 	_update()
 	_layout()
@@ -64,17 +146,29 @@ func _layout() -> void:
 func _load() -> void:
 	if _cfg.load(SAVE_PATH) == OK:
 		balance = int(_cfg.get_value("save", "balance", balance))
+		click_lvl = int(_cfg.get_value("save", "click_lvl", click_lvl))
+		auto_lvl = int(_cfg.get_value("save", "auto_lvl", auto_lvl))
 
 
 ## Пишем баланс в общий сейв, остальные ключи (ставка, скорость,
 ## громкости) сохраняем как есть.
 func _save() -> void:
 	_cfg.set_value("save", "balance", balance)
+	_cfg.set_value("save", "click_lvl", click_lvl)
+	_cfg.set_value("save", "auto_lvl", auto_lvl)
 	_cfg.save(SAVE_PATH)
 
 
 func _update() -> void:
 	hud_balance.text = _fmt(balance)
+	click_hint.text = "+%d за клик" % click_gain()
+	click_stat.text = "бабло за клик: %d" % click_gain()
+	auto_stat.text = "авт. бабло: %d/с" % auto_gain()
+	up_click_btn.text = "КЛИК\nур.%d" % click_lvl
+	up_auto_btn.text = "АВТО\nур.%d" % auto_lvl
+	click_info.text = "бабло за клик\n+%d, цена %d" % [CLICK_STEP, click_cost()]
+	auto_info.text = "автоматическое бабло\n+%d/с, цена %d" % [
+			AUTO_STEP, auto_cost()]
 
 
 func _fmt(v: int) -> String:
@@ -126,11 +220,11 @@ func _find_buttons(root: Node) -> Array[BaseButton]:
 # ------------------------------------------------------------------- клики
 
 func _on_coin() -> void:
-	balance += CLICK_VALUE
-	_dbg("клик по монете: +%d, баланс=%d" % [CLICK_VALUE, balance])
+	balance += click_gain()
+	_dbg("клик по монете: +%d, баланс=%d" % [click_gain(), balance])
 	_save()
 	_update()
-	_float("+%d" % CLICK_VALUE, coin_btn.position + coin_btn.size * 0.5,
+	_float("+%d" % click_gain(), coin_btn.position + coin_btn.size * 0.5,
 			Color("#ffe9b8"))
 
 

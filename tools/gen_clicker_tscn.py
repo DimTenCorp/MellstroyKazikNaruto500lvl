@@ -143,6 +143,33 @@ label("play_caption", "machine", "РЕКЛАМА: +500", 20, "8dffa0",
       position="Vector2(1000, 674)", size="Vector2(270, 28)",
       horizontal_alignment=1)
 
+# прокачка заработка: разметка заказчика (317589f) — белые квадраты справа
+node("up_auto_btn", "Button", "machine", text='"АВТО\\nур.0"',
+     position="Vector2(906, 31)", size="Vector2(98, 91)",
+     theme_override_font_sizes_font_size=16,
+     theme_override_styles_normal='SubResource("sb_btn_n")',
+     theme_override_styles_pressed='SubResource("sb_btn_n")',
+     theme_override_styles_hover='SubResource("sb_btn_n")')
+label("auto_info", "machine", "автоматическое бабло", 15, "9d8fb8",
+      position="Vector2(1041, 44)", size="Vector2(229, 68)")
+node("up_click_btn", "Button", "machine", text='"КЛИК\\nур.0"',
+     position="Vector2(905, 175)", size="Vector2(98, 91)",
+     theme_override_font_sizes_font_size=16,
+     theme_override_styles_normal='SubResource("sb_btn_n")',
+     theme_override_styles_pressed='SubResource("sb_btn_n")',
+     theme_override_styles_hover='SubResource("sb_btn_n")')
+label("click_info", "machine", "бабло за клик", 15, "9d8fb8",
+      position="Vector2(1040, 188)", size="Vector2(230, 68)")
+# строки статуса заработка слева под балансом (разметка заказчика)
+label("auto_stat", "machine", "авт. бабло: 0/с", 20, "ffe9b8",
+      position="Vector2(30, 91)", size="Vector2(300, 24)",
+      theme_override_constants_outline_size=6,
+      theme_override_colors_font_outline_color=hx("402008"))
+label("click_stat", "machine", "бабло за клик: 5", 20, "ffe9b8",
+      position="Vector2(26, 127)", size="Vector2(300, 24)",
+      theme_override_constants_outline_size=6,
+      theme_override_colors_font_outline_color=hx("402008"))
+
 # возврат к слот-машине
 node("back_btn", "Button", "machine", text='"← К СЛОТАМ"',
      position="Vector2(30, 640)", size="Vector2(230, 56)",
