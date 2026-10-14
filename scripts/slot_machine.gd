@@ -362,7 +362,7 @@ func _open_bet_menu() -> void:
 		return
 	bet_total_label.text = "Полная ставка: %s" % _fmt(total_bet())
 	_open_menu(bet_menu)
-	bet_input.text = str(bet_line)
+	bet_input.text = str(total_bet())
 
 
 func _close_menus() -> void:
@@ -424,24 +424,37 @@ func total_bet() -> int:
 	return bet_line * SlotData.PAYLINES.size()
 
 
-## Любая ставка числом: от 1 до текущего баланса (больше — нельзя).
+## Ставка на линию (внутренняя мастер-величина, целая).
 func _set_bet(v: int) -> void:
 	var capped := clampi(v, 1, maxi(1, balance))
 	if v > balance:
 		_banner("СТАВКА НЕ БОЛЬШЕ БАЛАНСА: %s" % _fmt(balance), Color("#ff7b7b"))
 	bet_line = capped
-	bet_input.text = str(bet_line)
+	bet_input.text = str(total_bet())
 	_save()
 	_update_labels()
 	_dbg("ставка на линию: %d, полная %d" % [bet_line, total_bet()])
 
 
+## Игрок вписывает ПОЛНУЮ ставку: округляем до кратной 9 линиям,
+## не больше баланса.
+func _set_bet_total(t: int) -> void:
+	var capped := clampi(t, 1, maxi(1, balance))
+	if t > balance:
+		_banner("СТАВКА НЕ БОЛЬШЕ БАЛАНСА: %s" % _fmt(balance), Color("#ff7b7b"))
+	var lines := SlotData.PAYLINES.size()
+	var rounded := maxi(lines, int(round(float(capped) / float(lines))) * lines)
+	if rounded != t:
+		_banner("ПОЛНАЯ СТАВКА ОКРУГЛЕНА ДО %d (9 ЛИНИЙ)" % rounded, Color("#ffe9b8"))
+	_set_bet(rounded / lines)
+
+
 func _on_bet_apply() -> void:
 	var s := bet_input.text.replace(" ", "").replace("\t", "")
 	if not s.is_valid_int():
-		_banner("ВПИШИ ЧИСЛО: НАПРИМЕР 25", Color("#ff7b7b"))
+		_banner("ВПИШИ ЧИСЛО: НАПРИМЕР 90", Color("#ff7b7b"))
 		return
-	_set_bet(int(s))
+	_set_bet_total(int(s))
 
 
 func _on_max_bet() -> void:

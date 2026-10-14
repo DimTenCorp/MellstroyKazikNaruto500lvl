@@ -337,7 +337,7 @@ node("vbox", "VBoxContainer", "panel",
      offset_left=16, offset_top=12, offset_right=-16, offset_bottom=-12,
      theme_override_constants_separation=12)
 hbox("head", "vbox", 0)
-label("head_title", "head", "СТАВКА НА ЛИНИЮ", 26, "ffd794")
+label("head_title", "head", "ПОЛНАЯ СТАВКА", 26, "ffd794")
 spacer("spacer_bet", "head")
 node("close_btn", "Button", "head", text='"ЗАКРЫТЬ"',
      custom_minimum_size="Vector2(140, 42)",
@@ -349,7 +349,7 @@ node("grid", "GridContainer", "vbox", columns=3,
      theme_override_constants_h_separation=10,
      theme_override_constants_v_separation=10)
 for i, b in enumerate(BETS_LIST):
-    node(f"bet_opt{i}", "Button", "grid", text=f'"{b}"',
+    node(f"bet_opt{i}", "Button", "grid", text=f'"{b * 9}"',  # пресеты полными ставками
          custom_minimum_size="Vector2(96, 56)",
          theme_override_font_sizes_font_size=24,
          theme_override_styles_normal='SubResource("sb_btn_n")',
@@ -359,7 +359,7 @@ hbox("bet_row", "vbox", 10)
 node("bet_input", "LineEdit", "bet_row",
      size_flags_horizontal=3,
      custom_minimum_size="Vector2(0, 46)",
-     placeholder_text='"СВОЯ СТАВКА (ЧИСЛО)"',
+     placeholder_text='"ПОЛНАЯ СТАВКА (ЧИСЛО)"',
      theme_override_font_sizes_font_size=20)
 node("bet_apply", "Button", "bet_row", text='"ПРИМЕНЯТЬ"',
      custom_minimum_size="Vector2(150, 46)",

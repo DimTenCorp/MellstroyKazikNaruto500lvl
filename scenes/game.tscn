@@ -597,7 +597,7 @@ theme_override_constants/separation = 12
 theme_override_constants/separation = 0
 
 [node name="head_title" type="Label" parent="machine/bet_menu/panel/vbox/head"]
-text = "СТАВКА НА ЛИНИЮ"
+text = "ПОЛНАЯ СТАВКА"
 theme_override_font_sizes/font_size = 26
 theme_override_colors/font_color = Color(1, 0.843137, 0.580392, 1)
 
@@ -618,7 +618,7 @@ theme_override_constants/h_separation = 10
 theme_override_constants/v_separation = 10
 
 [node name="bet_opt0" type="Button" parent="machine/bet_menu/panel/vbox/grid"]
-text = "1"
+text = "9"
 custom_minimum_size = Vector2(96, 56)
 theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("sb_btn_n")
@@ -626,7 +626,7 @@ theme_override_styles/hover = SubResource("sb_btn_h")
 theme_override_styles/pressed = SubResource("sb_btn_p")
 
 [node name="bet_opt1" type="Button" parent="machine/bet_menu/panel/vbox/grid"]
-text = "2"
+text = "18"
 custom_minimum_size = Vector2(96, 56)
 theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("sb_btn_n")
@@ -634,7 +634,7 @@ theme_override_styles/hover = SubResource("sb_btn_h")
 theme_override_styles/pressed = SubResource("sb_btn_p")
 
 [node name="bet_opt2" type="Button" parent="machine/bet_menu/panel/vbox/grid"]
-text = "5"
+text = "45"
 custom_minimum_size = Vector2(96, 56)
 theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("sb_btn_n")
@@ -642,7 +642,7 @@ theme_override_styles/hover = SubResource("sb_btn_h")
 theme_override_styles/pressed = SubResource("sb_btn_p")
 
 [node name="bet_opt3" type="Button" parent="machine/bet_menu/panel/vbox/grid"]
-text = "10"
+text = "90"
 custom_minimum_size = Vector2(96, 56)
 theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("sb_btn_n")
@@ -650,7 +650,7 @@ theme_override_styles/hover = SubResource("sb_btn_h")
 theme_override_styles/pressed = SubResource("sb_btn_p")
 
 [node name="bet_opt4" type="Button" parent="machine/bet_menu/panel/vbox/grid"]
-text = "25"
+text = "225"
 custom_minimum_size = Vector2(96, 56)
 theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("sb_btn_n")
@@ -658,7 +658,7 @@ theme_override_styles/hover = SubResource("sb_btn_h")
 theme_override_styles/pressed = SubResource("sb_btn_p")
 
 [node name="bet_opt5" type="Button" parent="machine/bet_menu/panel/vbox/grid"]
-text = "50"
+text = "450"
 custom_minimum_size = Vector2(96, 56)
 theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("sb_btn_n")
@@ -671,7 +671,7 @@ theme_override_constants/separation = 10
 [node name="bet_input" type="LineEdit" parent="machine/bet_menu/panel/vbox/bet_row"]
 size_flags_horizontal = 3
 custom_minimum_size = Vector2(0, 46)
-placeholder_text = "СВОЯ СТАВКА (ЧИСЛО)"
+placeholder_text = "ПОЛНАЯ СТАВКА (ЧИСЛО)"
 theme_override_font_sizes/font_size = 20
 
 [node name="bet_apply" type="Button" parent="machine/bet_menu/panel/vbox/bet_row"]
