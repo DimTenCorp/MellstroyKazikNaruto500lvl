@@ -83,25 +83,23 @@
 
 ## Playgama Bridge (публикация на любых площадках)
 
-Игра больше не привязана к Yandex SDK: весь платформенный код идёт через
-[Playgama Bridge](https://github.com/playgama/browser-games-bridge) — единый
-мост к SDK площадок (Yandex Games, VK, Poki, CrazyGames, GameDistribution и др.).
+Игра не привязана к Yandex SDK: весь платформенный код идёт через официальный
+аддон [Playgama Bridge](https://github.com/playgama/browser-games-bridge)
+(`addons/playgama_bridge`, autoload `Bridge`) — единый мост к SDK площадок
+(Yandex Games, VK, Poki, CrazyGames, GameDistribution и др.).
 
-* `scripts/bridge.gd` — autoload `Bridge`: обёртка над `window.bridge`.
-  В веб-сборке сам инжектит `bridge.js` в страницу и ждёт готовности,
-  в редакторе — мок (реклама «досмотрена»).
-* `web/bridge.js` — вендорный бандл `@playgama/bridge` v2.3.1 (IIFE, ставит
-  `window.bridge`). Экспорт-пресет «Web (Playgama Bridge)» копирует его рядом
-  с `index.html` через `include_filter="web/bridge.js"`; кастомный HTML-шелл
-  не нужен.
-* API в коде игры: `await Bridge.show_rewarded()` → `{success, rewarded, mock,
-  error}`, `Bridge.show_interstitial()`, `Bridge.gameplay_start()/stop()`
-  (пауза геймплея площадки на время рекламы/меню), `Bridge.platform_id()`.
-* Слот-машина шлёт `gameplay_start/stop` в начале и конце спин-сессии;
-  кликер — `show_rewarded()` по кнопке play.
-* Чтобы обновить bridge.js: `npm pack @playgama/bridge` и заменить
-  `web/bridge.js` файлом `package/dist/playgama-bridge.js`.
-* Аддон `addons/yandex_games` удалён из проекта (и из включённых плагинов).
+* Реклама с наградой (кликер, кнопка play):
+  `Bridge.advertisement.show_rewarded()` + сигнал `rewarded_state_changed`
+  (состояния `Bridge.RewardedState.*`: REWARDED = награда, CLOSED/FAILED =
+  конец). Обёртка — `_watch_rewarded_ad()` в `scripts/clicker.gd`.
+  В редакторе аддон подставляет мок: состояния прокручиваются сразу,
+  награда приходит — механика тестируется без веба.
+* Межстраничная реклама: `Bridge.advertisement.show_interstitial()`.
+* Платформа: `Bridge.platform.platform_id` (например, "yandex", "poki").
+* Экспорт: пресет «Web (Playgama Bridge)» с кастомным шеллом
+  `addons/playgama_bridge/template/index.html`; постпроцессор аддона сам
+  кладёт `playgama-bridge.js` и конфиг рядом с `index.html`.
+* Аддон `addons/yandex_games` удалён из проекта полностью.
 
 ## Кликер «Бабло» (вторая сцена)
 
@@ -109,10 +107,10 @@
   `scenes/clicker.tscn`; кнопка «← К СЛОТАМ» возвращает обратно.
 * Монета «БАБЛО» (`coin_btn`) даёт **+5 монет за клик** (константа
   `CLICK_VALUE` в `scripts/clicker.gd`), с отскоком монеты и всплывающим «+5».
-* Кнопка play (`play_btn`) смотрит рекламу через Playgama Bridge:
-  `await Bridge.show_rewarded()` → при `rewarded = true` начисляет
-  **+500** (`AD_REWARD`). В редакторе Bridge работает в моке: награда приходит
-  через секунду, чтобы механику можно было тестировать.
+* Кнопка play (`play_btn`) смотрит рекламу через Playgama Bridge
+  (`Bridge.advertisement.show_rewarded()`): состояние REWARDED начисляет
+  **+500** (`AD_REWARD`). В редакторе работает мок аддона — награда приходит
+  сразу, механика тестируется без веба.
 * Баланс общий со слот-машиной: оба пишут ключ `save/balance`
   в `user://slot_save.cfg`.
 * Сцену кликера пересобирает `python3 tools/gen_clicker_tscn.py`

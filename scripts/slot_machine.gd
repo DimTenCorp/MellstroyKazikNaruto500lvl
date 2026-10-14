@@ -458,7 +458,6 @@ func _run_session() -> void:
 		return
 	_spinning = true
 	_update_labels()
-	_bridge_call("gameplay_start")
 	while true:
 		await _spin(false)
 		if _fs_left > 0:
@@ -485,7 +484,6 @@ func _run_session() -> void:
 		await get_tree().create_timer(0.3 if SPEEDS[speed_idx] > 1.0 else 0.6).timeout
 	_spinning = false
 	_update_labels()
-	_bridge_call("gameplay_stop")
 
 
 ## Один оборот барабанов с оценкой результата. is_free = фриспин.
@@ -664,10 +662,3 @@ func _banner(text: String, color: Color) -> void:
 		_banner_tw = t2
 	)
 
-
-# ------------------------------------------------------------------- Playgama Bridge
-
-func _bridge_call(method: String) -> void:
-	var br := get_node_or_null("/root/Bridge")
-	if br != null and br.has_method(method):
-		br.call(method)

@@ -157,12 +157,7 @@ func _on_play() -> void:
 	_watching = true
 	play_btn.disabled = true
 	_banner("СМОТРИМ РЕКЛАМУ...", Color("#ffd794"))
-	var br := get_node_or_null("/root/Bridge")
-	var rewarded := false
-	var sdk_found := br != null and br.has_method("show_rewarded")
-	if sdk_found:
-		var res: Dictionary = await br.show_rewarded()
-		rewarded = bool(res.get("rewarded", false))
+	var rewarded := await _watch_rewarded_ad()
 	if rewarded:
 		balance += AD_REWARD
 		_save()
@@ -170,12 +165,35 @@ func _on_play() -> void:
 		_banner("БАБЛО ЗА РЕКЛАМУ: +%s" % _fmt(AD_REWARD), Color("#8dffa0"))
 		_float("+%d" % AD_REWARD,
 				play_btn.position + VISUAL["play_btn"] * 0.5, Color("#8dffa0"))
-	elif sdk_found:
-		_banner("РЕКЛАМА НЕ ДОСМОТРЕНА — НЕТ НАГРАДЫ", Color("#ff7b7b"))
 	else:
-		_banner("BRIDGE НЕ ПОДКЛЮЧЁН", Color("#ff7b7b"))
+		_banner("РЕКЛАМА НЕ ДОСМОТРЕНА — НЕТ НАГРАДЫ", Color("#ff7b7b"))
 	_watching = false
 	play_btn.disabled = false
+
+
+## Показ рекламы с наградой через Playgama Bridge (autoload Bridge).
+## Следим за сигналом rewarded_state_changed: REWARDED = награда,
+## CLOSED/FAILED = конец показа. В редакторе аддон крутит мок-состояния.
+func _watch_rewarded_ad() -> bool:
+	var br := get_node_or_null("/root/Bridge")
+	if br == null or br.advertisement == null:
+		_banner("BRIDGE НЕ ПОДКЛЮЧЁН", Color("#ff7b7b"))
+		return false
+	var st := {"rewarded": false, "finished": false}
+	var on_state := func(state) -> void:
+		if state == Bridge.RewardedState.REWARDED:
+			st["rewarded"] = true
+		elif state == Bridge.RewardedState.CLOSED 				or state == Bridge.RewardedState.FAILED:
+			st["finished"] = true
+	br.advertisement.rewarded_state_changed.connect(on_state)
+	br.advertisement.show_rewarded()
+	var t := 0.0
+	while not st["finished"] and t < 90.0:
+		await get_tree().create_timer(0.15).timeout
+		t += 0.15
+	if br.advertisement.rewarded_state_changed.is_connected(on_state):
+		br.advertisement.rewarded_state_changed.disconnect(on_state)
+	return st["rewarded"]
 
 
 # ------------------------------------------------------------------- выход

@@ -1,27 +1,27 @@
-[gd_scene load_steps=36 format=3 uid="uid://jem4ybiqp44h"]
+[gd_scene format=3 uid="uid://jem4ybiqp44h"]
 
-[ext_resource type="Script" path="res://scripts/slot_machine.gd" id="scr"]
-[ext_resource type="Script" path="res://scripts/reel.gd" id="scr_reel"]
-[ext_resource type="Texture2D" uid="uid://caapsar1k8jmj" path="res://img/background/back1.jpg" id="tex_back1"]
-[ext_resource type="Texture2D" uid="uid://bjvofqj1cb0a6" path="res://img/background/back2.jpg" id="tex_back2"]
-[ext_resource type="Texture2D" uid="uid://cbbspveqsxiel" path="res://img/money_icon.png" id="tex_money"]
-[ext_resource type="Texture2D" uid="uid://b45p0biosgnhx" path="res://img/buttons_clicker.png" id="tex_clicker"]
-[ext_resource type="Texture2D" uid="uid://c8c74mus4cvcu" path="res://img/buttons_spr/buttons_sprites.png" id="tex_buttons"]
-[ext_resource type="Texture2D" uid="uid://cs0j88w7gf0vi" path="res://img/slot_machine/cherry.png" id="tex_cherry"]
-[ext_resource type="Texture2D" uid="uid://dkqqa1uaw1ua1" path="res://img/slot_machine/lemon.png" id="tex_lemon"]
-[ext_resource type="Texture2D" uid="uid://ctn5brcnwuupa" path="res://img/slot_machine/orange.png" id="tex_orange"]
-[ext_resource type="Texture2D" uid="uid://bqq8hgofuqhc1" path="res://img/slot_machine/plum.png" id="tex_plum"]
-[ext_resource type="Texture2D" uid="uid://cscgqqojfybx1" path="res://img/slot_machine/watermelon.png" id="tex_watermelon"]
-[ext_resource type="Texture2D" uid="uid://6kjq40ks3o0g" path="res://img/slot_machine/star.png" id="tex_star"]
-[ext_resource type="Texture2D" uid="uid://bstpl6gdt358l" path="res://img/slot_machine/horseshoe.png" id="tex_horseshoe"]
-[ext_resource type="Texture2D" uid="uid://fx7j0c2sjdq0" path="res://img/slot_machine/moneysack.png" id="tex_moneysack"]
-[ext_resource type="Texture2D" uid="uid://b2wur7eu1gu0q" path="res://img/slot_machine/bell.png" id="tex_bell"]
+[ext_resource type="Script" uid="uid://7ep3ro0rasac" path="res://scripts/slot_machine.gd" id="scr"]
+[ext_resource type="Script" uid="uid://bdisjvk7buab" path="res://scripts/reel.gd" id="scr_reel"]
 [ext_resource type="Texture2D" uid="uid://t4e5gq0v52i7" path="res://img/slot_machine/1bar.png" id="tex_1bar"]
 [ext_resource type="Texture2D" uid="uid://wqh4pd561vsh" path="res://img/slot_machine/2bar.png" id="tex_2bar"]
 [ext_resource type="Texture2D" uid="uid://cr3b11nn5wbcj" path="res://img/slot_machine/3bar.png" id="tex_3bar"]
 [ext_resource type="Texture2D" uid="uid://b1l11apjrjjtd" path="res://img/slot_machine/777.png" id="tex_777"]
-[ext_resource type="Texture2D" uid="uid://60ru85p22c8v" path="res://img/slot_machine/wild.png" id="tex_wild"]
+[ext_resource type="Texture2D" uid="uid://caapsar1k8jmj" path="res://img/background/back1.jpg" id="tex_back1"]
+[ext_resource type="Texture2D" uid="uid://bjvofqj1cb0a6" path="res://img/background/back2.jpg" id="tex_back2"]
+[ext_resource type="Texture2D" uid="uid://b2wur7eu1gu0q" path="res://img/slot_machine/bell.png" id="tex_bell"]
+[ext_resource type="Texture2D" uid="uid://c8c74mus4cvcu" path="res://img/buttons_spr/buttons_sprites.png" id="tex_buttons"]
+[ext_resource type="Texture2D" uid="uid://cs0j88w7gf0vi" path="res://img/slot_machine/cherry.png" id="tex_cherry"]
 [ext_resource type="Texture2D" uid="uid://bmxavo6coxjyc" path="res://img/slot_machine/chestbonus.png" id="tex_chestbonus"]
+[ext_resource type="Texture2D" uid="uid://b45p0biosgnhx" path="res://img/buttons_clicker.png" id="tex_clicker"]
+[ext_resource type="Texture2D" uid="uid://bstpl6gdt358l" path="res://img/slot_machine/horseshoe.png" id="tex_horseshoe"]
+[ext_resource type="Texture2D" uid="uid://dkqqa1uaw1ua1" path="res://img/slot_machine/lemon.png" id="tex_lemon"]
+[ext_resource type="Texture2D" uid="uid://cbbspveqsxiel" path="res://img/money_icon.png" id="tex_money"]
+[ext_resource type="Texture2D" uid="uid://fx7j0c2sjdq0" path="res://img/slot_machine/moneysack.png" id="tex_moneysack"]
+[ext_resource type="Texture2D" uid="uid://ctn5brcnwuupa" path="res://img/slot_machine/orange.png" id="tex_orange"]
+[ext_resource type="Texture2D" uid="uid://bqq8hgofuqhc1" path="res://img/slot_machine/plum.png" id="tex_plum"]
+[ext_resource type="Texture2D" uid="uid://6kjq40ks3o0g" path="res://img/slot_machine/star.png" id="tex_star"]
+[ext_resource type="Texture2D" uid="uid://cscgqqojfybx1" path="res://img/slot_machine/watermelon.png" id="tex_watermelon"]
+[ext_resource type="Texture2D" uid="uid://60ru85p22c8v" path="res://img/slot_machine/wild.png" id="tex_wild"]
 
 [sub_resource type="StyleBoxFlat" id="sb_grid"]
 bg_color = Color(0.133333, 0.0901961, 0.188235, 1)
@@ -35,6 +35,50 @@ corner_radius_top_right = 14
 corner_radius_bottom_right = 14
 corner_radius_bottom_left = 14
 
+[sub_resource type="AtlasTexture" id="at_bet"]
+atlas = ExtResource("tex_buttons")
+region = Rect2(1062, 8, 265, 293)
+
+[sub_resource type="AtlasTexture" id="at_max"]
+atlas = ExtResource("tex_buttons")
+region = Rect2(716, 8, 266, 293)
+
+[sub_resource type="AtlasTexture" id="at_auto"]
+atlas = ExtResource("tex_buttons")
+region = Rect2(338, 8, 319, 293)
+
+[sub_resource type="AtlasTexture" id="at_speed"]
+atlas = ExtResource("tex_buttons")
+region = Rect2(19, 330, 265, 283)
+
+[sub_resource type="AtlasTexture" id="at_spin"]
+atlas = ExtResource("tex_buttons")
+region = Rect2(12, 8, 270, 293)
+
+[sub_resource type="AtlasTexture" id="at_paytable"]
+atlas = ExtResource("tex_buttons")
+region = Rect2(369, 330, 256, 283)
+
+[sub_resource type="AtlasTexture" id="at_sound"]
+atlas = ExtResource("tex_buttons")
+region = Rect2(1069, 330, 266, 283)
+
+[sub_resource type="AtlasTexture" id="at_bag"]
+atlas = ExtResource("tex_clicker")
+region = Rect2(726, 17, 274, 284)
+
+[sub_resource type="StyleBoxFlat" id="sb_btn_n"]
+bg_color = Color(0.227451, 0.172549, 0.301961, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.478431, 0.388235, 0.6, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
 [sub_resource type="StyleBoxFlat" id="sb_popup"]
 bg_color = Color(0.141176, 0.101961, 0.192157, 1)
 border_width_left = 2
@@ -47,13 +91,13 @@ corner_radius_top_right = 14
 corner_radius_bottom_right = 14
 corner_radius_bottom_left = 14
 
-[sub_resource type="StyleBoxFlat" id="sb_btn_n"]
-bg_color = Color(0.227451, 0.172549, 0.301961, 1)
+[sub_resource type="StyleBoxFlat" id="sb_btn_p"]
+bg_color = Color(0.164706, 0.121569, 0.227451, 1)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(0.478431, 0.388235, 0.6, 1)
+border_color = Color(0.364706, 0.290196, 0.501961, 1)
 corner_radius_top_left = 10
 corner_radius_top_right = 10
 corner_radius_bottom_right = 10
@@ -71,1930 +115,2537 @@ corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 
-[sub_resource type="StyleBoxFlat" id="sb_btn_p"]
-bg_color = Color(0.164706, 0.121569, 0.227451, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.364706, 0.290196, 0.501961, 1)
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
-
-[sub_resource type="AtlasTexture" id="at_spin"]
-atlas = ExtResource("tex_buttons")
-region = Rect2(12, 8, 270, 293)
-
-[sub_resource type="AtlasTexture" id="at_auto"]
-atlas = ExtResource("tex_buttons")
-region = Rect2(338, 8, 319, 293)
-
-[sub_resource type="AtlasTexture" id="at_max"]
-atlas = ExtResource("tex_buttons")
-region = Rect2(716, 8, 266, 293)
-
-[sub_resource type="AtlasTexture" id="at_bet"]
-atlas = ExtResource("tex_buttons")
-region = Rect2(1062, 8, 265, 293)
-
-[sub_resource type="AtlasTexture" id="at_speed"]
-atlas = ExtResource("tex_buttons")
-region = Rect2(19, 330, 265, 283)
-
-[sub_resource type="AtlasTexture" id="at_paytable"]
-atlas = ExtResource("tex_buttons")
-region = Rect2(369, 330, 256, 283)
-
-[sub_resource type="AtlasTexture" id="at_sound"]
-atlas = ExtResource("tex_buttons")
-region = Rect2(1069, 330, 266, 283)
-
-[sub_resource type="AtlasTexture" id="at_bag"]
-atlas = ExtResource("tex_clicker")
-region = Rect2(726, 17, 274, 284)
-
 [node name="game" type="Control" unique_id=1200433587]
+layout_mode = 3
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("scr")
 
-[node name="bg" type="TextureRect" parent="."]
+[node name="bg" type="TextureRect" parent="." unique_id=622335629]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
 texture = ExtResource("tex_back1")
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
 stretch_mode = 6
-mouse_filter = 2
 
-[node name="bg_dim" type="ColorRect" parent="."]
-color = Color(0.0784314, 0.0392157, 0.12549, 0.52)
+[node name="bg_dim" type="ColorRect" parent="." unique_id=593278686]
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+color = Color(0.0784314, 0.0392157, 0.12549, 0.52)
 
-[node name="machine" type="Control" parent="."]
-size = Vector2(1280, 720)
+[node name="machine" type="Control" parent="." unique_id=917540516]
+anchors_preset = 0
+offset_right = 1280.0
+offset_bottom = 720.0
 
-[node name="freespin_label" type="Label" parent="machine"]
-text = ""
-theme_override_font_sizes/font_size = 22
-theme_override_colors/font_color = Color(0.494118, 0.952941, 1, 1)
-position = Vector2(32, 140)
-size = Vector2(160, 34)
-theme_override_constants/outline_size = 8
-theme_override_colors/font_outline_color = Color(0.113725, 0.227451, 0.431373, 1)
+[node name="freespin_label" type="Label" parent="machine" unique_id=205575152]
 visible = false
+layout_mode = 0
+offset_left = 32.0
+offset_top = 140.0
+offset_right = 192.0
+offset_bottom = 174.0
+theme_override_colors/font_color = Color(0.494118, 0.952941, 1, 1)
+theme_override_colors/font_outline_color = Color(0.113725, 0.227451, 0.431373, 1)
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/font_size = 22
 
-[node name="balance_icon" type="TextureRect" parent="machine"]
+[node name="balance_icon" type="TextureRect" parent="machine" unique_id=538748316]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 34.0
+offset_right = 87.05303
+offset_bottom = 92.0
+mouse_filter = 2
 texture = ExtResource("tex_money")
-position = Vector2(24, 34)
-size = Vector2(65, 60)
 expand_mode = 1
 stretch_mode = 5
-mouse_filter = 2
 
-[node name="balance_label" type="Label" parent="machine"]
-text = "0"
-theme_override_font_sizes/font_size = 26
+[node name="balance_label" type="Label" parent="machine" unique_id=220106696]
+layout_mode = 0
+offset_left = 98.0
+offset_top = 44.0
+offset_right = 338.0
+offset_bottom = 80.0
 theme_override_colors/font_color = Color(1, 0.913725, 0.721569, 1)
-position = Vector2(98, 44)
-size = Vector2(240, 36)
+theme_override_font_sizes/font_size = 26
+text = "0"
 vertical_alignment = 1
 
-[node name="top_bar" type="HBoxContainer" parent="machine"]
+[node name="top_bar" type="HBoxContainer" parent="machine" unique_id=492249662]
+layout_mode = 0
+offset_left = 30.0
+offset_top = 56.0
+offset_right = 1250.0
+offset_bottom = 102.0
 theme_override_constants/separation = 12
-position = Vector2(30, 56)
-size = Vector2(1220, 46)
 
-[node name="spacer1" type="Control" parent="machine/top_bar"]
+[node name="spacer1" type="Control" parent="machine/top_bar" unique_id=871305137]
+layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="win_label" type="Label" parent="machine/top_bar"]
-text = ""
-theme_override_font_sizes/font_size = 26
+[node name="win_label" type="Label" parent="machine/top_bar" unique_id=1733289849]
+layout_mode = 2
 theme_override_colors/font_color = Color(0.552941, 1, 0.627451, 1)
+theme_override_font_sizes/font_size = 26
 horizontal_alignment = 1
 
-[node name="spacer2" type="Control" parent="machine/top_bar"]
+[node name="spacer2" type="Control" parent="machine/top_bar" unique_id=437042513]
+layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="grid_panel" type="Panel" parent="machine"]
-position = Vector2(66, 96)
-size = Vector2(798, 486)
+[node name="grid_panel" type="Panel" parent="machine" unique_id=1772555836]
+layout_mode = 0
+offset_left = 66.0
+offset_top = 96.0
+offset_right = 864.0
+offset_bottom = 582.0
 theme_override_styles/panel = SubResource("sb_grid")
 
-[node name="Reel0" type="Control" parent="machine/grid_panel"]
-position = Vector2(14, 14)
-size = Vector2(146, 438)
+[node name="Reel0" type="Control" parent="machine/grid_panel" unique_id=719106055]
 clip_contents = true
+anchors_preset = 0
+offset_left = 14.0
+offset_top = 14.0
+offset_right = 160.0
+offset_bottom = 452.0
 script = ExtResource("scr_reel")
 
-[node name="Cell0" type="TextureRect" parent="machine/grid_panel/Reel0"]
+[node name="Cell0" type="TextureRect" parent="machine/grid_panel/Reel0" unique_id=1347717158]
+layout_mode = 0
+offset_left = 4.0
+offset_top = -142.0
+offset_right = 209.0
+offset_bottom = 63.0
+mouse_filter = 2
 texture = ExtResource("tex_star")
-position = Vector2(4, -142)
-size = Vector2(138, 138)
-stretch_mode = 0
-expand_mode = 0
-mouse_filter = 2
 
-[node name="Cell1" type="TextureRect" parent="machine/grid_panel/Reel0"]
+[node name="Cell1" type="TextureRect" parent="machine/grid_panel/Reel0" unique_id=1115305094]
+layout_mode = 0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 209.0
+offset_bottom = 209.0
+mouse_filter = 2
 texture = ExtResource("tex_wild")
-position = Vector2(4, 4)
-size = Vector2(138, 138)
-stretch_mode = 0
-expand_mode = 0
-mouse_filter = 2
 
-[node name="Cell2" type="TextureRect" parent="machine/grid_panel/Reel0"]
+[node name="Cell2" type="TextureRect" parent="machine/grid_panel/Reel0" unique_id=118445998]
+layout_mode = 0
+offset_left = 4.0
+offset_top = 150.0
+offset_right = 209.0
+offset_bottom = 355.0
+mouse_filter = 2
 texture = ExtResource("tex_cherry")
-position = Vector2(4, 150)
-size = Vector2(138, 138)
-stretch_mode = 0
-expand_mode = 0
-mouse_filter = 2
 
-[node name="Cell3" type="TextureRect" parent="machine/grid_panel/Reel0"]
+[node name="Cell3" type="TextureRect" parent="machine/grid_panel/Reel0" unique_id=681437371]
+layout_mode = 0
+offset_left = 4.0
+offset_top = 296.0
+offset_right = 209.0
+offset_bottom = 501.0
+mouse_filter = 2
 texture = ExtResource("tex_lemon")
-position = Vector2(4, 296)
-size = Vector2(138, 138)
-stretch_mode = 0
-expand_mode = 0
-mouse_filter = 2
 
-[node name="Reel1" type="Control" parent="machine/grid_panel"]
-position = Vector2(170, 14)
-size = Vector2(146, 438)
+[node name="Reel1" type="Control" parent="machine/grid_panel" unique_id=1168322546]
 clip_contents = true
+anchors_preset = 0
+offset_left = 170.0
+offset_top = 14.0
+offset_right = 316.0
+offset_bottom = 452.0
 script = ExtResource("scr_reel")
 
-[node name="Cell0" type="TextureRect" parent="machine/grid_panel/Reel1"]
+[node name="Cell0" type="TextureRect" parent="machine/grid_panel/Reel1" unique_id=1209133938]
+layout_mode = 0
+offset_left = 4.0
+offset_top = -142.0
+offset_right = 209.0
+offset_bottom = 63.0
+mouse_filter = 2
 texture = ExtResource("tex_cherry")
-position = Vector2(4, -142)
-size = Vector2(138, 138)
-stretch_mode = 0
-expand_mode = 0
-mouse_filter = 2
 
-[node name="Cell1" type="TextureRect" parent="machine/grid_panel/Reel1"]
+[node name="Cell1" type="TextureRect" parent="machine/grid_panel/Reel1" unique_id=764114884]
+layout_mode = 0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 209.0
+offset_bottom = 209.0
+mouse_filter = 2
 texture = ExtResource("tex_wild")
-position = Vector2(4, 4)
-size = Vector2(138, 138)
-stretch_mode = 0
-expand_mode = 0
-mouse_filter = 2
 
-[node name="Cell2" type="TextureRect" parent="machine/grid_panel/Reel1"]
+[node name="Cell2" type="TextureRect" parent="machine/grid_panel/Reel1" unique_id=1320439898]
+layout_mode = 0
+offset_left = 4.0
+offset_top = 150.0
+offset_right = 209.0
+offset_bottom = 355.0
+mouse_filter = 2
 texture = ExtResource("tex_bell")
-position = Vector2(4, 150)
-size = Vector2(138, 138)
-stretch_mode = 0
-expand_mode = 0
-mouse_filter = 2
 
-[node name="Cell3" type="TextureRect" parent="machine/grid_panel/Reel1"]
+[node name="Cell3" type="TextureRect" parent="machine/grid_panel/Reel1" unique_id=1832395825]
+layout_mode = 0
+offset_left = 4.0
+offset_top = 296.0
+offset_right = 209.0
+offset_bottom = 501.0
+mouse_filter = 2
 texture = ExtResource("tex_orange")
-position = Vector2(4, 296)
-size = Vector2(138, 138)
-stretch_mode = 0
-expand_mode = 0
-mouse_filter = 2
 
-[node name="Reel2" type="Control" parent="machine/grid_panel"]
-position = Vector2(326, 14)
-size = Vector2(146, 438)
+[node name="Reel2" type="Control" parent="machine/grid_panel" unique_id=1000394]
 clip_contents = true
+anchors_preset = 0
+offset_left = 326.0
+offset_top = 14.0
+offset_right = 472.0
+offset_bottom = 452.0
 script = ExtResource("scr_reel")
 
-[node name="Cell0" type="TextureRect" parent="machine/grid_panel/Reel2"]
+[node name="Cell0" type="TextureRect" parent="machine/grid_panel/Reel2" unique_id=288270983]
+layout_mode = 0
+offset_left = 4.0
+offset_top = -142.0
+offset_right = 209.0
+offset_bottom = 63.0
+mouse_filter = 2
 texture = ExtResource("tex_chestbonus")
-position = Vector2(4, -142)
-size = Vector2(138, 138)
-stretch_mode = 0
-expand_mode = 0
-mouse_filter = 2
 
-[node name="Cell1" type="TextureRect" parent="machine/grid_panel/Reel2"]
+[node name="Cell1" type="TextureRect" parent="machine/grid_panel/Reel2" unique_id=649559332]
+layout_mode = 0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 209.0
+offset_bottom = 209.0
+mouse_filter = 2
 texture = ExtResource("tex_lemon")
-position = Vector2(4, 4)
-size = Vector2(138, 138)
-stretch_mode = 0
-expand_mode = 0
-mouse_filter = 2
 
-[node name="Cell2" type="TextureRect" parent="machine/grid_panel/Reel2"]
+[node name="Cell2" type="TextureRect" parent="machine/grid_panel/Reel2" unique_id=839855697]
+layout_mode = 0
+offset_left = 4.0
+offset_top = 150.0
+offset_right = 209.0
+offset_bottom = 355.0
+mouse_filter = 2
 texture = ExtResource("tex_cherry")
-position = Vector2(4, 150)
-size = Vector2(138, 138)
-stretch_mode = 0
-expand_mode = 0
-mouse_filter = 2
 
-[node name="Cell3" type="TextureRect" parent="machine/grid_panel/Reel2"]
+[node name="Cell3" type="TextureRect" parent="machine/grid_panel/Reel2" unique_id=286828931]
+layout_mode = 0
+offset_left = 4.0
+offset_top = 296.0
+offset_right = 209.0
+offset_bottom = 501.0
+mouse_filter = 2
 texture = ExtResource("tex_orange")
-position = Vector2(4, 296)
-size = Vector2(138, 138)
-stretch_mode = 0
-expand_mode = 0
-mouse_filter = 2
 
-[node name="Reel3" type="Control" parent="machine/grid_panel"]
-position = Vector2(482, 14)
-size = Vector2(146, 438)
+[node name="Reel3" type="Control" parent="machine/grid_panel" unique_id=1277944016]
 clip_contents = true
+anchors_preset = 0
+offset_left = 482.0
+offset_top = 14.0
+offset_right = 628.0
+offset_bottom = 452.0
 script = ExtResource("scr_reel")
 
-[node name="Cell0" type="TextureRect" parent="machine/grid_panel/Reel3"]
-texture = ExtResource("tex_plum")
-position = Vector2(4, -142)
-size = Vector2(138, 138)
-stretch_mode = 0
-expand_mode = 0
+[node name="Cell0" type="TextureRect" parent="machine/grid_panel/Reel3" unique_id=1985436065]
+layout_mode = 0
+offset_left = 4.0
+offset_top = -142.0
+offset_right = 209.0
+offset_bottom = 63.0
 mouse_filter = 2
+texture = ExtResource("tex_plum")
 
-[node name="Cell1" type="TextureRect" parent="machine/grid_panel/Reel3"]
+[node name="Cell1" type="TextureRect" parent="machine/grid_panel/Reel3" unique_id=1029537284]
+layout_mode = 0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 209.0
+offset_bottom = 209.0
+mouse_filter = 2
 texture = ExtResource("tex_watermelon")
-position = Vector2(4, 4)
-size = Vector2(138, 138)
-stretch_mode = 0
-expand_mode = 0
-mouse_filter = 2
 
-[node name="Cell2" type="TextureRect" parent="machine/grid_panel/Reel3"]
+[node name="Cell2" type="TextureRect" parent="machine/grid_panel/Reel3" unique_id=547930377]
+layout_mode = 0
+offset_left = 4.0
+offset_top = 150.0
+offset_right = 209.0
+offset_bottom = 355.0
+mouse_filter = 2
 texture = ExtResource("tex_plum")
-position = Vector2(4, 150)
-size = Vector2(138, 138)
-stretch_mode = 0
-expand_mode = 0
-mouse_filter = 2
 
-[node name="Cell3" type="TextureRect" parent="machine/grid_panel/Reel3"]
+[node name="Cell3" type="TextureRect" parent="machine/grid_panel/Reel3" unique_id=1864843778]
+layout_mode = 0
+offset_left = 4.0
+offset_top = 296.0
+offset_right = 209.0
+offset_bottom = 501.0
+mouse_filter = 2
 texture = ExtResource("tex_horseshoe")
-position = Vector2(4, 296)
-size = Vector2(138, 138)
-stretch_mode = 0
-expand_mode = 0
-mouse_filter = 2
 
-[node name="Reel4" type="Control" parent="machine/grid_panel"]
-position = Vector2(638, 14)
-size = Vector2(146, 438)
+[node name="Reel4" type="Control" parent="machine/grid_panel" unique_id=403123805]
 clip_contents = true
+anchors_preset = 0
+offset_left = 638.0
+offset_top = 14.0
+offset_right = 784.0
+offset_bottom = 452.0
 script = ExtResource("scr_reel")
 
-[node name="Cell0" type="TextureRect" parent="machine/grid_panel/Reel4"]
+[node name="Cell0" type="TextureRect" parent="machine/grid_panel/Reel4" unique_id=798559241]
+layout_mode = 0
+offset_left = 4.0
+offset_top = -142.0
+offset_right = 209.0
+offset_bottom = 63.0
+mouse_filter = 2
 texture = ExtResource("tex_orange")
-position = Vector2(4, -142)
-size = Vector2(138, 138)
-stretch_mode = 0
-expand_mode = 0
-mouse_filter = 2
 
-[node name="Cell1" type="TextureRect" parent="machine/grid_panel/Reel4"]
+[node name="Cell1" type="TextureRect" parent="machine/grid_panel/Reel4" unique_id=1348027581]
+layout_mode = 0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 209.0
+offset_bottom = 209.0
+mouse_filter = 2
 texture = ExtResource("tex_star")
-position = Vector2(4, 4)
-size = Vector2(138, 138)
-stretch_mode = 0
-expand_mode = 0
-mouse_filter = 2
 
-[node name="Cell2" type="TextureRect" parent="machine/grid_panel/Reel4"]
+[node name="Cell2" type="TextureRect" parent="machine/grid_panel/Reel4" unique_id=1696083187]
+layout_mode = 0
+offset_left = 4.0
+offset_top = 150.0
+offset_right = 209.0
+offset_bottom = 355.0
+mouse_filter = 2
 texture = ExtResource("tex_lemon")
-position = Vector2(4, 150)
-size = Vector2(138, 138)
-stretch_mode = 0
-expand_mode = 0
-mouse_filter = 2
 
-[node name="Cell3" type="TextureRect" parent="machine/grid_panel/Reel4"]
+[node name="Cell3" type="TextureRect" parent="machine/grid_panel/Reel4" unique_id=1340921910]
+layout_mode = 0
+offset_left = 4.0
+offset_top = 296.0
+offset_right = 209.0
+offset_bottom = 501.0
+mouse_filter = 2
 texture = ExtResource("tex_cherry")
-position = Vector2(4, 296)
-size = Vector2(138, 138)
-stretch_mode = 0
-expand_mode = 0
+
+[node name="fx_layer" type="Control" parent="machine/grid_panel" unique_id=696599613]
+anchors_preset = 0
+offset_left = 14.0
+offset_top = 14.0
+offset_right = 784.0
+offset_bottom = 472.0
 mouse_filter = 2
 
-[node name="fx_layer" type="Control" parent="machine/grid_panel"]
-position = Vector2(14, 14)
-size = Vector2(770, 458)
-mouse_filter = 2
-
-[node name="lines_overlay" type="Node2D" parent="machine/grid_panel"]
+[node name="lines_overlay" type="Node2D" parent="machine/grid_panel" unique_id=1035712082]
 position = Vector2(14, 14)
 
-[node name="msg_label" type="Label" parent="machine/grid_panel"]
-text = ""
-theme_override_font_sizes/font_size = 42
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-horizontal_alignment = 1
-position = Vector2(0, 213)
-size = Vector2(798, 60)
-theme_override_constants/outline_size = 10
-theme_override_colors/font_outline_color = Color(0.227451, 0.113725, 0.431373, 1)
+[node name="msg_label" type="Label" parent="machine/grid_panel" unique_id=1895096092]
 visible = false
+layout_mode = 0
+offset_top = 213.0
+offset_right = 798.0
+offset_bottom = 273.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0.227451, 0.113725, 0.431373, 1)
+theme_override_constants/outline_size = 10
+theme_override_font_sizes/font_size = 42
+horizontal_alignment = 1
 
-[node name="bottom_bar" type="Control" parent="machine"]
-position = Vector2(0, 0)
-size = Vector2(1280, 720)
+[node name="bottom_bar" type="Control" parent="machine" unique_id=1985881293]
+anchors_preset = 0
+offset_right = 1280.0
+offset_bottom = 720.0
 mouse_filter = 2
 
-[node name="bet_btn" type="TextureButton" parent="machine/bottom_bar"]
+[node name="bet_btn" type="TextureButton" parent="machine/bottom_bar" unique_id=634673084]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 544.0
+offset_right = 273.0
+offset_bottom = 837.0
 texture_normal = SubResource("at_bet")
 stretch_mode = 5
-position = Vector2(8, 544)
-size = Vector2(265, 293)
 
-[node name="max_btn" type="TextureButton" parent="machine/bottom_bar"]
+[node name="max_btn" type="TextureButton" parent="machine/bottom_bar" unique_id=2052830038]
+layout_mode = 0
+offset_left = 168.0
+offset_top = 568.0
+offset_right = 434.0
+offset_bottom = 861.0
 texture_normal = SubResource("at_max")
 stretch_mode = 5
-position = Vector2(168, 568)
-size = Vector2(266, 293)
 
-[node name="bet_label" type="Label" parent="machine/bottom_bar"]
-text = "Ставка/линия: 1"
-theme_override_font_sizes/font_size = 20
+[node name="bet_label" type="Label" parent="machine/bottom_bar" unique_id=828065524]
+layout_mode = 0
+offset_left = 264.0
+offset_top = 48.0
+offset_right = 484.0
+offset_bottom = 76.0
 theme_override_colors/font_color = Color(1, 0.913725, 0.721569, 1)
-position = Vector2(264, 48)
-size = Vector2(220, 28)
+theme_override_font_sizes/font_size = 20
+text = "Ставка/линия: 1"
 
-[node name="auto_label" type="Label" parent="machine/bottom_bar"]
-text = ""
-theme_override_font_sizes/font_size = 26
-theme_override_colors/font_color = Color(0.494118, 0.952941, 1, 1)
-position = Vector2(32, 112)
-size = Vector2(200, 40)
-theme_override_constants/outline_size = 8
-theme_override_colors/font_outline_color = Color(0.113725, 0.227451, 0.431373, 1)
+[node name="auto_label" type="Label" parent="machine/bottom_bar" unique_id=1992881419]
 visible = false
+layout_mode = 0
+offset_left = 32.0
+offset_top = 112.0
+offset_right = 232.0
+offset_bottom = 152.0
+theme_override_colors/font_color = Color(0.494118, 0.952941, 1, 1)
+theme_override_colors/font_outline_color = Color(0.113725, 0.227451, 0.431373, 1)
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/font_size = 26
 
-[node name="auto_btn" type="TextureButton" parent="machine/bottom_bar"]
+[node name="auto_btn" type="TextureButton" parent="machine/bottom_bar" unique_id=1023797044]
+layout_mode = 0
+offset_left = 800.0
+offset_top = 576.0
+offset_right = 1119.0
+offset_bottom = 869.0
 texture_normal = SubResource("at_auto")
 stretch_mode = 5
-position = Vector2(800, 576)
-size = Vector2(319, 293)
 
-[node name="speed_btn" type="TextureButton" parent="machine/bottom_bar"]
+[node name="speed_btn" type="TextureButton" parent="machine/bottom_bar" unique_id=602017208]
+layout_mode = 0
+offset_left = 968.0
+offset_top = 592.0
+offset_right = 1233.0
+offset_bottom = 875.0
 texture_normal = SubResource("at_speed")
 stretch_mode = 5
-position = Vector2(968, 592)
-size = Vector2(265, 283)
 
-[node name="spin_btn" type="TextureButton" parent="machine/bottom_bar"]
+[node name="spin_btn" type="TextureButton" parent="machine/bottom_bar" unique_id=1825636306]
+layout_mode = 0
+offset_left = 1088.0
+offset_top = 520.0
+offset_right = 1358.0
+offset_bottom = 813.0
 texture_normal = SubResource("at_spin")
 stretch_mode = 5
-position = Vector2(1088, 520)
-size = Vector2(270, 293)
 
-[node name="paytable_btn" type="TextureButton" parent="machine/bottom_bar"]
+[node name="paytable_btn" type="TextureButton" parent="machine/bottom_bar" unique_id=1659772671]
+layout_mode = 0
+offset_left = 1152.0
+offset_top = 152.0
+offset_right = 1408.0
+offset_bottom = 435.0
 texture_normal = SubResource("at_paytable")
 stretch_mode = 5
-position = Vector2(1152, 152)
-size = Vector2(256, 283)
 
-[node name="sound_btn" type="TextureButton" parent="machine/bottom_bar"]
+[node name="sound_btn" type="TextureButton" parent="machine/bottom_bar" unique_id=202842733]
+layout_mode = 0
+offset_left = 1144.0
+offset_right = 1410.0
+offset_bottom = 283.0
 texture_normal = SubResource("at_sound")
 stretch_mode = 5
-position = Vector2(1144, 0)
-size = Vector2(266, 283)
 
-[node name="clicker_btn" type="TextureButton" parent="machine/bottom_bar"]
+[node name="clicker_btn" type="TextureButton" parent="machine/bottom_bar" unique_id=1868678715]
+layout_mode = 0
+offset_left = 986.0
+offset_top = -2.0
+offset_right = 1260.0
+offset_bottom = 282.0
 texture_normal = SubResource("at_bag")
 stretch_mode = 5
-position = Vector2(986, -2)
-size = Vector2(274, 284)
 
-[node name="bonus_btn" type="Button" parent="machine/bottom_bar"]
+[node name="bonus_btn" type="Button" parent="machine/bottom_bar" unique_id=1912538892]
+visible = false
+layout_mode = 0
+offset_left = 360.0
+offset_top = 608.0
+offset_right = 550.0
+offset_bottom = 648.0
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("sb_btn_n")
+theme_override_styles/pressed = SubResource("sb_btn_n")
+theme_override_styles/hover = SubResource("sb_btn_n")
 text = "БОНУС +1000"
-position = Vector2(360, 608)
-size = Vector2(190, 40)
-theme_override_font_sizes/font_size = 18
-theme_override_styles/normal = SubResource("sb_btn_n")
-theme_override_styles/hover = SubResource("sb_btn_n")
-theme_override_styles/pressed = SubResource("sb_btn_n")
-visible = false
 
-[node name="win_popup" type="Control" parent="machine"]
-position = Vector2(215, 174)
-size = Vector2(500, 330)
+[node name="win_popup" type="Control" parent="machine" unique_id=1150483209]
 visible = false
+anchors_preset = 0
+offset_left = 215.0
+offset_top = 174.0
+offset_right = 715.0
+offset_bottom = 504.0
 mouse_filter = 2
 
-[node name="win_badge" type="TextureRect" parent="machine/win_popup"]
-position = Vector2(0, 0)
-size = Vector2(500, 260)
+[node name="win_badge" type="TextureRect" parent="machine/win_popup" unique_id=117164013]
+layout_mode = 0
+offset_right = 500.0
+offset_bottom = 260.0
+mouse_filter = 2
 stretch_mode = 5
-mouse_filter = 2
 
-[node name="win_popup_label" type="Label" parent="machine/win_popup"]
-text = ""
-theme_override_font_sizes/font_size = 44
+[node name="win_popup_label" type="Label" parent="machine/win_popup" unique_id=160336575]
+layout_mode = 0
+offset_top = 252.0
+offset_right = 500.0
+offset_bottom = 318.0
 theme_override_colors/font_color = Color(1, 0.913725, 0.721569, 1)
-horizontal_alignment = 1
-position = Vector2(0, 252)
-size = Vector2(500, 66)
-theme_override_constants/outline_size = 10
 theme_override_colors/font_outline_color = Color(0.25098, 0.12549, 0.0313725, 1)
+theme_override_constants/outline_size = 10
+theme_override_font_sizes/font_size = 44
+horizontal_alignment = 1
 
-[node name="bet_menu" type="Control" parent="machine"]
+[node name="bet_menu" type="Control" parent="machine" unique_id=1149525389]
 visible = false
+anchors_preset = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 
-[node name="dim" type="ColorRect" parent="machine/bet_menu"]
+[node name="dim" type="ColorRect" parent="machine/bet_menu" unique_id=279308411]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
 color = Color(0, 0, 0, 0.7)
-anchor_right = 1.0
-anchor_bottom = 1.0
 
-[node name="panel" type="Panel" parent="machine/bet_menu"]
-position = Vector2(470, 170)
-size = Vector2(340, 360)
+[node name="panel" type="Panel" parent="machine/bet_menu" unique_id=214384222]
+layout_mode = 0
+offset_left = 470.0
+offset_top = 170.0
+offset_right = 810.0
+offset_bottom = 530.0
 theme_override_styles/panel = SubResource("sb_popup")
 
-[node name="vbox" type="VBoxContainer" parent="machine/bet_menu/panel"]
+[node name="vbox" type="VBoxContainer" parent="machine/bet_menu/panel" unique_id=1185346443]
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 16
-offset_top = 12
-offset_right = -16
-offset_bottom = -12
+offset_left = 16.0
+offset_top = 12.0
+offset_right = -16.0
+offset_bottom = -12.0
 theme_override_constants/separation = 12
 
-[node name="head" type="HBoxContainer" parent="machine/bet_menu/panel/vbox"]
+[node name="head" type="HBoxContainer" parent="machine/bet_menu/panel/vbox" unique_id=2061619742]
+layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="head_title" type="Label" parent="machine/bet_menu/panel/vbox/head"]
+[node name="head_title" type="Label" parent="machine/bet_menu/panel/vbox/head" unique_id=674929289]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.843137, 0.580392, 1)
+theme_override_font_sizes/font_size = 26
 text = "СТАВКА НА ЛИНИЮ"
-theme_override_font_sizes/font_size = 26
-theme_override_colors/font_color = Color(1, 0.843137, 0.580392, 1)
 
-[node name="spacer_bet" type="Control" parent="machine/bet_menu/panel/vbox/head"]
+[node name="spacer_bet" type="Control" parent="machine/bet_menu/panel/vbox/head" unique_id=1244689083]
+layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="close_btn" type="Button" parent="machine/bet_menu/panel/vbox/head"]
-text = "ЗАКРЫТЬ"
+[node name="close_btn" type="Button" parent="machine/bet_menu/panel/vbox/head" unique_id=1402950340]
 custom_minimum_size = Vector2(140, 42)
+layout_mode = 2
 theme_override_font_sizes/font_size = 18
 theme_override_styles/normal = SubResource("sb_btn_n")
-theme_override_styles/hover = SubResource("sb_btn_n")
 theme_override_styles/pressed = SubResource("sb_btn_n")
+theme_override_styles/hover = SubResource("sb_btn_n")
+text = "ЗАКРЫТЬ"
 
-[node name="grid" type="GridContainer" parent="machine/bet_menu/panel/vbox"]
-columns = 3
+[node name="grid" type="GridContainer" parent="machine/bet_menu/panel/vbox" unique_id=949072072]
+layout_mode = 2
 theme_override_constants/h_separation = 10
 theme_override_constants/v_separation = 10
+columns = 3
 
-[node name="bet_opt0" type="Button" parent="machine/bet_menu/panel/vbox/grid"]
+[node name="bet_opt0" type="Button" parent="machine/bet_menu/panel/vbox/grid" unique_id=1090060688]
+custom_minimum_size = Vector2(96, 56)
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("sb_btn_n")
+theme_override_styles/pressed = SubResource("sb_btn_p")
+theme_override_styles/hover = SubResource("sb_btn_h")
 text = "1"
+
+[node name="bet_opt1" type="Button" parent="machine/bet_menu/panel/vbox/grid" unique_id=587183614]
 custom_minimum_size = Vector2(96, 56)
+layout_mode = 2
 theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("sb_btn_n")
-theme_override_styles/hover = SubResource("sb_btn_h")
 theme_override_styles/pressed = SubResource("sb_btn_p")
-
-[node name="bet_opt1" type="Button" parent="machine/bet_menu/panel/vbox/grid"]
+theme_override_styles/hover = SubResource("sb_btn_h")
 text = "2"
+
+[node name="bet_opt2" type="Button" parent="machine/bet_menu/panel/vbox/grid" unique_id=1738925718]
 custom_minimum_size = Vector2(96, 56)
+layout_mode = 2
 theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("sb_btn_n")
-theme_override_styles/hover = SubResource("sb_btn_h")
 theme_override_styles/pressed = SubResource("sb_btn_p")
-
-[node name="bet_opt2" type="Button" parent="machine/bet_menu/panel/vbox/grid"]
+theme_override_styles/hover = SubResource("sb_btn_h")
 text = "5"
+
+[node name="bet_opt3" type="Button" parent="machine/bet_menu/panel/vbox/grid" unique_id=709595657]
 custom_minimum_size = Vector2(96, 56)
+layout_mode = 2
 theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("sb_btn_n")
-theme_override_styles/hover = SubResource("sb_btn_h")
 theme_override_styles/pressed = SubResource("sb_btn_p")
-
-[node name="bet_opt3" type="Button" parent="machine/bet_menu/panel/vbox/grid"]
+theme_override_styles/hover = SubResource("sb_btn_h")
 text = "10"
+
+[node name="bet_opt4" type="Button" parent="machine/bet_menu/panel/vbox/grid" unique_id=59911407]
 custom_minimum_size = Vector2(96, 56)
+layout_mode = 2
 theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("sb_btn_n")
-theme_override_styles/hover = SubResource("sb_btn_h")
 theme_override_styles/pressed = SubResource("sb_btn_p")
-
-[node name="bet_opt4" type="Button" parent="machine/bet_menu/panel/vbox/grid"]
+theme_override_styles/hover = SubResource("sb_btn_h")
 text = "25"
+
+[node name="bet_opt5" type="Button" parent="machine/bet_menu/panel/vbox/grid" unique_id=1133047765]
 custom_minimum_size = Vector2(96, 56)
+layout_mode = 2
 theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("sb_btn_n")
-theme_override_styles/hover = SubResource("sb_btn_h")
 theme_override_styles/pressed = SubResource("sb_btn_p")
-
-[node name="bet_opt5" type="Button" parent="machine/bet_menu/panel/vbox/grid"]
+theme_override_styles/hover = SubResource("sb_btn_h")
 text = "50"
-custom_minimum_size = Vector2(96, 56)
-theme_override_font_sizes/font_size = 24
-theme_override_styles/normal = SubResource("sb_btn_n")
-theme_override_styles/hover = SubResource("sb_btn_h")
-theme_override_styles/pressed = SubResource("sb_btn_p")
 
-[node name="bet_total" type="Label" parent="machine/bet_menu/panel/vbox"]
-text = "Полная ставка: 9"
-theme_override_font_sizes/font_size = 20
+[node name="bet_total" type="Label" parent="machine/bet_menu/panel/vbox" unique_id=1545012552]
+layout_mode = 2
 theme_override_colors/font_color = Color(0.788235, 0.713725, 0.886275, 1)
+theme_override_font_sizes/font_size = 20
+text = "Полная ставка: 9"
 horizontal_alignment = 1
 
-[node name="auto_menu" type="Control" parent="machine"]
+[node name="auto_menu" type="Control" parent="machine" unique_id=1575834462]
 visible = false
+anchors_preset = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 
-[node name="dim" type="ColorRect" parent="machine/auto_menu"]
+[node name="dim" type="ColorRect" parent="machine/auto_menu" unique_id=639997123]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
 color = Color(0, 0, 0, 0.7)
-anchor_right = 1.0
-anchor_bottom = 1.0
 
-[node name="panel" type="Panel" parent="machine/auto_menu"]
-position = Vector2(470, 190)
-size = Vector2(340, 320)
+[node name="panel" type="Panel" parent="machine/auto_menu" unique_id=416530630]
+layout_mode = 0
+offset_left = 470.0
+offset_top = 190.0
+offset_right = 810.0
+offset_bottom = 510.0
 theme_override_styles/panel = SubResource("sb_popup")
 
-[node name="vbox" type="VBoxContainer" parent="machine/auto_menu/panel"]
+[node name="vbox" type="VBoxContainer" parent="machine/auto_menu/panel" unique_id=1310568409]
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 16
-offset_top = 12
-offset_right = -16
-offset_bottom = -12
+offset_left = 16.0
+offset_top = 12.0
+offset_right = -16.0
+offset_bottom = -12.0
 theme_override_constants/separation = 12
 
-[node name="head" type="HBoxContainer" parent="machine/auto_menu/panel/vbox"]
+[node name="head" type="HBoxContainer" parent="machine/auto_menu/panel/vbox" unique_id=363471414]
+layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="head_title" type="Label" parent="machine/auto_menu/panel/vbox/head"]
-text = "АВТОИГРА"
-theme_override_font_sizes/font_size = 26
+[node name="head_title" type="Label" parent="machine/auto_menu/panel/vbox/head" unique_id=999356256]
+layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.843137, 0.580392, 1)
+theme_override_font_sizes/font_size = 26
+text = "АВТОИГРА"
 
-[node name="spacer_auto" type="Control" parent="machine/auto_menu/panel/vbox/head"]
+[node name="spacer_auto" type="Control" parent="machine/auto_menu/panel/vbox/head" unique_id=1854354365]
+layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="close_btn" type="Button" parent="machine/auto_menu/panel/vbox/head"]
-text = "ЗАКРЫТЬ"
+[node name="close_btn" type="Button" parent="machine/auto_menu/panel/vbox/head" unique_id=1566470541]
 custom_minimum_size = Vector2(140, 42)
+layout_mode = 2
 theme_override_font_sizes/font_size = 18
 theme_override_styles/normal = SubResource("sb_btn_n")
-theme_override_styles/hover = SubResource("sb_btn_n")
 theme_override_styles/pressed = SubResource("sb_btn_n")
+theme_override_styles/hover = SubResource("sb_btn_n")
+text = "ЗАКРЫТЬ"
 
-[node name="grid" type="GridContainer" parent="machine/auto_menu/panel/vbox"]
-columns = 3
+[node name="grid" type="GridContainer" parent="machine/auto_menu/panel/vbox" unique_id=1340618850]
+layout_mode = 2
 theme_override_constants/h_separation = 10
 theme_override_constants/v_separation = 10
+columns = 3
 
-[node name="auto_opt0" type="Button" parent="machine/auto_menu/panel/vbox/grid"]
+[node name="auto_opt0" type="Button" parent="machine/auto_menu/panel/vbox/grid" unique_id=809964669]
+custom_minimum_size = Vector2(96, 56)
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("sb_btn_n")
+theme_override_styles/pressed = SubResource("sb_btn_p")
+theme_override_styles/hover = SubResource("sb_btn_h")
 text = "10"
+
+[node name="auto_opt1" type="Button" parent="machine/auto_menu/panel/vbox/grid" unique_id=838976939]
 custom_minimum_size = Vector2(96, 56)
+layout_mode = 2
 theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("sb_btn_n")
-theme_override_styles/hover = SubResource("sb_btn_h")
 theme_override_styles/pressed = SubResource("sb_btn_p")
-
-[node name="auto_opt1" type="Button" parent="machine/auto_menu/panel/vbox/grid"]
+theme_override_styles/hover = SubResource("sb_btn_h")
 text = "25"
+
+[node name="auto_opt2" type="Button" parent="machine/auto_menu/panel/vbox/grid" unique_id=631045374]
 custom_minimum_size = Vector2(96, 56)
+layout_mode = 2
 theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("sb_btn_n")
-theme_override_styles/hover = SubResource("sb_btn_h")
 theme_override_styles/pressed = SubResource("sb_btn_p")
-
-[node name="auto_opt2" type="Button" parent="machine/auto_menu/panel/vbox/grid"]
+theme_override_styles/hover = SubResource("sb_btn_h")
 text = "50"
+
+[node name="auto_opt3" type="Button" parent="machine/auto_menu/panel/vbox/grid" unique_id=1590976021]
 custom_minimum_size = Vector2(96, 56)
+layout_mode = 2
 theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("sb_btn_n")
-theme_override_styles/hover = SubResource("sb_btn_h")
 theme_override_styles/pressed = SubResource("sb_btn_p")
-
-[node name="auto_opt3" type="Button" parent="machine/auto_menu/panel/vbox/grid"]
+theme_override_styles/hover = SubResource("sb_btn_h")
 text = "100"
+
+[node name="auto_opt4" type="Button" parent="machine/auto_menu/panel/vbox/grid" unique_id=1255956227]
 custom_minimum_size = Vector2(96, 56)
+layout_mode = 2
 theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("sb_btn_n")
-theme_override_styles/hover = SubResource("sb_btn_h")
 theme_override_styles/pressed = SubResource("sb_btn_p")
-
-[node name="auto_opt4" type="Button" parent="machine/auto_menu/panel/vbox/grid"]
+theme_override_styles/hover = SubResource("sb_btn_h")
 text = "∞"
-custom_minimum_size = Vector2(96, 56)
-theme_override_font_sizes/font_size = 24
-theme_override_styles/normal = SubResource("sb_btn_n")
-theme_override_styles/hover = SubResource("sb_btn_h")
-theme_override_styles/pressed = SubResource("sb_btn_p")
 
-[node name="auto_cancel" type="Button" parent="machine/auto_menu/panel/vbox/grid"]
-text = "ОТМЕНА"
+[node name="auto_cancel" type="Button" parent="machine/auto_menu/panel/vbox/grid" unique_id=1476905068]
 custom_minimum_size = Vector2(96, 56)
+layout_mode = 2
 theme_override_font_sizes/font_size = 20
 theme_override_styles/normal = SubResource("sb_btn_n")
-theme_override_styles/hover = SubResource("sb_btn_h")
 theme_override_styles/pressed = SubResource("sb_btn_p")
+theme_override_styles/hover = SubResource("sb_btn_h")
+text = "ОТМЕНА"
 
-[node name="auto_hint" type="Label" parent="machine/auto_menu/panel/vbox"]
-text = "ПУСК во время автоигры останавливает серию"
-theme_override_font_sizes/font_size = 18
+[node name="auto_hint" type="Label" parent="machine/auto_menu/panel/vbox" unique_id=1396704725]
+layout_mode = 2
 theme_override_colors/font_color = Color(0.615686, 0.560784, 0.721569, 1)
+theme_override_font_sizes/font_size = 18
+text = "ПУСК во время автоигры останавливает серию"
 horizontal_alignment = 1
 
-[node name="sound_menu" type="Control" parent="machine"]
+[node name="sound_menu" type="Control" parent="machine" unique_id=205046606]
 visible = false
+anchors_preset = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 
-[node name="dim" type="ColorRect" parent="machine/sound_menu"]
+[node name="dim" type="ColorRect" parent="machine/sound_menu" unique_id=1601492653]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
 color = Color(0, 0, 0, 0.7)
-anchor_right = 1.0
-anchor_bottom = 1.0
 
-[node name="panel" type="Panel" parent="machine/sound_menu"]
-position = Vector2(430, 220)
-size = Vector2(420, 260)
+[node name="panel" type="Panel" parent="machine/sound_menu" unique_id=1299403257]
+layout_mode = 0
+offset_left = 430.0
+offset_top = 220.0
+offset_right = 850.0
+offset_bottom = 480.0
 theme_override_styles/panel = SubResource("sb_popup")
 
-[node name="vbox" type="VBoxContainer" parent="machine/sound_menu/panel"]
+[node name="vbox" type="VBoxContainer" parent="machine/sound_menu/panel" unique_id=936638334]
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 16
-offset_top = 12
-offset_right = -16
-offset_bottom = -12
+offset_left = 16.0
+offset_top = 12.0
+offset_right = -16.0
+offset_bottom = -12.0
 theme_override_constants/separation = 14
 
-[node name="head" type="HBoxContainer" parent="machine/sound_menu/panel/vbox"]
+[node name="head" type="HBoxContainer" parent="machine/sound_menu/panel/vbox" unique_id=304922986]
+layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="head_title" type="Label" parent="machine/sound_menu/panel/vbox/head"]
-text = "ЗВУК"
-theme_override_font_sizes/font_size = 26
+[node name="head_title" type="Label" parent="machine/sound_menu/panel/vbox/head" unique_id=387600450]
+layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.843137, 0.580392, 1)
+theme_override_font_sizes/font_size = 26
+text = "ЗВУК"
 
-[node name="spacer_sound" type="Control" parent="machine/sound_menu/panel/vbox/head"]
+[node name="spacer_sound" type="Control" parent="machine/sound_menu/panel/vbox/head" unique_id=568342135]
+layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="close_btn" type="Button" parent="machine/sound_menu/panel/vbox/head"]
-text = "ЗАКРЫТЬ"
+[node name="close_btn" type="Button" parent="machine/sound_menu/panel/vbox/head" unique_id=1988770723]
 custom_minimum_size = Vector2(140, 42)
+layout_mode = 2
 theme_override_font_sizes/font_size = 18
 theme_override_styles/normal = SubResource("sb_btn_n")
-theme_override_styles/hover = SubResource("sb_btn_n")
 theme_override_styles/pressed = SubResource("sb_btn_n")
+theme_override_styles/hover = SubResource("sb_btn_n")
+text = "ЗАКРЫТЬ"
 
-[node name="row_sfx" type="HBoxContainer" parent="machine/sound_menu/panel/vbox"]
+[node name="row_sfx" type="HBoxContainer" parent="machine/sound_menu/panel/vbox" unique_id=344594999]
+layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="sfx_name" type="Label" parent="machine/sound_menu/panel/vbox/row_sfx"]
+[node name="sfx_name" type="Label" parent="machine/sound_menu/panel/vbox/row_sfx" unique_id=752754901]
+custom_minimum_size = Vector2(110, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 20
 text = "ЭФФЕКТЫ"
-theme_override_font_sizes/font_size = 20
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-custom_minimum_size = Vector2(110, 0)
 vertical_alignment = 1
 
-[node name="sfx_slider" type="HSlider" parent="machine/sound_menu/panel/vbox/row_sfx"]
-min_value = 0
-max_value = 100
-value = 80
+[node name="sfx_slider" type="HSlider" parent="machine/sound_menu/panel/vbox/row_sfx" unique_id=1159932631]
 custom_minimum_size = Vector2(190, 36)
+layout_mode = 2
 size_flags_vertical = 8
+value = 80.0
 
-[node name="sfx_val" type="Label" parent="machine/sound_menu/panel/vbox/row_sfx"]
-text = "80"
-theme_override_font_sizes/font_size = 20
-theme_override_colors/font_color = Color(0.552941, 1, 0.627451, 1)
+[node name="sfx_val" type="Label" parent="machine/sound_menu/panel/vbox/row_sfx" unique_id=748492438]
 custom_minimum_size = Vector2(44, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.552941, 1, 0.627451, 1)
+theme_override_font_sizes/font_size = 20
+text = "80"
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="row_music" type="HBoxContainer" parent="machine/sound_menu/panel/vbox"]
+[node name="row_music" type="HBoxContainer" parent="machine/sound_menu/panel/vbox" unique_id=1950174381]
+layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="music_name" type="Label" parent="machine/sound_menu/panel/vbox/row_music"]
-text = "МУЗЫКА"
-theme_override_font_sizes/font_size = 20
-theme_override_colors/font_color = Color(1, 1, 1, 1)
+[node name="music_name" type="Label" parent="machine/sound_menu/panel/vbox/row_music" unique_id=1527130976]
 custom_minimum_size = Vector2(110, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 20
+text = "МУЗЫКА"
 vertical_alignment = 1
 
-[node name="music_slider" type="HSlider" parent="machine/sound_menu/panel/vbox/row_music"]
-min_value = 0
-max_value = 100
-value = 80
+[node name="music_slider" type="HSlider" parent="machine/sound_menu/panel/vbox/row_music" unique_id=1483507618]
 custom_minimum_size = Vector2(190, 36)
+layout_mode = 2
 size_flags_vertical = 8
+value = 80.0
 
-[node name="music_val" type="Label" parent="machine/sound_menu/panel/vbox/row_music"]
-text = "80"
-theme_override_font_sizes/font_size = 20
-theme_override_colors/font_color = Color(0.552941, 1, 0.627451, 1)
+[node name="music_val" type="Label" parent="machine/sound_menu/panel/vbox/row_music" unique_id=1088322006]
 custom_minimum_size = Vector2(44, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.552941, 1, 0.627451, 1)
+theme_override_font_sizes/font_size = 20
+text = "80"
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="paytable_popup" type="Control" parent="machine"]
+[node name="paytable_popup" type="Control" parent="machine" unique_id=1470420931]
 visible = false
+anchors_preset = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 
-[node name="dim" type="ColorRect" parent="machine/paytable_popup"]
+[node name="dim" type="ColorRect" parent="machine/paytable_popup" unique_id=135460360]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
 color = Color(0, 0, 0, 0.78)
-anchor_right = 1.0
-anchor_bottom = 1.0
 
-[node name="popup_panel" type="Panel" parent="machine/paytable_popup"]
-position = Vector2(70, 40)
-size = Vector2(1140, 640)
+[node name="popup_panel" type="Panel" parent="machine/paytable_popup" unique_id=1594524327]
+layout_mode = 0
+offset_left = 70.0
+offset_top = 40.0
+offset_right = 1210.0
+offset_bottom = 680.0
 theme_override_styles/panel = SubResource("sb_popup")
 
-[node name="panel_bg" type="TextureRect" parent="machine/paytable_popup/popup_panel"]
+[node name="panel_bg" type="TextureRect" parent="machine/paytable_popup/popup_panel" unique_id=1267877282]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
 texture = ExtResource("tex_back2")
-anchor_right = 1.0
-anchor_bottom = 1.0
 stretch_mode = 6
-mouse_filter = 2
 
-[node name="panel_dim" type="ColorRect" parent="machine/paytable_popup/popup_panel"]
+[node name="panel_dim" type="ColorRect" parent="machine/paytable_popup/popup_panel" unique_id=1178932233]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
 color = Color(0.0705882, 0.0313725, 0.109804, 0.86)
+
+[node name="scroll" type="ScrollContainer" parent="machine/paytable_popup/popup_panel" unique_id=1213752351]
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
-mouse_filter = 2
+offset_left = 16.0
+offset_top = 12.0
+offset_right = -16.0
+offset_bottom = -12.0
 
-[node name="scroll" type="ScrollContainer" parent="machine/paytable_popup/popup_panel"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 16
-offset_top = 12
-offset_right = -16
-offset_bottom = -12
-
-[node name="vbox" type="VBoxContainer" parent="machine/paytable_popup/popup_panel/scroll"]
+[node name="vbox" type="VBoxContainer" parent="machine/paytable_popup/popup_panel/scroll" unique_id=419698180]
+layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 8
 
-[node name="head" type="HBoxContainer" parent="machine/paytable_popup/popup_panel/scroll/vbox"]
+[node name="head" type="HBoxContainer" parent="machine/paytable_popup/popup_panel/scroll/vbox" unique_id=1713445298]
+layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="head_title" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/head"]
-text = "ТАБЛИЦА ВЫПЛАТ"
-theme_override_font_sizes/font_size = 30
+[node name="head_title" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/head" unique_id=972752175]
+layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.843137, 0.580392, 1)
+theme_override_font_sizes/font_size = 30
+text = "ТАБЛИЦА ВЫПЛАТ"
 
-[node name="spacer5" type="Control" parent="machine/paytable_popup/popup_panel/scroll/vbox/head"]
+[node name="spacer5" type="Control" parent="machine/paytable_popup/popup_panel/scroll/vbox/head" unique_id=1456673508]
+layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="close_btn" type="Button" parent="machine/paytable_popup/popup_panel/scroll/vbox/head"]
-text = "ЗАКРЫТЬ"
+[node name="close_btn" type="Button" parent="machine/paytable_popup/popup_panel/scroll/vbox/head" unique_id=1606231598]
 custom_minimum_size = Vector2(180, 50)
+layout_mode = 2
 theme_override_font_sizes/font_size = 22
 theme_override_styles/normal = SubResource("sb_btn_n")
-theme_override_styles/hover = SubResource("sb_btn_n")
 theme_override_styles/pressed = SubResource("sb_btn_n")
+theme_override_styles/hover = SubResource("sb_btn_n")
+text = "ЗАКРЫТЬ"
 
-[node name="rules" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox"]
-text = "Линии платят слева направо, начиная с первого барабана. Выплата = ставка на линию × коэффициент. WILD заменяет любой символ, кроме BONUS. Пара платится только у вишни, лимона и апельсина.\nBONUS (скаттер): 3/4/5 сундуков в любом месте поля = 2/10/50 полных ставок и 10/15/20 фриспинов. Во время фриспинов ставка не списывается."
-theme_override_font_sizes/font_size = 20
-theme_override_colors/font_color = Color(0.85098, 0.788235, 0.937255, 1)
-autowrap_mode = 3
+[node name="rules" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox" unique_id=1290445943]
+layout_mode = 2
 size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.85098, 0.788235, 0.937255, 1)
+theme_override_font_sizes/font_size = 20
+text = "Линии платят слева направо, начиная с первого барабана. Выплата = ставка на линию × коэффициент. WILD заменяет любой символ, кроме BONUS. Пара платится только у вишни, лимона и апельсина.
+BONUS (скаттер): 3/4/5 сундуков в любом месте поля = 2/10/50 полных ставок и 10/15/20 фриспинов. Во время фриспинов ставка не списывается."
+autowrap_mode = 3
 
-[node name="row_777" type="HBoxContainer" parent="machine/paytable_popup/popup_panel/scroll/vbox"]
+[node name="row_777" type="HBoxContainer" parent="machine/paytable_popup/popup_panel/scroll/vbox" unique_id=251635911]
+layout_mode = 2
 theme_override_constants/separation = 14
 
-[node name="icon" type="TextureRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_777"]
+[node name="icon" type="TextureRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_777" unique_id=754360136]
+custom_minimum_size = Vector2(54, 54)
+layout_mode = 2
 texture = ExtResource("tex_777")
-custom_minimum_size = Vector2(54, 54)
 stretch_mode = 4
 
-[node name="name" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_777"]
+[node name="name" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_777" unique_id=1343398848]
+custom_minimum_size = Vector2(170, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 22
 text = "777"
-theme_override_font_sizes/font_size = 22
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-custom_minimum_size = Vector2(170, 0)
 vertical_alignment = 1
 
-[node name="val" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_777"]
+[node name="val" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_777" unique_id=2046941641]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.552941, 1, 0.627451, 1)
+theme_override_font_sizes/font_size = 22
 text = "×2: 250   ×3: 1000   ×4: 5000"
-theme_override_font_sizes/font_size = 22
-theme_override_colors/font_color = Color(0.552941, 1, 0.627451, 1)
 vertical_alignment = 1
 
-[node name="row_3bar" type="HBoxContainer" parent="machine/paytable_popup/popup_panel/scroll/vbox"]
+[node name="row_3bar" type="HBoxContainer" parent="machine/paytable_popup/popup_panel/scroll/vbox" unique_id=1866979680]
+layout_mode = 2
 theme_override_constants/separation = 14
 
-[node name="icon" type="TextureRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_3bar"]
+[node name="icon" type="TextureRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_3bar" unique_id=714896803]
+custom_minimum_size = Vector2(54, 54)
+layout_mode = 2
 texture = ExtResource("tex_3bar")
-custom_minimum_size = Vector2(54, 54)
 stretch_mode = 4
 
-[node name="name" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_3bar"]
+[node name="name" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_3bar" unique_id=1412182620]
+custom_minimum_size = Vector2(170, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 22
 text = "BAR BAR BAR"
-theme_override_font_sizes/font_size = 22
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-custom_minimum_size = Vector2(170, 0)
 vertical_alignment = 1
 
-[node name="val" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_3bar"]
+[node name="val" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_3bar" unique_id=2026851698]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.552941, 1, 0.627451, 1)
+theme_override_font_sizes/font_size = 22
 text = "×2: 150   ×3: 600   ×4: 2500"
-theme_override_font_sizes/font_size = 22
-theme_override_colors/font_color = Color(0.552941, 1, 0.627451, 1)
 vertical_alignment = 1
 
-[node name="row_2bar" type="HBoxContainer" parent="machine/paytable_popup/popup_panel/scroll/vbox"]
+[node name="row_2bar" type="HBoxContainer" parent="machine/paytable_popup/popup_panel/scroll/vbox" unique_id=1512016440]
+layout_mode = 2
 theme_override_constants/separation = 14
 
-[node name="icon" type="TextureRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_2bar"]
+[node name="icon" type="TextureRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_2bar" unique_id=635676629]
+custom_minimum_size = Vector2(54, 54)
+layout_mode = 2
 texture = ExtResource("tex_2bar")
-custom_minimum_size = Vector2(54, 54)
 stretch_mode = 4
 
-[node name="name" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_2bar"]
+[node name="name" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_2bar" unique_id=1649351678]
+custom_minimum_size = Vector2(170, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 22
 text = "BAR BAR"
-theme_override_font_sizes/font_size = 22
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-custom_minimum_size = Vector2(170, 0)
 vertical_alignment = 1
 
-[node name="val" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_2bar"]
+[node name="val" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_2bar" unique_id=1802884689]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.552941, 1, 0.627451, 1)
+theme_override_font_sizes/font_size = 22
 text = "×2: 100   ×3: 400   ×4: 1600"
-theme_override_font_sizes/font_size = 22
-theme_override_colors/font_color = Color(0.552941, 1, 0.627451, 1)
 vertical_alignment = 1
 
-[node name="row_1bar" type="HBoxContainer" parent="machine/paytable_popup/popup_panel/scroll/vbox"]
+[node name="row_1bar" type="HBoxContainer" parent="machine/paytable_popup/popup_panel/scroll/vbox" unique_id=1692190210]
+layout_mode = 2
 theme_override_constants/separation = 14
 
-[node name="icon" type="TextureRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_1bar"]
+[node name="icon" type="TextureRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_1bar" unique_id=828827976]
+custom_minimum_size = Vector2(54, 54)
+layout_mode = 2
 texture = ExtResource("tex_1bar")
-custom_minimum_size = Vector2(54, 54)
 stretch_mode = 4
 
-[node name="name" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_1bar"]
+[node name="name" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_1bar" unique_id=267275759]
+custom_minimum_size = Vector2(170, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 22
 text = "BAR"
-theme_override_font_sizes/font_size = 22
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-custom_minimum_size = Vector2(170, 0)
 vertical_alignment = 1
 
-[node name="val" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_1bar"]
+[node name="val" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_1bar" unique_id=510613889]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.552941, 1, 0.627451, 1)
+theme_override_font_sizes/font_size = 22
 text = "×2: 75   ×3: 300   ×4: 1200"
-theme_override_font_sizes/font_size = 22
-theme_override_colors/font_color = Color(0.552941, 1, 0.627451, 1)
 vertical_alignment = 1
 
-[node name="row_bell" type="HBoxContainer" parent="machine/paytable_popup/popup_panel/scroll/vbox"]
+[node name="row_bell" type="HBoxContainer" parent="machine/paytable_popup/popup_panel/scroll/vbox" unique_id=1448534920]
+layout_mode = 2
 theme_override_constants/separation = 14
 
-[node name="icon" type="TextureRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_bell"]
+[node name="icon" type="TextureRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_bell" unique_id=179456849]
+custom_minimum_size = Vector2(54, 54)
+layout_mode = 2
 texture = ExtResource("tex_bell")
-custom_minimum_size = Vector2(54, 54)
 stretch_mode = 4
 
-[node name="name" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_bell"]
+[node name="name" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_bell" unique_id=448841253]
+custom_minimum_size = Vector2(170, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 22
 text = "Колокол"
-theme_override_font_sizes/font_size = 22
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-custom_minimum_size = Vector2(170, 0)
 vertical_alignment = 1
 
-[node name="val" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_bell"]
+[node name="val" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_bell" unique_id=265149029]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.552941, 1, 0.627451, 1)
+theme_override_font_sizes/font_size = 22
 text = "×2: 50   ×3: 200   ×4: 800"
-theme_override_font_sizes/font_size = 22
-theme_override_colors/font_color = Color(0.552941, 1, 0.627451, 1)
 vertical_alignment = 1
 
-[node name="row_moneysack" type="HBoxContainer" parent="machine/paytable_popup/popup_panel/scroll/vbox"]
+[node name="row_moneysack" type="HBoxContainer" parent="machine/paytable_popup/popup_panel/scroll/vbox" unique_id=1350561053]
+layout_mode = 2
 theme_override_constants/separation = 14
 
-[node name="icon" type="TextureRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_moneysack"]
+[node name="icon" type="TextureRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_moneysack" unique_id=249452325]
+custom_minimum_size = Vector2(54, 54)
+layout_mode = 2
 texture = ExtResource("tex_moneysack")
-custom_minimum_size = Vector2(54, 54)
 stretch_mode = 4
 
-[node name="name" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_moneysack"]
+[node name="name" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_moneysack" unique_id=17056382]
+custom_minimum_size = Vector2(170, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 22
 text = "Мешок денег"
-theme_override_font_sizes/font_size = 22
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-custom_minimum_size = Vector2(170, 0)
 vertical_alignment = 1
 
-[node name="val" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_moneysack"]
+[node name="val" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_moneysack" unique_id=1894877090]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.552941, 1, 0.627451, 1)
+theme_override_font_sizes/font_size = 22
 text = "×2: 40   ×3: 150   ×4: 600"
-theme_override_font_sizes/font_size = 22
-theme_override_colors/font_color = Color(0.552941, 1, 0.627451, 1)
 vertical_alignment = 1
 
-[node name="row_horseshoe" type="HBoxContainer" parent="machine/paytable_popup/popup_panel/scroll/vbox"]
+[node name="row_horseshoe" type="HBoxContainer" parent="machine/paytable_popup/popup_panel/scroll/vbox" unique_id=1177453516]
+layout_mode = 2
 theme_override_constants/separation = 14
 
-[node name="icon" type="TextureRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_horseshoe"]
+[node name="icon" type="TextureRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_horseshoe" unique_id=1478637369]
+custom_minimum_size = Vector2(54, 54)
+layout_mode = 2
 texture = ExtResource("tex_horseshoe")
-custom_minimum_size = Vector2(54, 54)
 stretch_mode = 4
 
-[node name="name" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_horseshoe"]
+[node name="name" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_horseshoe" unique_id=2115137305]
+custom_minimum_size = Vector2(170, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 22
 text = "Подкова"
-theme_override_font_sizes/font_size = 22
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-custom_minimum_size = Vector2(170, 0)
 vertical_alignment = 1
 
-[node name="val" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_horseshoe"]
+[node name="val" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_horseshoe" unique_id=1927871338]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.552941, 1, 0.627451, 1)
+theme_override_font_sizes/font_size = 22
 text = "×2: 30   ×3: 100   ×4: 400"
-theme_override_font_sizes/font_size = 22
-theme_override_colors/font_color = Color(0.552941, 1, 0.627451, 1)
 vertical_alignment = 1
 
-[node name="row_star" type="HBoxContainer" parent="machine/paytable_popup/popup_panel/scroll/vbox"]
+[node name="row_star" type="HBoxContainer" parent="machine/paytable_popup/popup_panel/scroll/vbox" unique_id=135753240]
+layout_mode = 2
 theme_override_constants/separation = 14
 
-[node name="icon" type="TextureRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_star"]
+[node name="icon" type="TextureRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_star" unique_id=1377177509]
+custom_minimum_size = Vector2(54, 54)
+layout_mode = 2
 texture = ExtResource("tex_star")
-custom_minimum_size = Vector2(54, 54)
 stretch_mode = 4
 
-[node name="name" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_star"]
+[node name="name" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_star" unique_id=808385555]
+custom_minimum_size = Vector2(170, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 22
 text = "Звезда"
-theme_override_font_sizes/font_size = 22
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-custom_minimum_size = Vector2(170, 0)
 vertical_alignment = 1
 
-[node name="val" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_star"]
+[node name="val" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_star" unique_id=960856589]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.552941, 1, 0.627451, 1)
+theme_override_font_sizes/font_size = 22
 text = "×2: 25   ×3: 80   ×4: 300"
-theme_override_font_sizes/font_size = 22
-theme_override_colors/font_color = Color(0.552941, 1, 0.627451, 1)
 vertical_alignment = 1
 
-[node name="row_watermelon" type="HBoxContainer" parent="machine/paytable_popup/popup_panel/scroll/vbox"]
+[node name="row_watermelon" type="HBoxContainer" parent="machine/paytable_popup/popup_panel/scroll/vbox" unique_id=124398745]
+layout_mode = 2
 theme_override_constants/separation = 14
 
-[node name="icon" type="TextureRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_watermelon"]
+[node name="icon" type="TextureRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_watermelon" unique_id=73950219]
+custom_minimum_size = Vector2(54, 54)
+layout_mode = 2
 texture = ExtResource("tex_watermelon")
-custom_minimum_size = Vector2(54, 54)
 stretch_mode = 4
 
-[node name="name" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_watermelon"]
+[node name="name" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_watermelon" unique_id=1963616218]
+custom_minimum_size = Vector2(170, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 22
 text = "Арбуз"
-theme_override_font_sizes/font_size = 22
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-custom_minimum_size = Vector2(170, 0)
 vertical_alignment = 1
 
-[node name="val" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_watermelon"]
+[node name="val" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_watermelon" unique_id=406816354]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.552941, 1, 0.627451, 1)
+theme_override_font_sizes/font_size = 22
 text = "×2: 20   ×3: 60   ×4: 200"
-theme_override_font_sizes/font_size = 22
-theme_override_colors/font_color = Color(0.552941, 1, 0.627451, 1)
 vertical_alignment = 1
 
-[node name="row_plum" type="HBoxContainer" parent="machine/paytable_popup/popup_panel/scroll/vbox"]
+[node name="row_plum" type="HBoxContainer" parent="machine/paytable_popup/popup_panel/scroll/vbox" unique_id=1660523798]
+layout_mode = 2
 theme_override_constants/separation = 14
 
-[node name="icon" type="TextureRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_plum"]
+[node name="icon" type="TextureRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_plum" unique_id=1697233303]
+custom_minimum_size = Vector2(54, 54)
+layout_mode = 2
 texture = ExtResource("tex_plum")
-custom_minimum_size = Vector2(54, 54)
 stretch_mode = 4
 
-[node name="name" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_plum"]
+[node name="name" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_plum" unique_id=1068861149]
+custom_minimum_size = Vector2(170, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 22
 text = "Слива"
-theme_override_font_sizes/font_size = 22
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-custom_minimum_size = Vector2(170, 0)
 vertical_alignment = 1
 
-[node name="val" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_plum"]
+[node name="val" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_plum" unique_id=2108486339]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.552941, 1, 0.627451, 1)
+theme_override_font_sizes/font_size = 22
 text = "×2: 15   ×3: 40   ×4: 150"
-theme_override_font_sizes/font_size = 22
-theme_override_colors/font_color = Color(0.552941, 1, 0.627451, 1)
 vertical_alignment = 1
 
-[node name="row_orange" type="HBoxContainer" parent="machine/paytable_popup/popup_panel/scroll/vbox"]
+[node name="row_orange" type="HBoxContainer" parent="machine/paytable_popup/popup_panel/scroll/vbox" unique_id=1548329107]
+layout_mode = 2
 theme_override_constants/separation = 14
 
-[node name="icon" type="TextureRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_orange"]
+[node name="icon" type="TextureRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_orange" unique_id=4255465]
+custom_minimum_size = Vector2(54, 54)
+layout_mode = 2
 texture = ExtResource("tex_orange")
-custom_minimum_size = Vector2(54, 54)
 stretch_mode = 4
 
-[node name="name" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_orange"]
+[node name="name" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_orange" unique_id=887024189]
+custom_minimum_size = Vector2(170, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 22
 text = "Апельсин"
-theme_override_font_sizes/font_size = 22
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-custom_minimum_size = Vector2(170, 0)
 vertical_alignment = 1
 
-[node name="val" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_orange"]
+[node name="val" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_orange" unique_id=884851101]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.552941, 1, 0.627451, 1)
+theme_override_font_sizes/font_size = 22
 text = "×2: 12   ×3: 30   ×4: 120"
-theme_override_font_sizes/font_size = 22
-theme_override_colors/font_color = Color(0.552941, 1, 0.627451, 1)
 vertical_alignment = 1
 
-[node name="p2" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_orange"]
-text = "×2: 2"
-theme_override_font_sizes/font_size = 22
+[node name="p2" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_orange" unique_id=1439786715]
+layout_mode = 2
 theme_override_colors/font_color = Color(0.615686, 0.560784, 0.721569, 1)
+theme_override_font_sizes/font_size = 22
+text = "×2: 2"
 vertical_alignment = 1
 
-[node name="row_lemon" type="HBoxContainer" parent="machine/paytable_popup/popup_panel/scroll/vbox"]
+[node name="row_lemon" type="HBoxContainer" parent="machine/paytable_popup/popup_panel/scroll/vbox" unique_id=182216895]
+layout_mode = 2
 theme_override_constants/separation = 14
 
-[node name="icon" type="TextureRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_lemon"]
+[node name="icon" type="TextureRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_lemon" unique_id=1100681269]
+custom_minimum_size = Vector2(54, 54)
+layout_mode = 2
 texture = ExtResource("tex_lemon")
-custom_minimum_size = Vector2(54, 54)
 stretch_mode = 4
 
-[node name="name" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_lemon"]
+[node name="name" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_lemon" unique_id=1472480363]
+custom_minimum_size = Vector2(170, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 22
 text = "Лимон"
-theme_override_font_sizes/font_size = 22
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-custom_minimum_size = Vector2(170, 0)
 vertical_alignment = 1
 
-[node name="val" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_lemon"]
-text = "×2: 10   ×3: 25   ×4: 100"
-theme_override_font_sizes/font_size = 22
+[node name="val" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_lemon" unique_id=2147086378]
+layout_mode = 2
 theme_override_colors/font_color = Color(0.552941, 1, 0.627451, 1)
-vertical_alignment = 1
-
-[node name="p2" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_lemon"]
-text = "×2: 2"
 theme_override_font_sizes/font_size = 22
-theme_override_colors/font_color = Color(0.615686, 0.560784, 0.721569, 1)
+text = "×2: 10   ×3: 25   ×4: 100"
 vertical_alignment = 1
 
-[node name="row_cherry" type="HBoxContainer" parent="machine/paytable_popup/popup_panel/scroll/vbox"]
+[node name="p2" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_lemon" unique_id=487173980]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.615686, 0.560784, 0.721569, 1)
+theme_override_font_sizes/font_size = 22
+text = "×2: 2"
+vertical_alignment = 1
+
+[node name="row_cherry" type="HBoxContainer" parent="machine/paytable_popup/popup_panel/scroll/vbox" unique_id=1791056479]
+layout_mode = 2
 theme_override_constants/separation = 14
 
-[node name="icon" type="TextureRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_cherry"]
+[node name="icon" type="TextureRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_cherry" unique_id=135084873]
+custom_minimum_size = Vector2(54, 54)
+layout_mode = 2
 texture = ExtResource("tex_cherry")
-custom_minimum_size = Vector2(54, 54)
 stretch_mode = 4
 
-[node name="name" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_cherry"]
+[node name="name" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_cherry" unique_id=7321168]
+custom_minimum_size = Vector2(170, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 22
 text = "Вишня"
-theme_override_font_sizes/font_size = 22
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-custom_minimum_size = Vector2(170, 0)
 vertical_alignment = 1
 
-[node name="val" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_cherry"]
+[node name="val" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_cherry" unique_id=512428980]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.552941, 1, 0.627451, 1)
+theme_override_font_sizes/font_size = 22
 text = "×2: 10   ×3: 25   ×4: 100"
-theme_override_font_sizes/font_size = 22
-theme_override_colors/font_color = Color(0.552941, 1, 0.627451, 1)
 vertical_alignment = 1
 
-[node name="p2" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_cherry"]
-text = "×2: 2"
-theme_override_font_sizes/font_size = 22
+[node name="p2" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_cherry" unique_id=915733799]
+layout_mode = 2
 theme_override_colors/font_color = Color(0.615686, 0.560784, 0.721569, 1)
+theme_override_font_sizes/font_size = 22
+text = "×2: 2"
 vertical_alignment = 1
 
-[node name="row_wild" type="HBoxContainer" parent="machine/paytable_popup/popup_panel/scroll/vbox"]
+[node name="row_wild" type="HBoxContainer" parent="machine/paytable_popup/popup_panel/scroll/vbox" unique_id=6578856]
+layout_mode = 2
 theme_override_constants/separation = 14
 
-[node name="icon" type="TextureRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_wild"]
+[node name="icon" type="TextureRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_wild" unique_id=146526317]
+custom_minimum_size = Vector2(54, 54)
+layout_mode = 2
 texture = ExtResource("tex_wild")
-custom_minimum_size = Vector2(54, 54)
 stretch_mode = 4
 
-[node name="name" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_wild"]
-text = "WILD"
-theme_override_font_sizes/font_size = 22
-theme_override_colors/font_color = Color(1, 1, 1, 1)
+[node name="name" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_wild" unique_id=1438051261]
 custom_minimum_size = Vector2(170, 0)
-vertical_alignment = 1
-
-[node name="val" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_wild"]
-text = "×2: 500   ×3: 2000   ×4: 10000"
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 22
-theme_override_colors/font_color = Color(0.552941, 1, 0.627451, 1)
+text = "WILD"
 vertical_alignment = 1
 
-[node name="row_bonus" type="HBoxContainer" parent="machine/paytable_popup/popup_panel/scroll/vbox"]
+[node name="val" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_wild" unique_id=1768654265]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.552941, 1, 0.627451, 1)
+theme_override_font_sizes/font_size = 22
+text = "×2: 500   ×3: 2000   ×4: 10000"
+vertical_alignment = 1
+
+[node name="row_bonus" type="HBoxContainer" parent="machine/paytable_popup/popup_panel/scroll/vbox" unique_id=1531603173]
+layout_mode = 2
 theme_override_constants/separation = 14
 
-[node name="icon" type="TextureRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_bonus"]
-texture = ExtResource("tex_chestbonus")
+[node name="icon" type="TextureRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_bonus" unique_id=338195892]
 custom_minimum_size = Vector2(54, 54)
+layout_mode = 2
+texture = ExtResource("tex_chestbonus")
 stretch_mode = 4
 
-[node name="name" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_bonus"]
-text = "BONUS (скаттер)"
-theme_override_font_sizes/font_size = 22
-theme_override_colors/font_color = Color(1, 1, 1, 1)
+[node name="name" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_bonus" unique_id=1875615718]
 custom_minimum_size = Vector2(170, 0)
-vertical_alignment = 1
-
-[node name="val" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_bonus"]
-text = "3 → 2× ставки + 10 фриспинов, 4 → 10× + 15, 5 → 50× + 20"
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 22
-theme_override_colors/font_color = Color(0.494118, 0.952941, 1, 1)
+text = "BONUS (скаттер)"
 vertical_alignment = 1
 
-[node name="lines_title" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox"]
-text = "ЛИНИИ ВЫПЛАТ (9):"
-theme_override_font_sizes/font_size = 26
-theme_override_colors/font_color = Color(1, 0.843137, 0.580392, 1)
+[node name="val" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/row_bonus" unique_id=194439310]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.494118, 0.952941, 1, 1)
+theme_override_font_sizes/font_size = 22
+text = "3 → 2× ставки + 10 фриспинов, 4 → 10× + 15, 5 → 50× + 20"
+vertical_alignment = 1
 
-[node name="lines_grid" type="GridContainer" parent="machine/paytable_popup/popup_panel/scroll/vbox"]
-columns = 3
+[node name="lines_title" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox" unique_id=207970849]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.843137, 0.580392, 1)
+theme_override_font_sizes/font_size = 26
+text = "ЛИНИИ ВЫПЛАТ (9):"
+
+[node name="lines_grid" type="GridContainer" parent="machine/paytable_popup/popup_panel/scroll/vbox" unique_id=742711870]
+layout_mode = 2
 theme_override_constants/h_separation = 30
 theme_override_constants/v_separation = 14
+columns = 3
 
-[node name="line_cell0" type="HBoxContainer" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid"]
+[node name="line_cell0" type="HBoxContainer" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid" unique_id=1879169294]
+layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="line_num0" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell0"]
-text = "Л1"
-theme_override_font_sizes/font_size = 20
+[node name="line_num0" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell0" unique_id=653252642]
+layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.843137, 0.580392, 1)
+theme_override_font_sizes/font_size = 20
+text = "Л1"
 vertical_alignment = 1
 
-[node name="line_diag0" type="Control" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell0"]
+[node name="line_diag0" type="Control" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell0" unique_id=1729306770]
 custom_minimum_size = Vector2(94, 58)
-size = Vector2(94, 58)
+layout_mode = 2
 
-[node name="dot_0_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell0/line_diag0"]
-size = Vector2(12, 12)
-position = Vector2(2, 4)
+[node name="dot_0_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell0/line_diag0" unique_id=65120176]
+layout_mode = 0
+offset_left = 2.0
+offset_top = 4.0
+offset_right = 14.0
+offset_bottom = 16.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_0_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell0/line_diag0"]
-size = Vector2(12, 12)
-position = Vector2(2, 25)
+[node name="dot_0_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell0/line_diag0" unique_id=1148632853]
+layout_mode = 0
+offset_left = 2.0
+offset_top = 25.0
+offset_right = 14.0
+offset_bottom = 37.0
 color = Color(1, 0.843137, 0.580392, 1)
 
-[node name="dot_0_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell0/line_diag0"]
-size = Vector2(12, 12)
-position = Vector2(2, 46)
+[node name="dot_0_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell0/line_diag0" unique_id=1881284387]
+layout_mode = 0
+offset_left = 2.0
+offset_top = 46.0
+offset_right = 14.0
+offset_bottom = 58.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_1_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell0/line_diag0"]
-size = Vector2(12, 12)
-position = Vector2(21, 4)
+[node name="dot_1_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell0/line_diag0" unique_id=39804253]
+layout_mode = 0
+offset_left = 21.0
+offset_top = 4.0
+offset_right = 33.0
+offset_bottom = 16.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_1_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell0/line_diag0"]
-size = Vector2(12, 12)
-position = Vector2(21, 25)
+[node name="dot_1_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell0/line_diag0" unique_id=1322996658]
+layout_mode = 0
+offset_left = 21.0
+offset_top = 25.0
+offset_right = 33.0
+offset_bottom = 37.0
 color = Color(1, 0.843137, 0.580392, 1)
 
-[node name="dot_1_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell0/line_diag0"]
-size = Vector2(12, 12)
-position = Vector2(21, 46)
+[node name="dot_1_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell0/line_diag0" unique_id=1036105054]
+layout_mode = 0
+offset_left = 21.0
+offset_top = 46.0
+offset_right = 33.0
+offset_bottom = 58.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_2_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell0/line_diag0"]
-size = Vector2(12, 12)
-position = Vector2(40, 4)
+[node name="dot_2_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell0/line_diag0" unique_id=1693068682]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 4.0
+offset_right = 52.0
+offset_bottom = 16.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_2_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell0/line_diag0"]
-size = Vector2(12, 12)
-position = Vector2(40, 25)
+[node name="dot_2_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell0/line_diag0" unique_id=810081430]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 25.0
+offset_right = 52.0
+offset_bottom = 37.0
 color = Color(1, 0.843137, 0.580392, 1)
 
-[node name="dot_2_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell0/line_diag0"]
-size = Vector2(12, 12)
-position = Vector2(40, 46)
+[node name="dot_2_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell0/line_diag0" unique_id=1104593718]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 46.0
+offset_right = 52.0
+offset_bottom = 58.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_3_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell0/line_diag0"]
-size = Vector2(12, 12)
-position = Vector2(59, 4)
+[node name="dot_3_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell0/line_diag0" unique_id=1996446919]
+layout_mode = 0
+offset_left = 59.0
+offset_top = 4.0
+offset_right = 71.0
+offset_bottom = 16.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_3_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell0/line_diag0"]
-size = Vector2(12, 12)
-position = Vector2(59, 25)
+[node name="dot_3_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell0/line_diag0" unique_id=857644026]
+layout_mode = 0
+offset_left = 59.0
+offset_top = 25.0
+offset_right = 71.0
+offset_bottom = 37.0
 color = Color(1, 0.843137, 0.580392, 1)
 
-[node name="dot_3_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell0/line_diag0"]
-size = Vector2(12, 12)
-position = Vector2(59, 46)
+[node name="dot_3_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell0/line_diag0" unique_id=1068947058]
+layout_mode = 0
+offset_left = 59.0
+offset_top = 46.0
+offset_right = 71.0
+offset_bottom = 58.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_4_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell0/line_diag0"]
-size = Vector2(12, 12)
-position = Vector2(78, 4)
+[node name="dot_4_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell0/line_diag0" unique_id=1161969808]
+layout_mode = 0
+offset_left = 78.0
+offset_top = 4.0
+offset_right = 90.0
+offset_bottom = 16.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_4_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell0/line_diag0"]
-size = Vector2(12, 12)
-position = Vector2(78, 25)
+[node name="dot_4_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell0/line_diag0" unique_id=643696809]
+layout_mode = 0
+offset_left = 78.0
+offset_top = 25.0
+offset_right = 90.0
+offset_bottom = 37.0
 color = Color(1, 0.843137, 0.580392, 1)
 
-[node name="dot_4_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell0/line_diag0"]
-size = Vector2(12, 12)
-position = Vector2(78, 46)
+[node name="dot_4_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell0/line_diag0" unique_id=430739264]
+layout_mode = 0
+offset_left = 78.0
+offset_top = 46.0
+offset_right = 90.0
+offset_bottom = 58.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="line_cell1" type="HBoxContainer" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid"]
+[node name="line_cell1" type="HBoxContainer" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid" unique_id=1596780358]
+layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="line_num1" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell1"]
-text = "Л2"
-theme_override_font_sizes/font_size = 20
+[node name="line_num1" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell1" unique_id=45131736]
+layout_mode = 2
 theme_override_colors/font_color = Color(0.356863, 0.54902, 1, 1)
+theme_override_font_sizes/font_size = 20
+text = "Л2"
 vertical_alignment = 1
 
-[node name="line_diag1" type="Control" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell1"]
+[node name="line_diag1" type="Control" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell1" unique_id=1323637191]
 custom_minimum_size = Vector2(94, 58)
-size = Vector2(94, 58)
+layout_mode = 2
 
-[node name="dot_0_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell1/line_diag1"]
-size = Vector2(12, 12)
-position = Vector2(2, 4)
+[node name="dot_0_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell1/line_diag1" unique_id=1878413001]
+layout_mode = 0
+offset_left = 2.0
+offset_top = 4.0
+offset_right = 14.0
+offset_bottom = 16.0
 color = Color(0.356863, 0.54902, 1, 1)
 
-[node name="dot_0_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell1/line_diag1"]
-size = Vector2(12, 12)
-position = Vector2(2, 25)
+[node name="dot_0_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell1/line_diag1" unique_id=969024305]
+layout_mode = 0
+offset_left = 2.0
+offset_top = 25.0
+offset_right = 14.0
+offset_bottom = 37.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_0_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell1/line_diag1"]
-size = Vector2(12, 12)
-position = Vector2(2, 46)
+[node name="dot_0_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell1/line_diag1" unique_id=682748751]
+layout_mode = 0
+offset_left = 2.0
+offset_top = 46.0
+offset_right = 14.0
+offset_bottom = 58.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_1_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell1/line_diag1"]
-size = Vector2(12, 12)
-position = Vector2(21, 4)
+[node name="dot_1_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell1/line_diag1" unique_id=1464241379]
+layout_mode = 0
+offset_left = 21.0
+offset_top = 4.0
+offset_right = 33.0
+offset_bottom = 16.0
 color = Color(0.356863, 0.54902, 1, 1)
 
-[node name="dot_1_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell1/line_diag1"]
-size = Vector2(12, 12)
-position = Vector2(21, 25)
+[node name="dot_1_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell1/line_diag1" unique_id=1094361790]
+layout_mode = 0
+offset_left = 21.0
+offset_top = 25.0
+offset_right = 33.0
+offset_bottom = 37.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_1_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell1/line_diag1"]
-size = Vector2(12, 12)
-position = Vector2(21, 46)
+[node name="dot_1_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell1/line_diag1" unique_id=1583372870]
+layout_mode = 0
+offset_left = 21.0
+offset_top = 46.0
+offset_right = 33.0
+offset_bottom = 58.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_2_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell1/line_diag1"]
-size = Vector2(12, 12)
-position = Vector2(40, 4)
+[node name="dot_2_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell1/line_diag1" unique_id=1716784809]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 4.0
+offset_right = 52.0
+offset_bottom = 16.0
 color = Color(0.356863, 0.54902, 1, 1)
 
-[node name="dot_2_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell1/line_diag1"]
-size = Vector2(12, 12)
-position = Vector2(40, 25)
+[node name="dot_2_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell1/line_diag1" unique_id=253553089]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 25.0
+offset_right = 52.0
+offset_bottom = 37.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_2_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell1/line_diag1"]
-size = Vector2(12, 12)
-position = Vector2(40, 46)
+[node name="dot_2_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell1/line_diag1" unique_id=1424573486]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 46.0
+offset_right = 52.0
+offset_bottom = 58.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_3_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell1/line_diag1"]
-size = Vector2(12, 12)
-position = Vector2(59, 4)
+[node name="dot_3_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell1/line_diag1" unique_id=1930262056]
+layout_mode = 0
+offset_left = 59.0
+offset_top = 4.0
+offset_right = 71.0
+offset_bottom = 16.0
 color = Color(0.356863, 0.54902, 1, 1)
 
-[node name="dot_3_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell1/line_diag1"]
-size = Vector2(12, 12)
-position = Vector2(59, 25)
+[node name="dot_3_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell1/line_diag1" unique_id=1449100817]
+layout_mode = 0
+offset_left = 59.0
+offset_top = 25.0
+offset_right = 71.0
+offset_bottom = 37.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_3_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell1/line_diag1"]
-size = Vector2(12, 12)
-position = Vector2(59, 46)
+[node name="dot_3_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell1/line_diag1" unique_id=869796327]
+layout_mode = 0
+offset_left = 59.0
+offset_top = 46.0
+offset_right = 71.0
+offset_bottom = 58.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_4_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell1/line_diag1"]
-size = Vector2(12, 12)
-position = Vector2(78, 4)
+[node name="dot_4_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell1/line_diag1" unique_id=1567297487]
+layout_mode = 0
+offset_left = 78.0
+offset_top = 4.0
+offset_right = 90.0
+offset_bottom = 16.0
 color = Color(0.356863, 0.54902, 1, 1)
 
-[node name="dot_4_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell1/line_diag1"]
-size = Vector2(12, 12)
-position = Vector2(78, 25)
+[node name="dot_4_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell1/line_diag1" unique_id=1723127270]
+layout_mode = 0
+offset_left = 78.0
+offset_top = 25.0
+offset_right = 90.0
+offset_bottom = 37.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_4_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell1/line_diag1"]
-size = Vector2(12, 12)
-position = Vector2(78, 46)
+[node name="dot_4_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell1/line_diag1" unique_id=1372010353]
+layout_mode = 0
+offset_left = 78.0
+offset_top = 46.0
+offset_right = 90.0
+offset_bottom = 58.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="line_cell2" type="HBoxContainer" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid"]
+[node name="line_cell2" type="HBoxContainer" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid" unique_id=1655180290]
+layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="line_num2" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell2"]
-text = "Л3"
-theme_override_font_sizes/font_size = 20
+[node name="line_num2" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell2" unique_id=1450347213]
+layout_mode = 2
 theme_override_colors/font_color = Color(0.431373, 0.878431, 0.431373, 1)
+theme_override_font_sizes/font_size = 20
+text = "Л3"
 vertical_alignment = 1
 
-[node name="line_diag2" type="Control" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell2"]
+[node name="line_diag2" type="Control" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell2" unique_id=858920096]
 custom_minimum_size = Vector2(94, 58)
-size = Vector2(94, 58)
+layout_mode = 2
 
-[node name="dot_0_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell2/line_diag2"]
-size = Vector2(12, 12)
-position = Vector2(2, 4)
+[node name="dot_0_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell2/line_diag2" unique_id=1512361127]
+layout_mode = 0
+offset_left = 2.0
+offset_top = 4.0
+offset_right = 14.0
+offset_bottom = 16.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_0_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell2/line_diag2"]
-size = Vector2(12, 12)
-position = Vector2(2, 25)
+[node name="dot_0_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell2/line_diag2" unique_id=1261115348]
+layout_mode = 0
+offset_left = 2.0
+offset_top = 25.0
+offset_right = 14.0
+offset_bottom = 37.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_0_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell2/line_diag2"]
-size = Vector2(12, 12)
-position = Vector2(2, 46)
+[node name="dot_0_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell2/line_diag2" unique_id=1004811023]
+layout_mode = 0
+offset_left = 2.0
+offset_top = 46.0
+offset_right = 14.0
+offset_bottom = 58.0
 color = Color(0.431373, 0.878431, 0.431373, 1)
 
-[node name="dot_1_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell2/line_diag2"]
-size = Vector2(12, 12)
-position = Vector2(21, 4)
+[node name="dot_1_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell2/line_diag2" unique_id=438315038]
+layout_mode = 0
+offset_left = 21.0
+offset_top = 4.0
+offset_right = 33.0
+offset_bottom = 16.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_1_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell2/line_diag2"]
-size = Vector2(12, 12)
-position = Vector2(21, 25)
+[node name="dot_1_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell2/line_diag2" unique_id=1817105694]
+layout_mode = 0
+offset_left = 21.0
+offset_top = 25.0
+offset_right = 33.0
+offset_bottom = 37.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_1_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell2/line_diag2"]
-size = Vector2(12, 12)
-position = Vector2(21, 46)
+[node name="dot_1_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell2/line_diag2" unique_id=1608583458]
+layout_mode = 0
+offset_left = 21.0
+offset_top = 46.0
+offset_right = 33.0
+offset_bottom = 58.0
 color = Color(0.431373, 0.878431, 0.431373, 1)
 
-[node name="dot_2_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell2/line_diag2"]
-size = Vector2(12, 12)
-position = Vector2(40, 4)
+[node name="dot_2_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell2/line_diag2" unique_id=2045092578]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 4.0
+offset_right = 52.0
+offset_bottom = 16.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_2_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell2/line_diag2"]
-size = Vector2(12, 12)
-position = Vector2(40, 25)
+[node name="dot_2_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell2/line_diag2" unique_id=1828014980]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 25.0
+offset_right = 52.0
+offset_bottom = 37.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_2_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell2/line_diag2"]
-size = Vector2(12, 12)
-position = Vector2(40, 46)
+[node name="dot_2_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell2/line_diag2" unique_id=1100695448]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 46.0
+offset_right = 52.0
+offset_bottom = 58.0
 color = Color(0.431373, 0.878431, 0.431373, 1)
 
-[node name="dot_3_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell2/line_diag2"]
-size = Vector2(12, 12)
-position = Vector2(59, 4)
+[node name="dot_3_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell2/line_diag2" unique_id=819985937]
+layout_mode = 0
+offset_left = 59.0
+offset_top = 4.0
+offset_right = 71.0
+offset_bottom = 16.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_3_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell2/line_diag2"]
-size = Vector2(12, 12)
-position = Vector2(59, 25)
+[node name="dot_3_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell2/line_diag2" unique_id=1848025855]
+layout_mode = 0
+offset_left = 59.0
+offset_top = 25.0
+offset_right = 71.0
+offset_bottom = 37.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_3_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell2/line_diag2"]
-size = Vector2(12, 12)
-position = Vector2(59, 46)
+[node name="dot_3_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell2/line_diag2" unique_id=1266553389]
+layout_mode = 0
+offset_left = 59.0
+offset_top = 46.0
+offset_right = 71.0
+offset_bottom = 58.0
 color = Color(0.431373, 0.878431, 0.431373, 1)
 
-[node name="dot_4_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell2/line_diag2"]
-size = Vector2(12, 12)
-position = Vector2(78, 4)
+[node name="dot_4_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell2/line_diag2" unique_id=660977641]
+layout_mode = 0
+offset_left = 78.0
+offset_top = 4.0
+offset_right = 90.0
+offset_bottom = 16.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_4_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell2/line_diag2"]
-size = Vector2(12, 12)
-position = Vector2(78, 25)
+[node name="dot_4_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell2/line_diag2" unique_id=1529819838]
+layout_mode = 0
+offset_left = 78.0
+offset_top = 25.0
+offset_right = 90.0
+offset_bottom = 37.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_4_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell2/line_diag2"]
-size = Vector2(12, 12)
-position = Vector2(78, 46)
+[node name="dot_4_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell2/line_diag2" unique_id=1913114400]
+layout_mode = 0
+offset_left = 78.0
+offset_top = 46.0
+offset_right = 90.0
+offset_bottom = 58.0
 color = Color(0.431373, 0.878431, 0.431373, 1)
 
-[node name="line_cell3" type="HBoxContainer" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid"]
+[node name="line_cell3" type="HBoxContainer" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid" unique_id=601353773]
+layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="line_num3" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell3"]
-text = "Л4"
-theme_override_font_sizes/font_size = 20
+[node name="line_num3" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell3" unique_id=269477083]
+layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.419608, 0.419608, 1)
+theme_override_font_sizes/font_size = 20
+text = "Л4"
 vertical_alignment = 1
 
-[node name="line_diag3" type="Control" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell3"]
+[node name="line_diag3" type="Control" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell3" unique_id=2107919526]
 custom_minimum_size = Vector2(94, 58)
-size = Vector2(94, 58)
+layout_mode = 2
 
-[node name="dot_0_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell3/line_diag3"]
-size = Vector2(12, 12)
-position = Vector2(2, 4)
+[node name="dot_0_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell3/line_diag3" unique_id=1463963107]
+layout_mode = 0
+offset_left = 2.0
+offset_top = 4.0
+offset_right = 14.0
+offset_bottom = 16.0
 color = Color(1, 0.419608, 0.419608, 1)
 
-[node name="dot_0_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell3/line_diag3"]
-size = Vector2(12, 12)
-position = Vector2(2, 25)
+[node name="dot_0_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell3/line_diag3" unique_id=1124469180]
+layout_mode = 0
+offset_left = 2.0
+offset_top = 25.0
+offset_right = 14.0
+offset_bottom = 37.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_0_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell3/line_diag3"]
-size = Vector2(12, 12)
-position = Vector2(2, 46)
+[node name="dot_0_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell3/line_diag3" unique_id=1327747452]
+layout_mode = 0
+offset_left = 2.0
+offset_top = 46.0
+offset_right = 14.0
+offset_bottom = 58.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_1_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell3/line_diag3"]
-size = Vector2(12, 12)
-position = Vector2(21, 4)
+[node name="dot_1_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell3/line_diag3" unique_id=1843308557]
+layout_mode = 0
+offset_left = 21.0
+offset_top = 4.0
+offset_right = 33.0
+offset_bottom = 16.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_1_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell3/line_diag3"]
-size = Vector2(12, 12)
-position = Vector2(21, 25)
+[node name="dot_1_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell3/line_diag3" unique_id=143490871]
+layout_mode = 0
+offset_left = 21.0
+offset_top = 25.0
+offset_right = 33.0
+offset_bottom = 37.0
 color = Color(1, 0.419608, 0.419608, 1)
 
-[node name="dot_1_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell3/line_diag3"]
-size = Vector2(12, 12)
-position = Vector2(21, 46)
+[node name="dot_1_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell3/line_diag3" unique_id=1170580010]
+layout_mode = 0
+offset_left = 21.0
+offset_top = 46.0
+offset_right = 33.0
+offset_bottom = 58.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_2_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell3/line_diag3"]
-size = Vector2(12, 12)
-position = Vector2(40, 4)
+[node name="dot_2_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell3/line_diag3" unique_id=379729214]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 4.0
+offset_right = 52.0
+offset_bottom = 16.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_2_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell3/line_diag3"]
-size = Vector2(12, 12)
-position = Vector2(40, 25)
+[node name="dot_2_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell3/line_diag3" unique_id=2935784]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 25.0
+offset_right = 52.0
+offset_bottom = 37.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_2_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell3/line_diag3"]
-size = Vector2(12, 12)
-position = Vector2(40, 46)
+[node name="dot_2_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell3/line_diag3" unique_id=1232402192]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 46.0
+offset_right = 52.0
+offset_bottom = 58.0
 color = Color(1, 0.419608, 0.419608, 1)
 
-[node name="dot_3_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell3/line_diag3"]
-size = Vector2(12, 12)
-position = Vector2(59, 4)
+[node name="dot_3_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell3/line_diag3" unique_id=692847913]
+layout_mode = 0
+offset_left = 59.0
+offset_top = 4.0
+offset_right = 71.0
+offset_bottom = 16.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_3_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell3/line_diag3"]
-size = Vector2(12, 12)
-position = Vector2(59, 25)
+[node name="dot_3_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell3/line_diag3" unique_id=1059302223]
+layout_mode = 0
+offset_left = 59.0
+offset_top = 25.0
+offset_right = 71.0
+offset_bottom = 37.0
 color = Color(1, 0.419608, 0.419608, 1)
 
-[node name="dot_3_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell3/line_diag3"]
-size = Vector2(12, 12)
-position = Vector2(59, 46)
+[node name="dot_3_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell3/line_diag3" unique_id=401025067]
+layout_mode = 0
+offset_left = 59.0
+offset_top = 46.0
+offset_right = 71.0
+offset_bottom = 58.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_4_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell3/line_diag3"]
-size = Vector2(12, 12)
-position = Vector2(78, 4)
+[node name="dot_4_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell3/line_diag3" unique_id=256290189]
+layout_mode = 0
+offset_left = 78.0
+offset_top = 4.0
+offset_right = 90.0
+offset_bottom = 16.0
 color = Color(1, 0.419608, 0.419608, 1)
 
-[node name="dot_4_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell3/line_diag3"]
-size = Vector2(12, 12)
-position = Vector2(78, 25)
+[node name="dot_4_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell3/line_diag3" unique_id=1773291711]
+layout_mode = 0
+offset_left = 78.0
+offset_top = 25.0
+offset_right = 90.0
+offset_bottom = 37.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_4_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell3/line_diag3"]
-size = Vector2(12, 12)
-position = Vector2(78, 46)
+[node name="dot_4_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell3/line_diag3" unique_id=1460910901]
+layout_mode = 0
+offset_left = 78.0
+offset_top = 46.0
+offset_right = 90.0
+offset_bottom = 58.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="line_cell4" type="HBoxContainer" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid"]
+[node name="line_cell4" type="HBoxContainer" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid" unique_id=1936989650]
+layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="line_num4" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell4"]
-text = "Л5"
-theme_override_font_sizes/font_size = 20
+[node name="line_num4" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell4" unique_id=279586001]
+layout_mode = 2
 theme_override_colors/font_color = Color(0.780392, 0.482353, 1, 1)
+theme_override_font_sizes/font_size = 20
+text = "Л5"
 vertical_alignment = 1
 
-[node name="line_diag4" type="Control" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell4"]
+[node name="line_diag4" type="Control" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell4" unique_id=1815694946]
 custom_minimum_size = Vector2(94, 58)
-size = Vector2(94, 58)
+layout_mode = 2
 
-[node name="dot_0_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell4/line_diag4"]
-size = Vector2(12, 12)
-position = Vector2(2, 4)
+[node name="dot_0_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell4/line_diag4" unique_id=895494901]
+layout_mode = 0
+offset_left = 2.0
+offset_top = 4.0
+offset_right = 14.0
+offset_bottom = 16.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_0_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell4/line_diag4"]
-size = Vector2(12, 12)
-position = Vector2(2, 25)
+[node name="dot_0_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell4/line_diag4" unique_id=626441134]
+layout_mode = 0
+offset_left = 2.0
+offset_top = 25.0
+offset_right = 14.0
+offset_bottom = 37.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_0_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell4/line_diag4"]
-size = Vector2(12, 12)
-position = Vector2(2, 46)
+[node name="dot_0_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell4/line_diag4" unique_id=615455615]
+layout_mode = 0
+offset_left = 2.0
+offset_top = 46.0
+offset_right = 14.0
+offset_bottom = 58.0
 color = Color(0.780392, 0.482353, 1, 1)
 
-[node name="dot_1_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell4/line_diag4"]
-size = Vector2(12, 12)
-position = Vector2(21, 4)
+[node name="dot_1_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell4/line_diag4" unique_id=1197356591]
+layout_mode = 0
+offset_left = 21.0
+offset_top = 4.0
+offset_right = 33.0
+offset_bottom = 16.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_1_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell4/line_diag4"]
-size = Vector2(12, 12)
-position = Vector2(21, 25)
+[node name="dot_1_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell4/line_diag4" unique_id=848637491]
+layout_mode = 0
+offset_left = 21.0
+offset_top = 25.0
+offset_right = 33.0
+offset_bottom = 37.0
 color = Color(0.780392, 0.482353, 1, 1)
 
-[node name="dot_1_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell4/line_diag4"]
-size = Vector2(12, 12)
-position = Vector2(21, 46)
+[node name="dot_1_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell4/line_diag4" unique_id=1283016488]
+layout_mode = 0
+offset_left = 21.0
+offset_top = 46.0
+offset_right = 33.0
+offset_bottom = 58.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_2_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell4/line_diag4"]
-size = Vector2(12, 12)
-position = Vector2(40, 4)
+[node name="dot_2_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell4/line_diag4" unique_id=857308314]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 4.0
+offset_right = 52.0
+offset_bottom = 16.0
 color = Color(0.780392, 0.482353, 1, 1)
 
-[node name="dot_2_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell4/line_diag4"]
-size = Vector2(12, 12)
-position = Vector2(40, 25)
+[node name="dot_2_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell4/line_diag4" unique_id=143539914]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 25.0
+offset_right = 52.0
+offset_bottom = 37.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_2_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell4/line_diag4"]
-size = Vector2(12, 12)
-position = Vector2(40, 46)
+[node name="dot_2_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell4/line_diag4" unique_id=1691495589]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 46.0
+offset_right = 52.0
+offset_bottom = 58.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_3_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell4/line_diag4"]
-size = Vector2(12, 12)
-position = Vector2(59, 4)
+[node name="dot_3_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell4/line_diag4" unique_id=499018316]
+layout_mode = 0
+offset_left = 59.0
+offset_top = 4.0
+offset_right = 71.0
+offset_bottom = 16.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_3_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell4/line_diag4"]
-size = Vector2(12, 12)
-position = Vector2(59, 25)
+[node name="dot_3_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell4/line_diag4" unique_id=1461292541]
+layout_mode = 0
+offset_left = 59.0
+offset_top = 25.0
+offset_right = 71.0
+offset_bottom = 37.0
 color = Color(0.780392, 0.482353, 1, 1)
 
-[node name="dot_3_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell4/line_diag4"]
-size = Vector2(12, 12)
-position = Vector2(59, 46)
+[node name="dot_3_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell4/line_diag4" unique_id=490051584]
+layout_mode = 0
+offset_left = 59.0
+offset_top = 46.0
+offset_right = 71.0
+offset_bottom = 58.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_4_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell4/line_diag4"]
-size = Vector2(12, 12)
-position = Vector2(78, 4)
+[node name="dot_4_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell4/line_diag4" unique_id=157244820]
+layout_mode = 0
+offset_left = 78.0
+offset_top = 4.0
+offset_right = 90.0
+offset_bottom = 16.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_4_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell4/line_diag4"]
-size = Vector2(12, 12)
-position = Vector2(78, 25)
+[node name="dot_4_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell4/line_diag4" unique_id=1693151055]
+layout_mode = 0
+offset_left = 78.0
+offset_top = 25.0
+offset_right = 90.0
+offset_bottom = 37.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_4_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell4/line_diag4"]
-size = Vector2(12, 12)
-position = Vector2(78, 46)
+[node name="dot_4_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell4/line_diag4" unique_id=95285357]
+layout_mode = 0
+offset_left = 78.0
+offset_top = 46.0
+offset_right = 90.0
+offset_bottom = 58.0
 color = Color(0.780392, 0.482353, 1, 1)
 
-[node name="line_cell5" type="HBoxContainer" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid"]
+[node name="line_cell5" type="HBoxContainer" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid" unique_id=1276009462]
+layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="line_num5" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell5"]
-text = "Л6"
-theme_override_font_sizes/font_size = 20
+[node name="line_num5" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell5" unique_id=987518165]
+layout_mode = 2
 theme_override_colors/font_color = Color(0.301961, 0.843137, 1, 1)
+theme_override_font_sizes/font_size = 20
+text = "Л6"
 vertical_alignment = 1
 
-[node name="line_diag5" type="Control" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell5"]
+[node name="line_diag5" type="Control" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell5" unique_id=111195595]
 custom_minimum_size = Vector2(94, 58)
-size = Vector2(94, 58)
+layout_mode = 2
 
-[node name="dot_0_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell5/line_diag5"]
-size = Vector2(12, 12)
-position = Vector2(2, 4)
+[node name="dot_0_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell5/line_diag5" unique_id=1023410146]
+layout_mode = 0
+offset_left = 2.0
+offset_top = 4.0
+offset_right = 14.0
+offset_bottom = 16.0
 color = Color(0.301961, 0.843137, 1, 1)
 
-[node name="dot_0_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell5/line_diag5"]
-size = Vector2(12, 12)
-position = Vector2(2, 25)
+[node name="dot_0_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell5/line_diag5" unique_id=1204255056]
+layout_mode = 0
+offset_left = 2.0
+offset_top = 25.0
+offset_right = 14.0
+offset_bottom = 37.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_0_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell5/line_diag5"]
-size = Vector2(12, 12)
-position = Vector2(2, 46)
+[node name="dot_0_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell5/line_diag5" unique_id=648156876]
+layout_mode = 0
+offset_left = 2.0
+offset_top = 46.0
+offset_right = 14.0
+offset_bottom = 58.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_1_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell5/line_diag5"]
-size = Vector2(12, 12)
-position = Vector2(21, 4)
+[node name="dot_1_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell5/line_diag5" unique_id=722032793]
+layout_mode = 0
+offset_left = 21.0
+offset_top = 4.0
+offset_right = 33.0
+offset_bottom = 16.0
 color = Color(0.301961, 0.843137, 1, 1)
 
-[node name="dot_1_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell5/line_diag5"]
-size = Vector2(12, 12)
-position = Vector2(21, 25)
+[node name="dot_1_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell5/line_diag5" unique_id=1088768260]
+layout_mode = 0
+offset_left = 21.0
+offset_top = 25.0
+offset_right = 33.0
+offset_bottom = 37.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_1_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell5/line_diag5"]
-size = Vector2(12, 12)
-position = Vector2(21, 46)
+[node name="dot_1_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell5/line_diag5" unique_id=726182762]
+layout_mode = 0
+offset_left = 21.0
+offset_top = 46.0
+offset_right = 33.0
+offset_bottom = 58.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_2_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell5/line_diag5"]
-size = Vector2(12, 12)
-position = Vector2(40, 4)
+[node name="dot_2_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell5/line_diag5" unique_id=1938807087]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 4.0
+offset_right = 52.0
+offset_bottom = 16.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_2_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell5/line_diag5"]
-size = Vector2(12, 12)
-position = Vector2(40, 25)
+[node name="dot_2_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell5/line_diag5" unique_id=181249829]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 25.0
+offset_right = 52.0
+offset_bottom = 37.0
 color = Color(0.301961, 0.843137, 1, 1)
 
-[node name="dot_2_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell5/line_diag5"]
-size = Vector2(12, 12)
-position = Vector2(40, 46)
+[node name="dot_2_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell5/line_diag5" unique_id=1306586446]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 46.0
+offset_right = 52.0
+offset_bottom = 58.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_3_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell5/line_diag5"]
-size = Vector2(12, 12)
-position = Vector2(59, 4)
+[node name="dot_3_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell5/line_diag5" unique_id=445740878]
+layout_mode = 0
+offset_left = 59.0
+offset_top = 4.0
+offset_right = 71.0
+offset_bottom = 16.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_3_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell5/line_diag5"]
-size = Vector2(12, 12)
-position = Vector2(59, 25)
+[node name="dot_3_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell5/line_diag5" unique_id=1518819854]
+layout_mode = 0
+offset_left = 59.0
+offset_top = 25.0
+offset_right = 71.0
+offset_bottom = 37.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_3_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell5/line_diag5"]
-size = Vector2(12, 12)
-position = Vector2(59, 46)
+[node name="dot_3_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell5/line_diag5" unique_id=840696379]
+layout_mode = 0
+offset_left = 59.0
+offset_top = 46.0
+offset_right = 71.0
+offset_bottom = 58.0
 color = Color(0.301961, 0.843137, 1, 1)
 
-[node name="dot_4_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell5/line_diag5"]
-size = Vector2(12, 12)
-position = Vector2(78, 4)
+[node name="dot_4_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell5/line_diag5" unique_id=1573878481]
+layout_mode = 0
+offset_left = 78.0
+offset_top = 4.0
+offset_right = 90.0
+offset_bottom = 16.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_4_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell5/line_diag5"]
-size = Vector2(12, 12)
-position = Vector2(78, 25)
+[node name="dot_4_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell5/line_diag5" unique_id=873546152]
+layout_mode = 0
+offset_left = 78.0
+offset_top = 25.0
+offset_right = 90.0
+offset_bottom = 37.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_4_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell5/line_diag5"]
-size = Vector2(12, 12)
-position = Vector2(78, 46)
+[node name="dot_4_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell5/line_diag5" unique_id=1210556719]
+layout_mode = 0
+offset_left = 78.0
+offset_top = 46.0
+offset_right = 90.0
+offset_bottom = 58.0
 color = Color(0.301961, 0.843137, 1, 1)
 
-[node name="line_cell6" type="HBoxContainer" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid"]
+[node name="line_cell6" type="HBoxContainer" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid" unique_id=519380998]
+layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="line_num6" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell6"]
-text = "Л7"
-theme_override_font_sizes/font_size = 20
+[node name="line_num6" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell6" unique_id=993244522]
+layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.635294, 0.301961, 1)
+theme_override_font_sizes/font_size = 20
+text = "Л7"
 vertical_alignment = 1
 
-[node name="line_diag6" type="Control" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell6"]
+[node name="line_diag6" type="Control" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell6" unique_id=448654394]
 custom_minimum_size = Vector2(94, 58)
-size = Vector2(94, 58)
+layout_mode = 2
 
-[node name="dot_0_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell6/line_diag6"]
-size = Vector2(12, 12)
-position = Vector2(2, 4)
+[node name="dot_0_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell6/line_diag6" unique_id=1660275779]
+layout_mode = 0
+offset_left = 2.0
+offset_top = 4.0
+offset_right = 14.0
+offset_bottom = 16.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_0_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell6/line_diag6"]
-size = Vector2(12, 12)
-position = Vector2(2, 25)
+[node name="dot_0_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell6/line_diag6" unique_id=997472594]
+layout_mode = 0
+offset_left = 2.0
+offset_top = 25.0
+offset_right = 14.0
+offset_bottom = 37.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_0_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell6/line_diag6"]
-size = Vector2(12, 12)
-position = Vector2(2, 46)
+[node name="dot_0_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell6/line_diag6" unique_id=1430818018]
+layout_mode = 0
+offset_left = 2.0
+offset_top = 46.0
+offset_right = 14.0
+offset_bottom = 58.0
 color = Color(1, 0.635294, 0.301961, 1)
 
-[node name="dot_1_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell6/line_diag6"]
-size = Vector2(12, 12)
-position = Vector2(21, 4)
+[node name="dot_1_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell6/line_diag6" unique_id=429129818]
+layout_mode = 0
+offset_left = 21.0
+offset_top = 4.0
+offset_right = 33.0
+offset_bottom = 16.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_1_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell6/line_diag6"]
-size = Vector2(12, 12)
-position = Vector2(21, 25)
+[node name="dot_1_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell6/line_diag6" unique_id=1841975948]
+layout_mode = 0
+offset_left = 21.0
+offset_top = 25.0
+offset_right = 33.0
+offset_bottom = 37.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_1_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell6/line_diag6"]
-size = Vector2(12, 12)
-position = Vector2(21, 46)
+[node name="dot_1_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell6/line_diag6" unique_id=921065808]
+layout_mode = 0
+offset_left = 21.0
+offset_top = 46.0
+offset_right = 33.0
+offset_bottom = 58.0
 color = Color(1, 0.635294, 0.301961, 1)
 
-[node name="dot_2_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell6/line_diag6"]
-size = Vector2(12, 12)
-position = Vector2(40, 4)
+[node name="dot_2_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell6/line_diag6" unique_id=1462504521]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 4.0
+offset_right = 52.0
+offset_bottom = 16.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_2_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell6/line_diag6"]
-size = Vector2(12, 12)
-position = Vector2(40, 25)
+[node name="dot_2_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell6/line_diag6" unique_id=2117431621]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 25.0
+offset_right = 52.0
+offset_bottom = 37.0
 color = Color(1, 0.635294, 0.301961, 1)
 
-[node name="dot_2_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell6/line_diag6"]
-size = Vector2(12, 12)
-position = Vector2(40, 46)
+[node name="dot_2_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell6/line_diag6" unique_id=1991555371]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 46.0
+offset_right = 52.0
+offset_bottom = 58.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_3_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell6/line_diag6"]
-size = Vector2(12, 12)
-position = Vector2(59, 4)
+[node name="dot_3_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell6/line_diag6" unique_id=2088276637]
+layout_mode = 0
+offset_left = 59.0
+offset_top = 4.0
+offset_right = 71.0
+offset_bottom = 16.0
 color = Color(1, 0.635294, 0.301961, 1)
 
-[node name="dot_3_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell6/line_diag6"]
-size = Vector2(12, 12)
-position = Vector2(59, 25)
+[node name="dot_3_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell6/line_diag6" unique_id=972301310]
+layout_mode = 0
+offset_left = 59.0
+offset_top = 25.0
+offset_right = 71.0
+offset_bottom = 37.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_3_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell6/line_diag6"]
-size = Vector2(12, 12)
-position = Vector2(59, 46)
+[node name="dot_3_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell6/line_diag6" unique_id=1912845924]
+layout_mode = 0
+offset_left = 59.0
+offset_top = 46.0
+offset_right = 71.0
+offset_bottom = 58.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_4_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell6/line_diag6"]
-size = Vector2(12, 12)
-position = Vector2(78, 4)
+[node name="dot_4_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell6/line_diag6" unique_id=741436420]
+layout_mode = 0
+offset_left = 78.0
+offset_top = 4.0
+offset_right = 90.0
+offset_bottom = 16.0
 color = Color(1, 0.635294, 0.301961, 1)
 
-[node name="dot_4_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell6/line_diag6"]
-size = Vector2(12, 12)
-position = Vector2(78, 25)
+[node name="dot_4_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell6/line_diag6" unique_id=1702986590]
+layout_mode = 0
+offset_left = 78.0
+offset_top = 25.0
+offset_right = 90.0
+offset_bottom = 37.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_4_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell6/line_diag6"]
-size = Vector2(12, 12)
-position = Vector2(78, 46)
+[node name="dot_4_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell6/line_diag6" unique_id=1016995676]
+layout_mode = 0
+offset_left = 78.0
+offset_top = 46.0
+offset_right = 90.0
+offset_bottom = 58.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="line_cell7" type="HBoxContainer" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid"]
+[node name="line_cell7" type="HBoxContainer" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid" unique_id=1360389563]
+layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="line_num7" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell7"]
-text = "Л8"
-theme_override_font_sizes/font_size = 20
+[node name="line_num7" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell7" unique_id=578468737]
+layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.482353, 0.835294, 1)
+theme_override_font_sizes/font_size = 20
+text = "Л8"
 vertical_alignment = 1
 
-[node name="line_diag7" type="Control" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell7"]
+[node name="line_diag7" type="Control" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell7" unique_id=1528296523]
 custom_minimum_size = Vector2(94, 58)
-size = Vector2(94, 58)
+layout_mode = 2
 
-[node name="dot_0_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell7/line_diag7"]
-size = Vector2(12, 12)
-position = Vector2(2, 4)
+[node name="dot_0_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell7/line_diag7" unique_id=2007031742]
+layout_mode = 0
+offset_left = 2.0
+offset_top = 4.0
+offset_right = 14.0
+offset_bottom = 16.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_0_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell7/line_diag7"]
-size = Vector2(12, 12)
-position = Vector2(2, 25)
+[node name="dot_0_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell7/line_diag7" unique_id=2069665457]
+layout_mode = 0
+offset_left = 2.0
+offset_top = 25.0
+offset_right = 14.0
+offset_bottom = 37.0
 color = Color(1, 0.482353, 0.835294, 1)
 
-[node name="dot_0_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell7/line_diag7"]
-size = Vector2(12, 12)
-position = Vector2(2, 46)
+[node name="dot_0_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell7/line_diag7" unique_id=66345926]
+layout_mode = 0
+offset_left = 2.0
+offset_top = 46.0
+offset_right = 14.0
+offset_bottom = 58.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_1_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell7/line_diag7"]
-size = Vector2(12, 12)
-position = Vector2(21, 4)
+[node name="dot_1_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell7/line_diag7" unique_id=1561129081]
+layout_mode = 0
+offset_left = 21.0
+offset_top = 4.0
+offset_right = 33.0
+offset_bottom = 16.0
 color = Color(1, 0.482353, 0.835294, 1)
 
-[node name="dot_1_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell7/line_diag7"]
-size = Vector2(12, 12)
-position = Vector2(21, 25)
+[node name="dot_1_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell7/line_diag7" unique_id=2133836860]
+layout_mode = 0
+offset_left = 21.0
+offset_top = 25.0
+offset_right = 33.0
+offset_bottom = 37.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_1_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell7/line_diag7"]
-size = Vector2(12, 12)
-position = Vector2(21, 46)
+[node name="dot_1_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell7/line_diag7" unique_id=1707486014]
+layout_mode = 0
+offset_left = 21.0
+offset_top = 46.0
+offset_right = 33.0
+offset_bottom = 58.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_2_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell7/line_diag7"]
-size = Vector2(12, 12)
-position = Vector2(40, 4)
+[node name="dot_2_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell7/line_diag7" unique_id=1512481302]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 4.0
+offset_right = 52.0
+offset_bottom = 16.0
 color = Color(1, 0.482353, 0.835294, 1)
 
-[node name="dot_2_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell7/line_diag7"]
-size = Vector2(12, 12)
-position = Vector2(40, 25)
+[node name="dot_2_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell7/line_diag7" unique_id=1371401633]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 25.0
+offset_right = 52.0
+offset_bottom = 37.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_2_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell7/line_diag7"]
-size = Vector2(12, 12)
-position = Vector2(40, 46)
+[node name="dot_2_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell7/line_diag7" unique_id=1756602848]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 46.0
+offset_right = 52.0
+offset_bottom = 58.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_3_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell7/line_diag7"]
-size = Vector2(12, 12)
-position = Vector2(59, 4)
+[node name="dot_3_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell7/line_diag7" unique_id=1886679290]
+layout_mode = 0
+offset_left = 59.0
+offset_top = 4.0
+offset_right = 71.0
+offset_bottom = 16.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_3_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell7/line_diag7"]
-size = Vector2(12, 12)
-position = Vector2(59, 25)
+[node name="dot_3_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell7/line_diag7" unique_id=1801628079]
+layout_mode = 0
+offset_left = 59.0
+offset_top = 25.0
+offset_right = 71.0
+offset_bottom = 37.0
 color = Color(1, 0.482353, 0.835294, 1)
 
-[node name="dot_3_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell7/line_diag7"]
-size = Vector2(12, 12)
-position = Vector2(59, 46)
+[node name="dot_3_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell7/line_diag7" unique_id=1803354477]
+layout_mode = 0
+offset_left = 59.0
+offset_top = 46.0
+offset_right = 71.0
+offset_bottom = 58.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_4_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell7/line_diag7"]
-size = Vector2(12, 12)
-position = Vector2(78, 4)
+[node name="dot_4_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell7/line_diag7" unique_id=1083581585]
+layout_mode = 0
+offset_left = 78.0
+offset_top = 4.0
+offset_right = 90.0
+offset_bottom = 16.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_4_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell7/line_diag7"]
-size = Vector2(12, 12)
-position = Vector2(78, 25)
+[node name="dot_4_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell7/line_diag7" unique_id=279558061]
+layout_mode = 0
+offset_left = 78.0
+offset_top = 25.0
+offset_right = 90.0
+offset_bottom = 37.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_4_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell7/line_diag7"]
-size = Vector2(12, 12)
-position = Vector2(78, 46)
+[node name="dot_4_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell7/line_diag7" unique_id=1750232420]
+layout_mode = 0
+offset_left = 78.0
+offset_top = 46.0
+offset_right = 90.0
+offset_bottom = 58.0
 color = Color(1, 0.482353, 0.835294, 1)
 
-[node name="line_cell8" type="HBoxContainer" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid"]
+[node name="line_cell8" type="HBoxContainer" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid" unique_id=404431183]
+layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="line_num8" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell8"]
-text = "Л9"
-theme_override_font_sizes/font_size = 20
+[node name="line_num8" type="Label" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell8" unique_id=1772328800]
+layout_mode = 2
 theme_override_colors/font_color = Color(0.721569, 1, 0.419608, 1)
+theme_override_font_sizes/font_size = 20
+text = "Л9"
 vertical_alignment = 1
 
-[node name="line_diag8" type="Control" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell8"]
+[node name="line_diag8" type="Control" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell8" unique_id=1790532272]
 custom_minimum_size = Vector2(94, 58)
-size = Vector2(94, 58)
+layout_mode = 2
 
-[node name="dot_0_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell8/line_diag8"]
-size = Vector2(12, 12)
-position = Vector2(2, 4)
+[node name="dot_0_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell8/line_diag8" unique_id=40286318]
+layout_mode = 0
+offset_left = 2.0
+offset_top = 4.0
+offset_right = 14.0
+offset_bottom = 16.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_0_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell8/line_diag8"]
-size = Vector2(12, 12)
-position = Vector2(2, 25)
+[node name="dot_0_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell8/line_diag8" unique_id=1576140528]
+layout_mode = 0
+offset_left = 2.0
+offset_top = 25.0
+offset_right = 14.0
+offset_bottom = 37.0
 color = Color(0.721569, 1, 0.419608, 1)
 
-[node name="dot_0_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell8/line_diag8"]
-size = Vector2(12, 12)
-position = Vector2(2, 46)
+[node name="dot_0_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell8/line_diag8" unique_id=1913424854]
+layout_mode = 0
+offset_left = 2.0
+offset_top = 46.0
+offset_right = 14.0
+offset_bottom = 58.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_1_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell8/line_diag8"]
-size = Vector2(12, 12)
-position = Vector2(21, 4)
+[node name="dot_1_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell8/line_diag8" unique_id=923928625]
+layout_mode = 0
+offset_left = 21.0
+offset_top = 4.0
+offset_right = 33.0
+offset_bottom = 16.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_1_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell8/line_diag8"]
-size = Vector2(12, 12)
-position = Vector2(21, 25)
+[node name="dot_1_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell8/line_diag8" unique_id=1286252443]
+layout_mode = 0
+offset_left = 21.0
+offset_top = 25.0
+offset_right = 33.0
+offset_bottom = 37.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_1_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell8/line_diag8"]
-size = Vector2(12, 12)
-position = Vector2(21, 46)
+[node name="dot_1_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell8/line_diag8" unique_id=1841589170]
+layout_mode = 0
+offset_left = 21.0
+offset_top = 46.0
+offset_right = 33.0
+offset_bottom = 58.0
 color = Color(0.721569, 1, 0.419608, 1)
 
-[node name="dot_2_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell8/line_diag8"]
-size = Vector2(12, 12)
-position = Vector2(40, 4)
+[node name="dot_2_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell8/line_diag8" unique_id=425039597]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 4.0
+offset_right = 52.0
+offset_bottom = 16.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_2_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell8/line_diag8"]
-size = Vector2(12, 12)
-position = Vector2(40, 25)
+[node name="dot_2_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell8/line_diag8" unique_id=1440397546]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 25.0
+offset_right = 52.0
+offset_bottom = 37.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_2_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell8/line_diag8"]
-size = Vector2(12, 12)
-position = Vector2(40, 46)
+[node name="dot_2_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell8/line_diag8" unique_id=1285472305]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 46.0
+offset_right = 52.0
+offset_bottom = 58.0
 color = Color(0.721569, 1, 0.419608, 1)
 
-[node name="dot_3_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell8/line_diag8"]
-size = Vector2(12, 12)
-position = Vector2(59, 4)
+[node name="dot_3_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell8/line_diag8" unique_id=1156139304]
+layout_mode = 0
+offset_left = 59.0
+offset_top = 4.0
+offset_right = 71.0
+offset_bottom = 16.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_3_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell8/line_diag8"]
-size = Vector2(12, 12)
-position = Vector2(59, 25)
+[node name="dot_3_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell8/line_diag8" unique_id=570306420]
+layout_mode = 0
+offset_left = 59.0
+offset_top = 25.0
+offset_right = 71.0
+offset_bottom = 37.0
 color = Color(0.721569, 1, 0.419608, 1)
 
-[node name="dot_3_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell8/line_diag8"]
-size = Vector2(12, 12)
-position = Vector2(59, 46)
+[node name="dot_3_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell8/line_diag8" unique_id=542469431]
+layout_mode = 0
+offset_left = 59.0
+offset_top = 46.0
+offset_right = 71.0
+offset_bottom = 58.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_4_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell8/line_diag8"]
-size = Vector2(12, 12)
-position = Vector2(78, 4)
+[node name="dot_4_0" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell8/line_diag8" unique_id=1293713423]
+layout_mode = 0
+offset_left = 78.0
+offset_top = 4.0
+offset_right = 90.0
+offset_bottom = 16.0
 color = Color(0.721569, 1, 0.419608, 1)
 
-[node name="dot_4_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell8/line_diag8"]
-size = Vector2(12, 12)
-position = Vector2(78, 25)
+[node name="dot_4_1" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell8/line_diag8" unique_id=793319319]
+layout_mode = 0
+offset_left = 78.0
+offset_top = 25.0
+offset_right = 90.0
+offset_bottom = 37.0
 color = Color(0.235294, 0.2, 0.278431, 1)
 
-[node name="dot_4_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell8/line_diag8"]
-size = Vector2(12, 12)
-position = Vector2(78, 46)
+[node name="dot_4_2" type="ColorRect" parent="machine/paytable_popup/popup_panel/scroll/vbox/lines_grid/line_cell8/line_diag8" unique_id=1670833097]
+layout_mode = 0
+offset_left = 78.0
+offset_top = 46.0
+offset_right = 90.0
+offset_bottom = 58.0
 color = Color(0.235294, 0.2, 0.278431, 1)
