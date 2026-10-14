@@ -278,8 +278,6 @@ node("clicker_glow", "Panel", "bottom_bar",
      visible="false", mouse_filter=2,
      theme_override_styles_panel='SubResource("sb_glow")')
 tbtn("clicker_btn", "bottom_bar", "at_bag", (1132, 277), (219, 227))
-     theme_override_styles_pressed='SubResource("sb_btn_n")',
-     visible="false")
 
 # ---------------------------------------------------------- попап выигрыша
 node("win_popup", "Control", "machine", position="Vector2(364, 173)",

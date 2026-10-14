@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=3 uid="uid://jem4ybiqp44h"]
+[gd_scene load_steps=37 format=3 uid="uid://jem4ybiqp44h"]
 
 [ext_resource type="Script" path="res://scripts/slot_machine.gd" id="scr"]
 [ext_resource type="Script" path="res://scripts/reel.gd" id="scr_reel"]
@@ -82,6 +82,18 @@ corner_radius_top_left = 10
 corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="sb_glow"]
+bg_color = Color(1, 0.843137, 0.580392, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(1, 0.843137, 0.580392, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
 
 [sub_resource type="AtlasTexture" id="at_spin"]
 atlas = ExtResource("tex_buttons")
@@ -474,22 +486,19 @@ stretch_mode = 5
 position = Vector2(1144, 0)
 size = Vector2(130, 139)
 
+[node name="clicker_glow" type="Panel" parent="machine/bottom_bar"]
+position = Vector2(1122, 267)
+size = Vector2(239, 247)
+visible = false
+mouse_filter = 2
+theme_override_styles/panel = SubResource("sb_glow")
+
 [node name="clicker_btn" type="TextureButton" parent="machine/bottom_bar"]
 texture_normal = SubResource("at_bag")
 ignore_texture_size = true
 stretch_mode = 5
 position = Vector2(1132, 277)
 size = Vector2(219, 227)
-
-[node name="bonus_btn" type="Button" parent="machine/bottom_bar"]
-text = "БОНУС +1000"
-position = Vector2(360, 608)
-size = Vector2(190, 40)
-theme_override_font_sizes/font_size = 18
-theme_override_styles/normal = SubResource("sb_btn_n")
-theme_override_styles/hover = SubResource("sb_btn_n")
-theme_override_styles/pressed = SubResource("sb_btn_n")
-visible = false
 
 [node name="win_popup" type="Control" parent="machine"]
 position = Vector2(364, 173)
@@ -512,6 +521,35 @@ position = Vector2(0, 252)
 size = Vector2(500, 66)
 theme_override_constants/outline_size = 10
 theme_override_colors/font_outline_color = Color(0.25098, 0.12549, 0.0313725, 1)
+
+[node name="intro_popup" type="Control" parent="machine"]
+visible = false
+
+[node name="intro_panel" type="Panel" parent="machine/intro_popup"]
+position = Vector2(300, 170)
+size = Vector2(680, 360)
+theme_override_styles/panel = SubResource("sb_popup")
+
+[node name="intro_label" type="Label" parent="machine/intro_popup"]
+text = "Ты набрал много кредитов и проиграл всё в казино, теперь тебе нужно собрать 100 000 денег, чтобы расплатится с долгами"
+theme_override_font_sizes/font_size = 24
+theme_override_colors/font_color = Color(1, 0.913725, 0.721569, 1)
+position = Vector2(330, 200)
+size = Vector2(620, 240)
+autowrap_mode = 3
+horizontal_alignment = 1
+vertical_alignment = 1
+theme_override_constants/outline_size = 8
+theme_override_colors/font_outline_color = Color(0.141176, 0.101961, 0.192157, 1)
+
+[node name="intro_btn" type="Button" parent="machine/intro_popup"]
+text = "ПОНЯТНО, ПОГНАЛИ"
+position = Vector2(520, 455)
+size = Vector2(240, 52)
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("sb_btn_n")
+theme_override_styles/hover = SubResource("sb_btn_h")
+theme_override_styles/pressed = SubResource("sb_btn_p")
 
 [node name="bet_menu" type="Control" parent="machine"]
 visible = false
