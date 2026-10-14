@@ -248,7 +248,7 @@ func _close_menus() -> void:
 # ------------------------------------------------------------------- хелперы UI
 
 func _update_labels() -> void:
-	balance_label.text = "Баланс: %s" % _fmt(balance)
+	balance_label.text = _fmt(balance)  # число рядом с иконкой мешка денег
 	bet_label.text = "Ставка/линия: %d" % BETS[bet_idx]
 	bonus_btn.visible = not _spinning and balance < total_bet()
 	if _fs_left > 0:

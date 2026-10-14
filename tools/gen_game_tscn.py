@@ -187,7 +187,12 @@ node("machine", "Control", ".", size=f"Vector2({VSIZE[0]}, {VSIZE[1]})")
 
 hbox("top_bar", "machine", 12, position="Vector2(30, 56)",
      size=f"Vector2({VSIZE[0] - 60}, 46)")
-label("balance_label", "top_bar", "Баланс: 0", 26, "ffe9b8")
+node("balance_icon", "TextureRect", "top_bar",
+     texture='ExtResource("tex_moneysack")',
+     custom_minimum_size="Vector2(42, 42)", expand_mode=1,
+     stretch_mode=5, mouse_filter=2)
+label("balance_label", "top_bar", "0", 26, "ffe9b8",
+      vertical_alignment=1)
 spacer("spacer1", "top_bar")
 label("win_label", "top_bar", "", 26, "8dffa0", horizontal_alignment=1)
 spacer("spacer2", "top_bar")

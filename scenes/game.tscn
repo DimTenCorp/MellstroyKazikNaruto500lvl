@@ -141,10 +141,18 @@ theme_override_constants/separation = 12
 position = Vector2(30, 56)
 size = Vector2(1220, 46)
 
+[node name="balance_icon" type="TextureRect" parent="machine/top_bar"]
+texture = ExtResource("tex_moneysack")
+custom_minimum_size = Vector2(42, 42)
+expand_mode = 1
+stretch_mode = 5
+mouse_filter = 2
+
 [node name="balance_label" type="Label" parent="machine/top_bar"]
-text = "Баланс: 0"
+text = "0"
 theme_override_font_sizes/font_size = 26
 theme_override_colors/font_color = Color(1, 0.913725, 0.721569, 1)
+vertical_alignment = 1
 
 [node name="spacer1" type="Control" parent="machine/top_bar"]
 size_flags_horizontal = 3
