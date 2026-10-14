@@ -624,10 +624,10 @@ horizontal_alignment = 1
 
 [node name="reset_btn" type="Button" parent="machine" unique_id=1564387457]
 layout_mode = 0
-offset_left = -266.0
-offset_top = 206.0
-offset_right = -114.0
-offset_bottom = 242.0
+offset_left = -241.0
+offset_top = 176.0
+offset_right = -89.0
+offset_bottom = 212.0
 theme_override_font_sizes/font_size = 14
 theme_override_styles/normal = SubResource("sb_btn_n")
 theme_override_styles/pressed = SubResource("sb_btn_p")
