@@ -17,6 +17,8 @@ const VISUAL := {
 	"play_btn": Vector2(150, 148),
 }
 
+const DEBUG := true  ## отладочные логи в консоль (print)
+
 var balance := 1000
 var _cfg := ConfigFile.new()
 var _watching := false
@@ -33,8 +35,14 @@ var _banner_tw: Tween
 @onready var float_layer: Control = $machine/float_layer
 
 
+func _dbg(msg: String) -> void:
+	if DEBUG:
+		print("[clicker] " + msg)
+
+
 func _ready() -> void:
 	_load()
+	_dbg("сцена готова, баланс=%d" % balance)
 	for key in VISUAL:
 		var btn: TextureButton = get_node("machine/" + key)
 		btn.pivot_offset = Vector2.ZERO
@@ -127,6 +135,7 @@ func _find_buttons(root: Node) -> Array[BaseButton]:
 
 func _on_coin() -> void:
 	balance += CLICK_VALUE
+	_dbg("клик по монете: +%d, баланс=%d" % [CLICK_VALUE, balance])
 	_save()
 	_update()
 	_float("+%d" % CLICK_VALUE, coin_btn.position + VISUAL["coin_btn"] * 0.5,
@@ -153,12 +162,16 @@ func _float(text: String, at: Vector2, color: Color) -> void:
 
 func _on_play() -> void:
 	if _watching:
+		_dbg("play нажат повторно — уже смотрим рекламу, игнор")
 		return
+	_dbg("play нажат: запрашиваем рекламу с наградой")
 	_watching = true
 	play_btn.disabled = true
 	var rewarded := await _watch_rewarded_ad()
+	_dbg("реклама завершена, rewarded=%s" % rewarded)
 	if rewarded:
 		balance += AD_REWARD
+		_dbg("награда начислена: +%d, баланс=%d" % [AD_REWARD, balance])
 		_save()
 		_update()
 		_banner("БАБЛО ЗА РЕКЛАМУ: +%s" % _fmt(AD_REWARD), Color("#8dffa0"))
@@ -177,14 +190,18 @@ func _on_play() -> void:
 func _watch_rewarded_ad() -> bool:
 	var br := get_node_or_null("/root/Bridge")
 	if br == null or br.advertisement == null:
+		_dbg("ОШИБКА: autoload Bridge не найден")
 		_banner("BRIDGE НЕ ПОДКЛЮЧЁН", Color("#ff7b7b"))
 		return false
+	_dbg("платформа: %s, rewarded supported=%s" % [
+			_platform_name(br), br.advertisement.is_rewarded_supported])
 	if not bool(br.advertisement.is_rewarded_supported):
 		_banner("НЕТ РЕКЛАМЫ НА ПЛАТФОРМЕ: %s" % _platform_name(br),
 				Color("#ff7b7b"))
 		return false
 	var st := {"rewarded": false, "finished": false, "failed": false}
 	var on_state := func(state) -> void:
+		_dbg("состояние рекламы: %s" % state)
 		if state == Bridge.RewardedState.REWARDED:
 			st["rewarded"] = true
 		elif state == Bridge.RewardedState.FAILED:
@@ -194,6 +211,7 @@ func _watch_rewarded_ad() -> bool:
 			st["finished"] = true
 	br.advertisement.rewarded_state_changed.connect(on_state)
 	_banner("СМОТРИМ РЕКЛАМУ... [%s]" % _platform_name(br), Color("#ffd794"))
+	_dbg("вызов Bridge.advertisement.show_rewarded()")
 	br.advertisement.show_rewarded()
 	var t := 0.0
 	while not st["finished"] and t < 90.0:
@@ -202,9 +220,11 @@ func _watch_rewarded_ad() -> bool:
 	if br.advertisement.rewarded_state_changed.is_connected(on_state):
 		br.advertisement.rewarded_state_changed.disconnect(on_state)
 	if not st["finished"]:
+		_dbg("ОШИБКА: таймаут ожидания рекламы (90 c)")
 		_banner("РЕКЛАМА НЕ ОТВЕТИЛА (ТАЙМАУТ)", Color("#ff7b7b"))
 		return false
 	if st["failed"]:
+		_dbg("ОШИБКА: реклама завершилась с FAILED")
 		_banner("ОШИБКА РЕКЛАМЫ — НЕТ НАГРАДЫ", Color("#ff7b7b"))
 		return false
 	return st["rewarded"]
@@ -221,6 +241,7 @@ func _platform_name(br: Node) -> String:
 # ------------------------------------------------------------------- выход
 
 func _on_back() -> void:
+	_dbg("возврат к слот-машине, баланс=%d" % balance)
 	_save()
 	get_tree().change_scene_to_file("res://scenes/game.tscn")
 

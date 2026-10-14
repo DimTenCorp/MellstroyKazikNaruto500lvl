@@ -61,6 +61,8 @@ const BTN_VISUAL := {
 	"clicker_btn": Vector2(150, 155),
 }
 
+const DEBUG := true  ## отладочные логи в консоль (print)
+
 var rng := RandomNumberGenerator.new()
 var textures: Array[Texture2D] = []
 var reels: Array[SlotReel] = []
@@ -238,6 +240,11 @@ func _apply_button_visuals() -> void:
 		btn.scale = BTN_VISUAL[btn_key] / btn.size
 
 
+func _dbg(msg: String) -> void:
+	if DEBUG:
+		print("[slot] " + msg)
+
+
 func _layout() -> void:
 	var vs := get_viewport_rect().size
 	if vs.x <= 0 or vs.y <= 0:
@@ -370,7 +377,9 @@ func _on_max_bet() -> void:
 
 func _on_clicker_pressed() -> void:
 	if _spinning:
+		_dbg("клик по мешку во время спина — игнор")
 		return
+	_dbg("переход в сцену кликера, баланс=%d" % balance)
 	_save()
 	get_tree().change_scene_to_file("res://scenes/clicker.tscn")
 
@@ -413,6 +422,7 @@ func _stop_autospin(text: String) -> void:
 
 func _on_speed_pressed() -> void:
 	speed_idx = (speed_idx + 1) % SPEEDS.size()
+	_dbg("скорость -> x%d" % int(SPEEDS[speed_idx]))
 	_save()
 	_apply_toggles()
 	_banner("СКОРОСТЬ ×%d" % int(SPEEDS[speed_idx]), Color("#ffd794"))
@@ -456,6 +466,7 @@ func _on_spin_pressed() -> void:
 func _run_session() -> void:
 	if _spinning:
 		return
+	_dbg("сессия спинов начата (autospin=%s, ставка=%d)" % [autospin, total_bet()])
 	_spinning = true
 	_update_labels()
 	while true:
@@ -483,6 +494,7 @@ func _run_session() -> void:
 			break
 		await get_tree().create_timer(0.3 if SPEEDS[speed_idx] > 1.0 else 0.6).timeout
 	_spinning = false
+	_dbg("сессия спинов завершена, баланс=%d" % balance)
 	_update_labels()
 
 
@@ -512,6 +524,8 @@ func _spin(is_free: bool) -> void:
 
 	var res := SlotData.evaluate(grid, int(BETS[bet_idx]))
 	var won: int = res.total
+	_dbg("спин: выигрыш=%d, линий=%d, скаттер=%d, фриспины=%d" % [
+			won, res.line_wins.size(), res.scatter, res.free_spins])
 	if won > 0:
 		balance += won
 		_save()
@@ -545,6 +559,7 @@ func _spin(is_free: bool) -> void:
 
 ## Всплывающее уведомление с бейджем из wins_spritessheet.png.
 func _popup(badge_idx: int, text: String) -> void:
+	_dbg("попап бейджа %d: %s" % [badge_idx, text])
 	if _popup_tw != null and _popup_tw.is_valid():
 		_popup_tw.kill()
 	var at := AtlasTexture.new()
