@@ -71,8 +71,8 @@ var _banner_tw: Tween
 @onready var play_caption: Label = $machine/play_caption
 @onready var back_btn: Button = $machine/back_btn
 @onready var msg_label: Label = $machine/msg_label
-@onready var upg_btns: Array = [$machine/upg0_btn, $machine/upg1_btn]
-@onready var upg_infos: Array = [$machine/upg0_info, $machine/upg1_info]
+var upg_btns: Array = []   ## кнопки-иконки строк списка улучшений
+var upg_infos: Array = []  ## подписи строк списка улучшений
 @onready var auto_stat: Label = $machine/auto_stat
 @onready var click_stat: Label = $machine/click_stat
 @onready var float_layer: Control = $machine/float_layer
@@ -97,15 +97,19 @@ func _upg_cost(i: int) -> int:
 	return int(round(float(u.cost) * pow(float(u.mult), upg_levels[i]) / 10.0)) * 10
 
 
-## Первые два непрокачанных до упора улучшения очереди — они в витрине.
-func _shop_slots() -> Array[int]:
-	var out: Array[int] = []
+## Список показывает все улучшения сверху вниз; прокачанные до упора
+## строки помечаются МАКС и их кнопка гаснет.
+func _refresh_shop() -> void:
 	for i in UPGRADES.size():
-		if upg_levels[i] < int(UPGRADES[i].max):
-			out.append(i)
-			if out.size() == 2:
-				break
-	return out
+		var u: Dictionary = UPGRADES[i]
+		upg_btns[i].texture_normal = _icons[int(u.icon)]
+		upg_btns[i].disabled = upg_levels[i] >= int(u.max)
+		if upg_levels[i] >= int(u.max):
+			upg_infos[i].text = "%s\n%s | ур.%d/%d | МАКС" % [
+					u.name, _upg_effect_text(u), upg_levels[i], u.max]
+		else:
+			upg_infos[i].text = "%s\n%s | ур.%d/%d | цена %d" % [
+					u.name, _upg_effect_text(u), upg_levels[i], u.max, _upg_cost(i)]
 
 
 func _upg_effect_text(u: Dictionary) -> String:
@@ -117,29 +121,10 @@ func _upg_effect_text(u: Dictionary) -> String:
 	return " ".join(parts)
 
 
-## Витрина: два слота, после полной прокачки улучшение уступает место следующему.
-func _refresh_shop() -> void:
-	var slots := _shop_slots()
-	for s in upg_btns.size():
-		if s >= slots.size():
-			upg_btns[s].visible = false
-			upg_infos[s].visible = false
-			continue
-		var i: int = slots[s]
-		var u: Dictionary = UPGRADES[i]
-		upg_btns[s].visible = true
-		upg_infos[s].visible = true
-		upg_btns[s].texture_normal = _icons[int(u.icon)]
-		upg_infos[s].text = "%s\n%s\nур.%d/%d — цена %d" % [
-				u.name, _upg_effect_text(u), upg_levels[i], u.max, _upg_cost(i)]
-
-
-func _on_upg(slot: int) -> void:
-	var slots := _shop_slots()
-	if slot >= slots.size():
-		return
-	var i: int = slots[slot]
+func _on_upg(i: int) -> void:
 	var u: Dictionary = UPGRADES[i]
+	if upg_levels[i] >= int(u.max):
+		return
 	var c := _upg_cost(i)
 	if balance < c:
 		_dbg("улучшение %s: не хватает бабла (нужно %d, есть %d)" % [u.name, c, balance])
@@ -150,12 +135,12 @@ func _on_upg(slot: int) -> void:
 	_dbg("улучшение %s: ур.%d/%d, след. цена %d (клик %d, авто %d)" % [
 			u.name, upg_levels[i], u.max, _upg_cost(i), click_gain(), auto_gain()])
 	if upg_levels[i] >= int(u.max):
-		_dbg("улучшение %s прокачано полностью — в витрину придёт следующее" % u.name)
+		_dbg("улучшение %s прокачано полностью" % u.name)
 	_save()
 	_refresh_shop()
 	_update()
-	_float(_upg_effect_text(u), upg_btns[slot].position + upg_btns[slot].size * 0.5,
-			Color("#8dffa0"))
+	_float(_upg_effect_text(u),
+			upg_btns[i].global_position + upg_btns[i].size * 0.5, Color("#8dffa0"))
 
 
 func _process(delta: float) -> void:
@@ -189,8 +174,14 @@ func _ready() -> void:
 		at.atlas = sheet
 		at.region = r
 		_icons.append(at)
-	for s in upg_btns.size():
-		upg_btns[s].pressed.connect(_on_upg.bind(s))
+	for i in UPGRADES.size():
+		var btn: TextureButton = get_node(
+				"machine/upg_scroll/upg_vbox/upg%d_row/upg%d_btn" % [i, i])
+		var info: Label = get_node(
+				"machine/upg_scroll/upg_vbox/upg%d_row/upg%d_info" % [i, i])
+		upg_btns.append(btn)
+		upg_infos.append(info)
+		btn.pressed.connect(_on_upg.bind(i))
 	_refresh_shop()
 	for btn in _find_buttons(self):
 		_bind_press_anim(btn)
