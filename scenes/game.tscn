@@ -167,7 +167,7 @@ visible = false
 [node name="balance_icon" type="TextureRect" parent="machine"]
 texture = ExtResource("tex_money")
 position = Vector2(24, 34)
-size = Vector2(61, 56)
+size = Vector2(61.97, 57)
 expand_mode = 1
 stretch_mode = 5
 mouse_filter = 2
@@ -661,6 +661,23 @@ theme_override_styles/pressed = SubResource("sb_btn_p")
 text = "50"
 custom_minimum_size = Vector2(96, 56)
 theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("sb_btn_n")
+theme_override_styles/hover = SubResource("sb_btn_h")
+theme_override_styles/pressed = SubResource("sb_btn_p")
+
+[node name="bet_row" type="HBoxContainer" parent="machine/bet_menu/panel/vbox"]
+theme_override_constants/separation = 10
+
+[node name="bet_input" type="LineEdit" parent="machine/bet_menu/panel/vbox/bet_row"]
+size_flags_horizontal = 3
+custom_minimum_size = Vector2(0, 46)
+placeholder_text = "СВОЯ СТАВКА (ЧИСЛО)"
+theme_override_font_sizes/font_size = 20
+
+[node name="bet_apply" type="Button" parent="machine/bet_menu/panel/vbox/bet_row"]
+text = "ПРИМЕНЯТЬ"
+custom_minimum_size = Vector2(150, 46)
+theme_override_font_sizes/font_size = 18
 theme_override_styles/normal = SubResource("sb_btn_n")
 theme_override_styles/hover = SubResource("sb_btn_h")
 theme_override_styles/pressed = SubResource("sb_btn_p")

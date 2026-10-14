@@ -56,7 +56,7 @@ var textures: Array[Texture2D] = []
 var reels: Array[SlotReel] = []
 
 var balance := START_BALANCE
-var bet_idx := 0
+var bet_line := 1  ## ставка на линию: любое число от 1 до баланса
 var speed_idx := 0
 var vol_sfx := 80
 var vol_music := 80
@@ -102,6 +102,8 @@ var _wins_tex: Texture2D
 @onready var paytable_popup: Control = $machine/paytable_popup
 @onready var bet_menu: Control = $machine/bet_menu
 @onready var bet_total_label: Label = $machine/bet_menu/panel/vbox/bet_total
+@onready var bet_input: LineEdit = $machine/bet_menu/panel/vbox/bet_row/bet_input
+@onready var bet_apply: Button = $machine/bet_menu/panel/vbox/bet_row/bet_apply
 @onready var auto_menu: Control = $machine/auto_menu
 @onready var sound_menu: Control = $machine/sound_menu
 @onready var sfx_slider: HSlider = $machine/sound_menu/panel/vbox/row_sfx/sfx_slider
@@ -153,10 +155,11 @@ func _ready() -> void:
 	for i in BETS.size():
 		var opt: Button = get_node("machine/bet_menu/panel/vbox/grid/bet_opt%d" % i)
 		opt.pressed.connect(func() -> void:
-			bet_idx = i
+			_set_bet(int(BETS[i]))
 			_close_menus()
-			_update_labels()
 		)
+	bet_apply.pressed.connect(_on_bet_apply)
+	bet_input.text_submitted.connect(func(_t: String) -> void: _on_bet_apply())
 	for i in AUTO_OPTIONS.size():
 		var opt: Button = get_node("machine/auto_menu/panel/vbox/grid/auto_opt%d" % i)
 		opt.pressed.connect(func() -> void: _start_autospin(int(AUTO_OPTIONS[i])))
@@ -359,6 +362,7 @@ func _open_bet_menu() -> void:
 		return
 	bet_total_label.text = "Полная ставка: %s" % _fmt(total_bet())
 	_open_menu(bet_menu)
+	bet_input.text = str(bet_line)
 
 
 func _close_menus() -> void:
@@ -372,7 +376,7 @@ func _close_menus() -> void:
 
 func _update_labels() -> void:
 	balance_label.text = _fmt(balance)  # число рядом с иконкой мешка денег
-	bet_label.text = "Ставка/линия: %d" % BETS[bet_idx]
+	bet_label.text = "Ставка/линия: %d" % bet_line
 	fullbet_label.text = "Полная ставка: %d" % total_bet()
 	if _fs_left > 0:
 		freespin_label.show()
@@ -417,14 +421,33 @@ func _fmt(v: int) -> String:
 
 
 func total_bet() -> int:
-	return int(BETS[bet_idx]) * SlotData.PAYLINES.size()
+	return bet_line * SlotData.PAYLINES.size()
+
+
+## Любая ставка числом: от 1 до текущего баланса (больше — нельзя).
+func _set_bet(v: int) -> void:
+	var capped := clampi(v, 1, maxi(1, balance))
+	if v > balance:
+		_banner("СТАВКА НЕ БОЛЬШЕ БАЛАНСА: %s" % _fmt(balance), Color("#ff7b7b"))
+	bet_line = capped
+	bet_input.text = str(bet_line)
+	_save()
+	_update_labels()
+	_dbg("ставка на линию: %d, полная %d" % [bet_line, total_bet()])
+
+
+func _on_bet_apply() -> void:
+	var s := bet_input.text.replace(" ", "").replace("\t", "")
+	if not s.is_valid_int():
+		_banner("ВПИШИ ЧИСЛО: НАПРИМЕР 25", Color("#ff7b7b"))
+		return
+	_set_bet(int(s))
 
 
 func _on_max_bet() -> void:
 	if _spinning:
 		return
-	bet_idx = BETS.size() - 1
-	_update_labels()
+	_set_bet(int(BETS[BETS.size() - 1]))
 	_banner("МАКС. СТАВКА: %s" % _fmt(total_bet()), Color("#ffe9b8"))
 
 
@@ -484,7 +507,8 @@ func _load_save() -> void:
 	var cfg := ConfigFile.new()
 	if cfg.load(SAVE_PATH) == OK:
 		balance = int(cfg.get_value("save", "balance", START_BALANCE))
-		bet_idx = clampi(int(cfg.get_value("save", "bet", 0)), 0, BETS.size() - 1)
+		var old_idx := clampi(int(cfg.get_value("save", "bet", 0)), 0, BETS.size() - 1)
+		bet_line = maxi(1, int(cfg.get_value("save", "bet_line", int(BETS[old_idx]))))
 		speed_idx = clampi(int(cfg.get_value("save", "speed", 0)), 0, SPEEDS.size() - 1)
 		vol_sfx = clampi(int(cfg.get_value("save", "vol_sfx", 80)), 0, 100)
 		vol_music = clampi(int(cfg.get_value("save", "vol_music", 80)), 0, 100)
@@ -494,7 +518,7 @@ func _save() -> void:
 	var cfg := ConfigFile.new()
 	cfg.load(SAVE_PATH)  # сохраняем чужие ключи (уровни кликера, флаги)
 	cfg.set_value("save", "balance", balance)
-	cfg.set_value("save", "bet", bet_idx)
+	cfg.set_value("save", "bet_line", bet_line)
 	cfg.set_value("save", "speed", speed_idx)
 	cfg.set_value("save", "vol_sfx", vol_sfx)
 	cfg.set_value("save", "vol_music", vol_music)
@@ -573,7 +597,7 @@ func _spin(is_free: bool) -> void:
 	for reel in reels:
 		await reel.stopped
 
-	var res := SlotData.evaluate(grid, int(BETS[bet_idx]))
+	var res := SlotData.evaluate(grid, bet_line)
 	var won: int = res.total
 	_dbg("спин: выигрыш=%d, линий=%d, скаттер=%d, фриспины=%d" % [
 			won, res.line_wins.size(), res.scatter, res.free_spins])

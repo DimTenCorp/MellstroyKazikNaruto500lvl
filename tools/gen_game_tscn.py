@@ -205,7 +205,7 @@ label("freespin_label", "machine", "", 22, "7ef3ff",
 # чтобы их можно было перетаскивать в редакторе.
 node("balance_icon", "TextureRect", "machine",
      texture='ExtResource("tex_money")',
-     position="Vector2(24, 34)", size="Vector2(61, 56)",
+     position="Vector2(24, 34)", size="Vector2(61.97, 57)",  # размер заказчика — НЕ МЕНЯТЬ
      expand_mode=1, stretch_mode=5, mouse_filter=2)
 label("balance_label", "machine", "0", 26, "ffe9b8",
       position="Vector2(98, 44)", size="Vector2(240, 36)",
@@ -355,6 +355,18 @@ for i, b in enumerate(BETS_LIST):
          theme_override_styles_normal='SubResource("sb_btn_n")',
          theme_override_styles_hover='SubResource("sb_btn_h")',
          theme_override_styles_pressed='SubResource("sb_btn_p")')
+hbox("bet_row", "vbox", 10)
+node("bet_input", "LineEdit", "bet_row",
+     size_flags_horizontal=3,
+     custom_minimum_size="Vector2(0, 46)",
+     placeholder_text='"СВОЯ СТАВКА (ЧИСЛО)"',
+     theme_override_font_sizes_font_size=20)
+node("bet_apply", "Button", "bet_row", text='"ПРИМЕНЯТЬ"',
+     custom_minimum_size="Vector2(150, 46)",
+     theme_override_font_sizes_font_size=18,
+     theme_override_styles_normal='SubResource("sb_btn_n")',
+     theme_override_styles_hover='SubResource("sb_btn_h")',
+     theme_override_styles_pressed='SubResource("sb_btn_p")')
 label("bet_total", "vbox", "Полная ставка: 9", 20, "c9b6e2",
       horizontal_alignment=1)
 

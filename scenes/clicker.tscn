@@ -60,7 +60,7 @@ size = Vector2(1280, 720)
 [node name="hud_icon" type="TextureRect" parent="machine"]
 texture = ExtResource("tex_money")
 position = Vector2(30, 14)
-size = Vector2(66, 61)
+size = Vector2(66.31, 61)
 expand_mode = 1
 stretch_mode = 5
 mouse_filter = 2

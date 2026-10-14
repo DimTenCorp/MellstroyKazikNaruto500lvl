@@ -126,7 +126,7 @@ node("machine", "Control", ".", size=f"Vector2({VSIZE[0]}, {VSIZE[1]})")
 # верх: иконка денег + баланс
 node("hud_icon", "TextureRect", "machine",
      texture='ExtResource("tex_money")',
-     position="Vector2(30, 14)", size="Vector2(66, 61)",
+     position="Vector2(30, 14)", size="Vector2(66.31, 61)",  # размер заказчика — НЕ МЕНЯТЬ
      expand_mode=1, stretch_mode=5, mouse_filter=2)
 label("hud_balance", "machine", "0", 28, "ffe9b8",
       position="Vector2(104, 24)", size="Vector2(320, 38)",
