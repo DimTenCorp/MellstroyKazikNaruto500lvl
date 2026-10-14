@@ -171,6 +171,7 @@ stylebox("sb_popup", "241a31", "d8b45e", 2, 14)
 stylebox("sb_btn_n", "3a2c4d", "7a6399", 2, 10)
 stylebox("sb_btn_h", "4a3a63", "9d86c4", 2, 10)
 stylebox("sb_btn_p", "2a1f3a", "5d4a80", 2, 10)
+stylebox("sb_glow", "ffd79400", "ffd794", 6, 20)  # светящаяся рамка-указатель
 for key in BTN_REGIONS:
     if key in ("collect", "denom"):
         continue  # кнопки ЗАБРАТЬ/НОМИНАЛ удалены заказчиком
@@ -272,12 +273,11 @@ tbtn("speed_btn", "bottom_bar", "at_speed", (968, 592), (113, 120))
 tbtn("spin_btn", "bottom_bar", "at_spin", (1088, 520), (177, 192))
 tbtn("paytable_btn", "bottom_bar", "at_paytable", (1152, 152), (115, 127))
 tbtn("sound_btn", "bottom_bar", "at_sound", (1144, 0), (130, 139))
+node("clicker_glow", "Panel", "bottom_bar",
+     position="Vector2(1122, 267)", size="Vector2(239, 247)",
+     visible="false", mouse_filter=2,
+     theme_override_styles_panel='SubResource("sb_glow")')
 tbtn("clicker_btn", "bottom_bar", "at_bag", (1132, 277), (219, 227))
-node("bonus_btn", "Button", "bottom_bar", text='"БОНУС +1000"',
-     position="Vector2(360, 608)", size="Vector2(190, 40)",
-     theme_override_font_sizes_font_size=18,
-     theme_override_styles_normal='SubResource("sb_btn_n")',
-     theme_override_styles_hover='SubResource("sb_btn_n")',
      theme_override_styles_pressed='SubResource("sb_btn_n")',
      visible="false")
 
@@ -292,6 +292,25 @@ label("win_popup_label", "win_popup", "", 44, "ffe9b8",
       size="Vector2(500, 66)",
       theme_override_constants_outline_size=10,
       theme_override_colors_font_outline_color=hx("402008"))
+
+# интро при первом заходе: долг 100 000
+node("intro_popup", "Control", "machine", visible="false")
+node("intro_panel", "Panel", "intro_popup",
+     position="Vector2(300, 170)", size="Vector2(680, 360)",
+     theme_override_styles_panel='SubResource("sb_popup")')
+label("intro_label", "intro_popup",
+      "Ты набрал много кредитов и проиграл всё в казино, теперь тебе нужно "
+      "собрать 100 000 денег, чтобы расплатится с долгами", 24, "ffe9b8",
+      position="Vector2(330, 200)", size="Vector2(620, 240)",
+      autowrap_mode=3, horizontal_alignment=1, vertical_alignment=1,
+      theme_override_constants_outline_size=8,
+      theme_override_colors_font_outline_color=hx("241a31"))
+node("intro_btn", "Button", "intro_popup", text='"ПОНЯТНО, ПОГНАЛИ"',
+     position="Vector2(520, 455)", size="Vector2(240, 52)",
+     theme_override_font_sizes_font_size=20,
+     theme_override_styles_normal='SubResource("sb_btn_n")',
+     theme_override_styles_hover='SubResource("sb_btn_h")',
+     theme_override_styles_pressed='SubResource("sb_btn_p")')
 
 # ---------------------------------------------------------- меню ставок
 node("bet_menu", "Control", "machine", visible="false",

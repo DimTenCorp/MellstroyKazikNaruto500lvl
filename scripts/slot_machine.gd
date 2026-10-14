@@ -13,8 +13,7 @@ const GAP := 8.0                   ## зазор между ячейками
 const BETS := [1, 2, 5, 10, 25, 50]
 const AUTO_OPTIONS := [10, 25, 50, 100, -1]  ## -1 = без лимита
 const SPEEDS := [1.0, 2.0, 5.0]
-const START_BALANCE := 1000
-const BONUS_TOPUP := 1000
+const START_BALANCE := 0  ## первый заход: баланс 0 (долг по сюжету)
 const SAVE_PATH := "user://slot_save.cfg"
 
 # Порядок символов в таблице выплат (id из SlotData.Symbol) и их ключи в сцене.
@@ -86,8 +85,9 @@ var _wins_tex: Texture2D
 @onready var speed_btn: TextureButton = $machine/bottom_bar/speed_btn
 @onready var sound_btn: TextureButton = $machine/bottom_bar/sound_btn
 @onready var paytable_btn: TextureButton = $machine/bottom_bar/paytable_btn
-@onready var bonus_btn: Button = $machine/bottom_bar/bonus_btn
-@onready var clicker_btn: TextureButton = $machine/bottom_bar/clicker_btn
+@onready var intro_popup: Control = $machine/intro_popup
+@onready var intro_btn: Button = $machine/intro_popup/intro_btn
+@onready var clicker_glow: Panel = $machine/bottom_bar/clicker_glow@onready var clicker_btn: TextureButton = $machine/bottom_bar/clicker_btn
 @onready var fx_layer: Control = $machine/grid_panel/fx_layer
 @onready var lines_overlay: Node2D = $machine/grid_panel/lines_overlay
 @onready var win_popup: Control = $machine/win_popup
@@ -134,7 +134,7 @@ func _ready() -> void:
 	auto_btn.pressed.connect(_on_auto_pressed)
 	speed_btn.pressed.connect(_on_speed_pressed)
 	sound_btn.pressed.connect(func() -> void: _open_menu(sound_menu))
-	bonus_btn.pressed.connect(_on_bonus_pressed)
+	intro_btn.pressed.connect(_on_intro_ok)
 	clicker_btn.pressed.connect(_on_clicker_pressed)
 	paytable_btn.pressed.connect(func() -> void: _open_menu(paytable_popup))
 
@@ -180,6 +180,7 @@ func _ready() -> void:
 	_apply_toggles()
 	_refresh_paytable()
 	_update_labels()
+	_setup_intro()
 	_layout()
 	get_viewport().size_changed.connect(_layout)
 
@@ -222,6 +223,43 @@ func _find_buttons(root: Node) -> Array[BaseButton]:
 ## Рисует кнопки в задуманном размере: в сцене спрайт лежит в родном
 ## размере, здесь ставим масштаб от левого верхнего угла. Кликабельная
 ## область учитывает трансформ контроля, то есть совпадает с картинкой.
+func _flag_get(key: String, def: Variant) -> Variant:
+	var cfg := ConfigFile.new()
+	if cfg.load(SAVE_PATH) == OK:
+		return cfg.get_value("save", key, def)
+	return def
+
+
+func _flag_set(key: String, val: Variant) -> void:
+	var cfg := ConfigFile.new()
+	cfg.load(SAVE_PATH)
+	cfg.set_value("save", key, val)
+	cfg.save(SAVE_PATH)
+
+
+## Первый заход: сюжетный долг, баланс 0, подсветка кнопки кликера.
+func _setup_intro() -> void:
+	if not bool(_flag_get("intro_seen", false)):
+		balance = 0
+		_save()
+		_update_labels()
+		intro_popup.visible = true
+		_dbg("первый заход: баланс обнулён, показано интро о долге 100 000")
+	if not bool(_flag_get("clicker_visited", false)):
+		clicker_glow.visible = true
+		clicker_glow.modulate = Color(1, 1, 1, 1)
+		_glow_tw = create_tween().set_loops()
+		_glow_tw.tween_property(clicker_glow, "modulate:a", 0.15, 0.7)
+		_glow_tw.tween_property(clicker_glow, "modulate:a", 1.0, 0.7)
+		_dbg("световое выделение кнопки кликера включено")
+
+
+func _on_intro_ok() -> void:
+	_flag_set("intro_seen", true)
+	intro_popup.visible = false
+	_dbg("интро закрыто игроком")
+
+
 func _dbg(msg: String) -> void:
 	if DEBUG:
 		print("[slot] " + msg)
@@ -302,7 +340,6 @@ func _close_menus() -> void:
 func _update_labels() -> void:
 	balance_label.text = _fmt(balance)  # число рядом с иконкой мешка денег
 	bet_label.text = "Ставка/линия: %d" % BETS[bet_idx]
-	bonus_btn.visible = not _spinning and balance < total_bet()
 	if _fs_left > 0:
 		freespin_label.show()
 		freespin_label.text = "ФРИСПИНЫ: %d" % _fs_left
@@ -362,17 +399,14 @@ func _on_clicker_pressed() -> void:
 		_dbg("клик по мешку во время спина — игнор")
 		return
 	_dbg("переход в сцену кликера, баланс=%d" % balance)
+	if not bool(_flag_get("clicker_visited", false)):
+		_flag_set("clicker_visited", true)
+		clicker_glow.visible = false
+		if _glow_tw != null:
+			_glow_tw.kill()
+		_dbg("световое выделение снято: игрок впервые ушёл в кликер")
 	_save()
 	get_tree().change_scene_to_file("res://scenes/clicker.tscn")
-
-
-func _on_bonus_pressed() -> void:
-	if _spinning:
-		return
-	balance += BONUS_TOPUP
-	_save()
-	_update_labels()
-	_banner("БОНУС +%s МОНЕТ" % _fmt(BONUS_TOPUP), Color("#8dffa0"))
 
 
 func _on_auto_pressed() -> void:
@@ -424,6 +458,7 @@ func _load_save() -> void:
 
 func _save() -> void:
 	var cfg := ConfigFile.new()
+	cfg.load(SAVE_PATH)  # сохраняем чужие ключи (уровни кликера, флаги)
 	cfg.set_value("save", "balance", balance)
 	cfg.set_value("save", "bet", bet_idx)
 	cfg.set_value("save", "speed", speed_idx)
