@@ -202,12 +202,12 @@ func _watch_rewarded_ad() -> bool:
 	var st := {"rewarded": false, "finished": false, "failed": false}
 	var on_state := func(state) -> void:
 		_dbg("состояние рекламы: %s" % state)
-		if state == Bridge.RewardedState.REWARDED:
+		if state == br.RewardedState.REWARDED:
 			st["rewarded"] = true
-		elif state == Bridge.RewardedState.FAILED:
+		elif state == br.RewardedState.FAILED:
 			st["failed"] = true
 			st["finished"] = true
-		elif state == Bridge.RewardedState.CLOSED:
+		elif state == br.RewardedState.CLOSED:
 			st["finished"] = true
 	br.advertisement.rewarded_state_changed.connect(on_state)
 	_banner("СМОТРИМ РЕКЛАМУ... [%s]" % _platform_name(br), Color("#ffd794"))

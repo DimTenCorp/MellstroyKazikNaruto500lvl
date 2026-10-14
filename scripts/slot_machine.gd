@@ -58,7 +58,7 @@ const BTN_VISUAL := {
 	"spin_btn": Vector2(177, 192),
 	"paytable_btn": Vector2(115, 127),
 	"sound_btn": Vector2(130, 139),
-	"clicker_btn": Vector2(150, 155),
+	"clicker_btn": Vector2(219, 227),
 }
 
 const DEBUG := true  ## отладочные логи в консоль (print)

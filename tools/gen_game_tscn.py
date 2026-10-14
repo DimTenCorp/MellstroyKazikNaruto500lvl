@@ -271,7 +271,7 @@ tbtn("speed_btn", "bottom_bar", "at_speed", (968, 592), (265, 283))
 tbtn("spin_btn", "bottom_bar", "at_spin", (1088, 520), (270, 293))
 tbtn("paytable_btn", "bottom_bar", "at_paytable", (1152, 152), (256, 283))
 tbtn("sound_btn", "bottom_bar", "at_sound", (1144, 0), (266, 283))
-tbtn("clicker_btn", "bottom_bar", "at_bag", (986, -2), (274, 284))
+tbtn("clicker_btn", "bottom_bar", "at_bag", (1132, 277), (274, 284))
 node("bonus_btn", "Button", "bottom_bar", text='"БОНУС +1000"',
      position="Vector2(360, 608)", size="Vector2(190, 40)",
      theme_override_font_sizes_font_size=18,
