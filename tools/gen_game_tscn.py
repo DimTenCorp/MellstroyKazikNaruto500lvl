@@ -197,9 +197,11 @@ label("fs_label", "top_bar", "", 26, "7ef3ff", horizontal_alignment=2,
 grid_w = COLS * CELL + (COLS - 1) * GAP
 grid_h = ROWS * CELL + (ROWS - 1) * GAP
 panel_w, panel_h = grid_w + GRID_PAD * 2, grid_h + GRID_PAD * 2
-panel_x = (VSIZE[0] - panel_w) * 0.5
+# Позиция сетки — по центру области, размеченной заказчиком
+# (красный квадрат на скриншоте: ~(20, 97)-(912, 568)).
+GRID_X, GRID_Y = 66.0, 96.0
 node("grid_panel", "Panel", "machine",
-     position=f"Vector2({panel_x:g}, 110)",
+     position=f"Vector2({GRID_X:g}, {GRID_Y:g})",
      size=f"Vector2({panel_w:g}, {panel_h:g})",
      theme_override_styles_panel='SubResource("sb_grid")')
 
@@ -232,15 +234,20 @@ node("bottom_bar", "Control", "machine",
      mouse_filter=2)
 # Раскладка кнопок перенесена из правки заказчика (91dc2e5): позиции те же,
 # но размеры заданы через Size (без Scale), чтобы хитбокс совпадал со спрайтом.
-tbtn("bet_btn", "bottom_bar", "at_bet", (24, 568), (122, 135))
-tbtn("max_btn", "bottom_bar", "at_max", (152, 616), (72, 79))
+tbtn("bet_btn", "bottom_bar", "at_bet", (8, 544), (150, 166))
+tbtn("max_btn", "bottom_bar", "at_max", (168, 568), (129, 142))
 label("bet_label", "bottom_bar", "Ставка/линия: 1", 20, "ffe9b8",
-      position="Vector2(264, 48)")
-tbtn("auto_btn", "bottom_bar", "at_auto", (720, 576), (179, 142))
-tbtn("speed_btn", "bottom_bar", "at_speed", (912, 568), (127, 136))
-tbtn("spin_btn", "bottom_bar", "at_spin", (1056, 488), (204, 221))
-tbtn("paytable_btn", "bottom_bar", "at_paytable", (960, 8), (138, 153))
-tbtn("sound_btn", "bottom_bar", "at_sound", (1137, 1), (113, 120))
+      position="Vector2(264, 48)", size="Vector2(220, 28)")
+label("auto_label", "bottom_bar", "", 26, "7ef3ff",
+      position="Vector2(32, 112)", size="Vector2(200, 40)",
+      theme_override_constants_outline_size=8,
+      theme_override_colors_font_outline_color=hx("1d3a6e"),
+      visible="false")
+tbtn("auto_btn", "bottom_bar", "at_auto", (800, 576), (163, 144))
+tbtn("speed_btn", "bottom_bar", "at_speed", (968, 592), (113, 120))
+tbtn("spin_btn", "bottom_bar", "at_spin", (1088, 520), (177, 192))
+tbtn("paytable_btn", "bottom_bar", "at_paytable", (1152, 152), (115, 127))
+tbtn("sound_btn", "bottom_bar", "at_sound", (1144, 0), (130, 139))
 node("bonus_btn", "Button", "bottom_bar", text='"БОНУС +1000"',
      position="Vector2(360, 608)", size="Vector2(190, 40)",
      theme_override_font_sizes_font_size=18,
@@ -250,7 +257,7 @@ node("bonus_btn", "Button", "bottom_bar", text='"БОНУС +1000"',
      visible="false")
 
 # ---------------------------------------------------------- попап выигрыша
-node("win_popup", "Control", "machine", position="Vector2(390, 168)",
+node("win_popup", "Control", "machine", position="Vector2(215, 174)",
      size="Vector2(500, 330)", visible="false", mouse_filter=2)
 node("win_badge", "TextureRect", "win_popup",
      position="Vector2(0, 0)", size="Vector2(500, 260)",

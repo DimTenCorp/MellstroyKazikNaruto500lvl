@@ -72,6 +72,7 @@ var _wins_tex: Texture2D
 @onready var win_label: Label = $machine/top_bar/win_label
 @onready var fs_label: Label = $machine/top_bar/fs_label
 @onready var bet_label: Label = $machine/bottom_bar/bet_label
+@onready var auto_label: Label = $machine/bottom_bar/auto_label
 @onready var msg_label: Label = $machine/grid_panel/msg_label
 @onready var spin_btn: TextureButton = $machine/bottom_bar/spin_btn
 @onready var bet_btn: TextureButton = $machine/bottom_bar/bet_btn
@@ -253,11 +254,13 @@ func _update_labels() -> void:
 	if _fs_left > 0:
 		fs_label.show()
 		fs_label.text = "ФРИСПИНЫ: %d" % _fs_left
-	elif autospin:
-		fs_label.show()
-		fs_label.text = "АВТО: %s" % ("∞" if _auto_left < 0 else str(_auto_left))
 	else:
 		fs_label.hide()
+	if autospin:
+		auto_label.show()
+		auto_label.text = "АВТО: %s" % ("∞" if _auto_left < 0 else str(_auto_left))
+	else:
+		auto_label.hide()
 
 
 func _apply_toggles() -> void:
