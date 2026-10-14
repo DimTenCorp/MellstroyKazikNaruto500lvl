@@ -1,0 +1,171 @@
+#!/usr/bin/env python3
+"""Генератор scenes/clicker.tscn: сцена кликера «Бабло».
+
+Перезаписывает scenes/clicker.tscn целиком:
+    python3 tools/gen_clicker_tscn.py
+Весь UI — узлы сцены. Спрайты вырезаются атласами из
+img/buttons_clicker.png (монета «БАБЛО», кнопка play, мешок денег)
+и img/money_icon.png (иконка баланса).
+"""
+import os
+import re
+
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+VSIZE = (1280, 720)
+
+# Регионы img/buttons_clicker.png (x, y, w, h) — посчитаны по альфе листа.
+CLICKER_REGIONS = {
+    "money": (25, 28, 288, 273),   # стопка купюр
+    "play": (375, 25, 280, 276),   # кнопка play (реклама)
+    "bag": (726, 17, 274, 284),    # мешок денег
+    "coin": (20, 323, 278, 287),   # монета «БАБЛО»
+}
+
+OUT = []
+REG = {}
+
+
+def hx(h: str, a: float = 1.0) -> str:
+    r, g, b = (int(h[i:i + 2], 16) / 255.0 for i in (0, 2, 4))
+    return f"Color({r:g}, {g:g}, {b:g}, {a:g})"
+
+
+def res_uid(path: str) -> str:
+    m = re.search(r'uid="(uid://[^"]+)"',
+                  open(os.path.join(ROOT, path) + ".import").read())
+    return m.group(1)
+
+
+def prop_name(k: str) -> str:
+    for g in ("constants", "font_sizes", "colors", "styles"):
+        pre = f"theme_override_{g}_"
+        if k.startswith(pre):
+            return f"theme_override_{g}/" + k[len(pre):]
+    return k
+
+
+def node(name, ntype, parent, **props):
+    if parent == ".":
+        path, parent_attr = name, "."
+    else:
+        base = REG[parent]
+        path, parent_attr = base + "/" + name, base
+    REG[name] = path
+    OUT.append(f'\n[node name="{name}" type="{ntype}" '
+               f'parent="{parent_attr}"]')
+    for k, v in props.items():
+        OUT.append(f"{prop_name(k)} = {v}")
+
+
+def label(name, parent, text, fs, color, **kw):
+    props = {"text": '"' + text + '"',
+             "theme_override_font_sizes_font_size": fs,
+             "theme_override_colors_font_color": hx(color)}
+    props.update(kw)
+    node(name, "Label", parent, **props)
+
+
+def stylebox(sid, bg, border=None, width=0, radius=10):
+    OUT.append(f'\n[sub_resource type="StyleBoxFlat" id="{sid}"]')
+    OUT.append(f"bg_color = {hx(bg)}")
+    if width:
+        for side in ("left", "top", "right", "bottom"):
+            OUT.append(f"border_width_{side} = {width}")
+        OUT.append(f"border_color = {hx(border)}")
+    for c in ("top_left", "top_right", "bottom_left", "bottom_right"):
+        OUT.append(f"corner_radius_{c} = {radius}")
+
+
+def atlassub(sid, ext_id, rect):
+    OUT.append(f'\n[sub_resource type="AtlasTexture" id="{sid}"]')
+    OUT.append(f'atlas = ExtResource("{ext_id}")')
+    OUT.append(f"region = Rect2({rect[0]}, {rect[1]}, {rect[2]}, {rect[3]})")
+
+
+def tbtn(name, parent, sid, pos, size):
+    node(name, "TextureButton", parent,
+         texture_normal=f'SubResource("{sid}")',
+         stretch_mode=5,
+         position=f"Vector2({pos[0]}, {pos[1]})",
+         size=f"Vector2({size[0]}, {size[1]})")
+
+
+# ------------------------------------------------------------------ ресурсы
+ext = ['[ext_resource type="Script" path="res://scripts/clicker.gd" '
+       'id="scr"]',
+       f'[ext_resource type="Texture2D" uid="{res_uid("img/background/back2.jpg")}" '
+       'path="res://img/background/back2.jpg" id="tex_back2"]',
+       f'[ext_resource type="Texture2D" uid="{res_uid("img/buttons_clicker.png")}" '
+       'path="res://img/buttons_clicker.png" id="tex_clicker"]',
+       f'[ext_resource type="Texture2D" uid="{res_uid("img/money_icon.png")}" '
+       'path="res://img/money_icon.png" id="tex_money"]']
+
+stylebox("sb_btn_n", "3a2c4d", "7a6399", 2, 10)
+for key in ("coin", "play", "bag"):
+    atlassub("at_" + key, "tex_clicker", CLICKER_REGIONS[key])
+
+# ------------------------------------------------------------------ узлы
+OUT.append('\n[node name="clicker" type="Control"]')
+OUT.append("anchor_right = 1.0")
+OUT.append("anchor_bottom = 1.0")
+OUT.append("grow_horizontal = 2")
+OUT.append("grow_vertical = 2")
+OUT.append('script = ExtResource("scr")')
+
+node("bg", "TextureRect", ".", texture='ExtResource("tex_back2")',
+     anchor_right=1.0, anchor_bottom=1.0, grow_horizontal=2, grow_vertical=2,
+     stretch_mode=6, mouse_filter=2)
+node("bg_dim", "ColorRect", ".", color=hx("140a20", 0.55),
+     anchor_right=1.0, anchor_bottom=1.0, grow_horizontal=2, grow_vertical=2,
+     mouse_filter=2)
+node("machine", "Control", ".", size=f"Vector2({VSIZE[0]}, {VSIZE[1]})")
+
+# верх: иконка денег + баланс
+node("hud_icon", "TextureRect", "machine",
+     texture='ExtResource("tex_money")',
+     position="Vector2(30, 16)", size="Vector2(46, 40)",
+     expand_mode=1, stretch_mode=5, mouse_filter=2)
+label("hud_balance", "machine", "0", 28, "ffe9b8",
+      position="Vector2(86, 20)", size="Vector2(320, 38)",
+      theme_override_constants_outline_size=8,
+      theme_override_colors_font_outline_color=hx("402008"))
+
+# монета-кликер (в сцене родной размер региона, визуальный ставит скрипт)
+tbtn("coin_btn", "machine", "at_coin", (480, 165), CLICKER_REGIONS["coin"][2:])
+label("click_hint", "machine", "+5 за клик", 22, "9d8fb8",
+      position="Vector2(480, 508)", size="Vector2(320, 30)",
+      horizontal_alignment=1)
+
+# play = реклама с наградой
+tbtn("play_btn", "machine", "at_play", (1060, 520), CLICKER_REGIONS["play"][2:])
+label("play_caption", "machine", "РЕКЛАМА: +500", 20, "8dffa0",
+      position="Vector2(1000, 674)", size="Vector2(270, 28)",
+      horizontal_alignment=1)
+
+# возврат к слот-машине
+node("back_btn", "Button", "machine", text='"← К СЛОТАМ"',
+     position="Vector2(30, 640)", size="Vector2(230, 56)",
+     theme_override_font_sizes_font_size=20,
+     theme_override_styles_normal='SubResource("sb_btn_n")',
+     theme_override_styles_hover='SubResource("sb_btn_n")',
+     theme_override_styles_pressed='SubResource("sb_btn_n")')
+
+# баннер и слой всплывающих «+N»
+label("msg_label", "machine", "", 40, "ffffff", horizontal_alignment=1,
+      position="Vector2(0, 86)", size=f"Vector2({VSIZE[0]}, 60)",
+      theme_override_constants_outline_size=10,
+      theme_override_colors_font_outline_color=hx("3a1d6e"), visible="false")
+node("float_layer", "Control", "machine",
+     position="Vector2(0, 0)", size=f"Vector2({VSIZE[0]}, {VSIZE[1]})",
+     mouse_filter=2)
+
+# ------------------------------------------------------------------ сборка
+body = "\n".join(OUT)
+n_sub = body.count("\n[sub_resource ")
+n_ext = len(ext)
+header = (f"[gd_scene load_steps={n_ext + n_sub + 1} format=3 "
+          f'uid="uid://cpkkdr77qsj4v"]\n\n' + "\n".join(ext) + "\n")
+with open(os.path.join(ROOT, "scenes", "clicker.tscn"), "w") as f:
+    f.write(header + body + "\n")
+print("nodes:", body.count("\n[node "), "| sub_resources:", n_sub,
+      "| ext_resources:", n_ext)

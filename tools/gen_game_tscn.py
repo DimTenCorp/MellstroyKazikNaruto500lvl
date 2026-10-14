@@ -153,6 +153,8 @@ ext = ['[ext_resource type="Script" path="res://scripts/slot_machine.gd" '
        'path="res://img/background/back2.jpg" id="tex_back2"]',
        f'[ext_resource type="Texture2D" uid="{res_uid("img/money_icon.png")}" '
        'path="res://img/money_icon.png" id="tex_money"]',
+       f'[ext_resource type="Texture2D" uid="{res_uid("img/buttons_clicker.png")}" '
+       'path="res://img/buttons_clicker.png" id="tex_clicker"]',
        f'[ext_resource type="Texture2D" uid="{res_uid("img/buttons_spr/buttons_sprites.png")}" '
        'path="res://img/buttons/buttons_sprites.png" id="tex_buttons"]'.replace(
            "img/buttons/buttons_sprites.png", "img/buttons_spr/buttons_sprites.png"),
@@ -170,6 +172,8 @@ for key in BTN_REGIONS:
     if key in ("collect", "denom"):
         continue  # кнопки ЗАБРАТЬ/НОМИНАЛ удалены заказчиком
     atlassub("at_" + key, "tex_buttons", BTN_REGIONS[key])
+# мешок денег из листа кликера: кнопка перехода в кликер
+atlassub("at_bag", "tex_clicker", (726, 17, 274, 284))
 
 # ------------------------------------------------------------------ узлы
 OUT.append('\n[node name="game" type="Control" unique_id=1200433587]')
@@ -255,6 +259,7 @@ tbtn("speed_btn", "bottom_bar", "at_speed", (968, 592), (265, 283))
 tbtn("spin_btn", "bottom_bar", "at_spin", (1088, 520), (270, 293))
 tbtn("paytable_btn", "bottom_bar", "at_paytable", (1152, 152), (256, 283))
 tbtn("sound_btn", "bottom_bar", "at_sound", (1144, 0), (266, 283))
+tbtn("clicker_btn", "bottom_bar", "at_bag", (560, 545), (274, 284))
 node("bonus_btn", "Button", "bottom_bar", text='"БОНУС +1000"',
      position="Vector2(360, 608)", size="Vector2(190, 40)",
      theme_override_font_sizes_font_size=18,

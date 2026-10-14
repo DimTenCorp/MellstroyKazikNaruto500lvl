@@ -58,6 +58,7 @@ const BTN_VISUAL := {
 	"spin_btn": Vector2(177, 192),
 	"paytable_btn": Vector2(115, 127),
 	"sound_btn": Vector2(130, 139),
+	"clicker_btn": Vector2(150, 155),
 }
 
 var rng := RandomNumberGenerator.new()
@@ -95,6 +96,7 @@ var _wins_tex: Texture2D
 @onready var sound_btn: TextureButton = $machine/bottom_bar/sound_btn
 @onready var paytable_btn: TextureButton = $machine/bottom_bar/paytable_btn
 @onready var bonus_btn: Button = $machine/bottom_bar/bonus_btn
+@onready var clicker_btn: TextureButton = $machine/bottom_bar/clicker_btn
 @onready var fx_layer: Control = $machine/grid_panel/fx_layer
 @onready var lines_overlay: Node2D = $machine/grid_panel/lines_overlay
 @onready var win_popup: Control = $machine/win_popup
@@ -142,6 +144,7 @@ func _ready() -> void:
 	speed_btn.pressed.connect(_on_speed_pressed)
 	sound_btn.pressed.connect(func() -> void: _open_menu(sound_menu))
 	bonus_btn.pressed.connect(_on_bonus_pressed)
+	clicker_btn.pressed.connect(_on_clicker_pressed)
 	paytable_btn.pressed.connect(func() -> void: _open_menu(paytable_popup))
 
 	_connect_menu($machine/paytable_popup,
@@ -327,6 +330,13 @@ func _on_max_bet() -> void:
 	bet_idx = BETS.size() - 1
 	_update_labels()
 	_banner("МАКС. СТАВКА: %s" % _fmt(total_bet()), Color("#ffe9b8"))
+
+
+func _on_clicker_pressed() -> void:
+	if _spinning:
+		return
+	_save()
+	get_tree().change_scene_to_file("res://scenes/clicker.tscn")
 
 
 func _on_bonus_pressed() -> void:

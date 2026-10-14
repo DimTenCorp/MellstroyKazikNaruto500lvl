@@ -1,10 +1,11 @@
-[gd_scene load_steps=34 format=3 uid="uid://jem4ybiqp44h"]
+[gd_scene load_steps=36 format=3 uid="uid://jem4ybiqp44h"]
 
 [ext_resource type="Script" path="res://scripts/slot_machine.gd" id="scr"]
 [ext_resource type="Script" path="res://scripts/reel.gd" id="scr_reel"]
 [ext_resource type="Texture2D" uid="uid://caapsar1k8jmj" path="res://img/background/back1.jpg" id="tex_back1"]
 [ext_resource type="Texture2D" uid="uid://bjvofqj1cb0a6" path="res://img/background/back2.jpg" id="tex_back2"]
 [ext_resource type="Texture2D" uid="uid://cbbspveqsxiel" path="res://img/money_icon.png" id="tex_money"]
+[ext_resource type="Texture2D" uid="uid://b45p0biosgnhx" path="res://img/buttons_clicker.png" id="tex_clicker"]
 [ext_resource type="Texture2D" uid="uid://c8c74mus4cvcu" path="res://img/buttons_spr/buttons_sprites.png" id="tex_buttons"]
 [ext_resource type="Texture2D" uid="uid://cs0j88w7gf0vi" path="res://img/slot_machine/cherry.png" id="tex_cherry"]
 [ext_resource type="Texture2D" uid="uid://dkqqa1uaw1ua1" path="res://img/slot_machine/lemon.png" id="tex_lemon"]
@@ -109,6 +110,10 @@ region = Rect2(369, 330, 256, 283)
 [sub_resource type="AtlasTexture" id="at_sound"]
 atlas = ExtResource("tex_buttons")
 region = Rect2(1069, 330, 266, 283)
+
+[sub_resource type="AtlasTexture" id="at_bag"]
+atlas = ExtResource("tex_clicker")
+region = Rect2(726, 17, 274, 284)
 
 [node name="game" type="Control" unique_id=1200433587]
 anchor_right = 1.0
@@ -451,6 +456,12 @@ texture_normal = SubResource("at_sound")
 stretch_mode = 5
 position = Vector2(1144, 0)
 size = Vector2(266, 283)
+
+[node name="clicker_btn" type="TextureButton" parent="machine/bottom_bar"]
+texture_normal = SubResource("at_bag")
+stretch_mode = 5
+position = Vector2(560, 545)
+size = Vector2(274, 284)
 
 [node name="bonus_btn" type="Button" parent="machine/bottom_bar"]
 text = "БОНУС +1000"
