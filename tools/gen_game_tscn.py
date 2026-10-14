@@ -190,6 +190,13 @@ node("bg_dim", "ColorRect", ".", color=hx("140a20", 0.52),
      anchor_right=1.0, anchor_bottom=1.0, grow_horizontal=2, grow_vertical=2,
      mouse_filter=2)
 node("machine", "Control", ".", size=f"Vector2({VSIZE[0]}, {VSIZE[1]})")
+# Остаток фриспинов (узел добавлен заказчиком, перенесён под machine,
+# чтобы масштабироваться вместе с макетом).
+label("freespin_label", "machine", "", 22, "7ef3ff",
+      position="Vector2(32, 140)", size="Vector2(160, 34)",
+      theme_override_constants_outline_size=8,
+      theme_override_colors_font_outline_color=hx("1d3a6e"),
+      visible="false")
 # Иконка денег и число баланса лежат ОТДЕЛЬНО от контейнеров,
 # чтобы их можно было перетаскивать в редакторе.
 node("balance_icon", "TextureRect", "machine",
@@ -205,8 +212,6 @@ hbox("top_bar", "machine", 12, position="Vector2(30, 56)",
 spacer("spacer1", "top_bar")
 label("win_label", "top_bar", "", 26, "8dffa0", horizontal_alignment=1)
 spacer("spacer2", "top_bar")
-label("fs_label", "top_bar", "", 26, "7ef3ff", horizontal_alignment=2,
-      visible="false")
 
 grid_w = COLS * CELL + (COLS - 1) * GAP
 grid_h = ROWS * CELL + (ROWS - 1) * GAP
@@ -262,7 +267,7 @@ tbtn("speed_btn", "bottom_bar", "at_speed", (968, 592), (265, 283))
 tbtn("spin_btn", "bottom_bar", "at_spin", (1088, 520), (270, 293))
 tbtn("paytable_btn", "bottom_bar", "at_paytable", (1152, 152), (256, 283))
 tbtn("sound_btn", "bottom_bar", "at_sound", (1144, 0), (266, 283))
-tbtn("clicker_btn", "bottom_bar", "at_bag", (560, 545), (274, 284))
+tbtn("clicker_btn", "bottom_bar", "at_bag", (986, -2), (274, 284))
 node("bonus_btn", "Button", "bottom_bar", text='"БОНУС +1000"',
      position="Vector2(360, 608)", size="Vector2(190, 40)",
      theme_override_font_sizes_font_size=18,

@@ -41,6 +41,8 @@ func _ready() -> void:
 	coin_btn.pressed.connect(_on_coin)
 	play_btn.pressed.connect(_on_play)
 	back_btn.pressed.connect(_on_back)
+	for btn in _find_buttons(self):
+		_bind_press_anim(btn)
 	click_hint.text = "+%d за клик" % CLICK_VALUE
 	play_caption.text = "РЕКЛАМА: +%d" % AD_REWARD
 	_update()
@@ -87,23 +89,47 @@ func _fmt(v: int) -> String:
 	return out
 
 
+func _bind_press_anim(btn: BaseButton) -> void:
+	var base: Vector2 = btn.scale
+	btn.button_down.connect(func() -> void:
+		var old_tw: Tween = btn.get_meta("press_tw", null)
+		if old_tw != null and old_tw.is_valid():
+			old_tw.kill()
+		var tw := create_tween()
+		tw.tween_property(btn, "scale", base * 0.9, 0.06)
+		btn.set_meta("press_tw", tw)
+	)
+	btn.button_up.connect(func() -> void:
+		var old_tw: Tween = btn.get_meta("press_tw", null)
+		if old_tw != null and old_tw.is_valid():
+			old_tw.kill()
+		var tw := create_tween()
+		tw.tween_property(btn, "scale", base, 0.16) \
+			.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+		btn.set_meta("press_tw", tw)
+	)
+
+
+func _find_buttons(root: Node) -> Array[BaseButton]:
+	var out: Array[BaseButton] = []
+	var stack: Array[Node] = [root]
+	while not stack.is_empty():
+		var n: Node = stack.pop_back()
+		if n is BaseButton:
+			out.append(n)
+		for c in n.get_children():
+			stack.append(c)
+	return out
+
+
 # ------------------------------------------------------------------- клики
 
 func _on_coin() -> void:
 	balance += CLICK_VALUE
 	_save()
 	_update()
-	_punch()
 	_float("+%d" % CLICK_VALUE, coin_btn.position + VISUAL["coin_btn"] * 0.5,
 			Color("#ffe9b8"))
-
-
-func _punch() -> void:
-	var base: Vector2 = VISUAL["coin_btn"] / Vector2(278, 287)
-	var tw := create_tween()
-	tw.tween_property(coin_btn, "scale", base * 1.1, 0.07)
-	tw.tween_property(coin_btn, "scale", base, 0.14) \
-		.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 
 
 func _float(text: String, at: Vector2, color: Color) -> void:

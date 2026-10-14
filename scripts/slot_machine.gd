@@ -28,13 +28,13 @@ const SYMBOL_KEYS: Array[String] = [
 ## 0 ВЫИГРЫШ, 1 БОЛЬШОЙ, 2 МЕГА, 3 ЭПИЧЕСКИЙ, 4 СУПЕР, 5 БОНУС,
 ## 6 ДЖЕКПОТ, 7 ФРИСПИН, 8 ВЫИГРЫШ В БОНУСНОЙ ИГРЕ.
 const WIN_REGIONS: Array[Rect2] = [
-	Rect2(9, 23, 394, 212),
+	Rect2(9, 23, 394, 221),
 	Rect2(462, 8, 393, 218),
-	Rect2(929, 11, 373, 224),
-	Rect2(24, 235, 365, 224),
+	Rect2(929, 11, 373, 230),
+	Rect2(24, 244, 365, 245),
 	Rect2(466, 266, 386, 191),
-	Rect2(949, 235, 331, 186),
-	Rect2(6, 483, 401, 238),
+	Rect2(949, 298, 331, 123),
+	Rect2(6, 489, 401, 232),
 	Rect2(471, 523, 372, 179),
 	Rect2(921, 512, 392, 174),
 ]
@@ -84,7 +84,7 @@ var _wins_tex: Texture2D
 @onready var machine: Control = $machine
 @onready var balance_label: Label = $machine/balance_label
 @onready var win_label: Label = $machine/top_bar/win_label
-@onready var fs_label: Label = $machine/top_bar/fs_label
+@onready var freespin_label: Label = $machine/freespin_label
 @onready var bet_label: Label = $machine/bottom_bar/bet_label
 @onready var auto_label: Label = $machine/bottom_bar/auto_label
 @onready var msg_label: Label = $machine/grid_panel/msg_label
@@ -179,6 +179,8 @@ func _ready() -> void:
 	)
 
 	_apply_button_visuals()
+	for btn in _find_buttons(self):
+		_bind_press_anim(btn)
 	_load_save()
 	sfx_slider.value = vol_sfx
 	music_slider.value = vol_music
@@ -190,6 +192,40 @@ func _ready() -> void:
 	_update_labels()
 	_layout()
 	get_viewport().size_changed.connect(_layout)
+
+
+## Анимация нажатия: кнопка чуть сжимается и отпружинивает обратно.
+func _bind_press_anim(btn: BaseButton) -> void:
+	var base: Vector2 = btn.scale
+	btn.button_down.connect(func() -> void:
+		var old: Tween = btn.get_meta("press_tw", null)
+		if old != null and old.is_valid():
+			old.kill()
+		var tw := create_tween()
+		tw.tween_property(btn, "scale", base * 0.9, 0.06)
+		btn.set_meta("press_tw", tw)
+	)
+	btn.button_up.connect(func() -> void:
+		var old: Tween = btn.get_meta("press_tw", null)
+		if old != null and old.is_valid():
+			old.kill()
+		var tw := create_tween()
+		tw.tween_property(btn, "scale", base, 0.16) \
+			.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+		btn.set_meta("press_tw", tw)
+	)
+
+
+func _find_buttons(root: Node) -> Array[BaseButton]:
+	var out: Array[BaseButton] = []
+	var stack: Array[Node] = [root]
+	while not stack.is_empty():
+		var n: Node = stack.pop_back()
+		if n is BaseButton:
+			out.append(n)
+		for c in n.get_children():
+			stack.append(c)
+	return out
 
 
 ## Рисует кнопки в задуманном размере: в сцене спрайт лежит в родном
@@ -279,10 +315,10 @@ func _update_labels() -> void:
 	bet_label.text = "Ставка/линия: %d" % BETS[bet_idx]
 	bonus_btn.visible = not _spinning and balance < total_bet()
 	if _fs_left > 0:
-		fs_label.show()
-		fs_label.text = "ФРИСПИНЫ: %d" % _fs_left
+		freespin_label.show()
+		freespin_label.text = "ФРИСПИНЫ: %d" % _fs_left
 	else:
-		fs_label.hide()
+		freespin_label.hide()
 	if autospin:
 		auto_label.show()
 		auto_label.text = "АВТО: %s" % ("∞" if _auto_left < 0 else str(_auto_left))
