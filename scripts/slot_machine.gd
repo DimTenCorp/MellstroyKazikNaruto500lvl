@@ -189,18 +189,14 @@ func _ready() -> void:
 	get_viewport().size_changed.connect(_layout)
 
 
-## Рисует кнопки в задуманном размере и сужает хитбокс до него же.
+## Рисует кнопки в задуманном размере: в сцене спрайт лежит в родном
+## размере, здесь ставим масштаб от левого верхнего угла. Кликабельная
+## область учитывает трансформ контроля, то есть совпадает с картинкой.
 func _apply_button_visuals() -> void:
-	for name in BTN_VISUAL:
-		var btn: TextureButton = get_node("machine/bottom_bar/" + name)
-		var vis: Vector2 = BTN_VISUAL[name]
+	for btn_key in BTN_VISUAL:
+		var btn: TextureButton = get_node("machine/bottom_bar/" + btn_key)
 		btn.pivot_offset = Vector2.ZERO
-		btn.scale = vis / btn.size
-		var img := Image.create(int(vis.x), int(vis.y), false, Image.FORMAT_RGBA8)
-		img.fill(Color(1, 1, 1, 1))
-		var mask := BitMap.new()
-		mask.create_from_image_alpha(img)
-		btn.click_mask = mask
+		btn.scale = BTN_VISUAL[btn_key] / btn.size
 
 
 func _layout() -> void:
