@@ -78,6 +78,7 @@ var _wins_tex: Texture2D
 @onready var win_label: Label = $machine/win_label
 @onready var freespin_label: Label = $machine/freespin_label
 @onready var bet_label: Label = $machine/bottom_bar/bet_label
+@onready var fullbet_label: Label = $machine/bottom_bar/fullbet_label
 @onready var auto_label: Label = $machine/bottom_bar/auto_label
 @onready var msg_label: Label = $machine/grid_panel/msg_label
 @onready var spin_btn: TextureButton = $machine/bottom_bar/spin_btn
@@ -372,6 +373,7 @@ func _close_menus() -> void:
 func _update_labels() -> void:
 	balance_label.text = _fmt(balance)  # число рядом с иконкой мешка денег
 	bet_label.text = "Ставка/линия: %d" % BETS[bet_idx]
+	fullbet_label.text = "Полная ставка: %d" % total_bet()
 	if _fs_left > 0:
 		freespin_label.show()
 		freespin_label.text = "ФРИСПИНЫ: %d" % _fs_left

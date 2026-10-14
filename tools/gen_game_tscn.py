@@ -205,7 +205,7 @@ label("freespin_label", "machine", "", 22, "7ef3ff",
 # чтобы их можно было перетаскивать в редакторе.
 node("balance_icon", "TextureRect", "machine",
      texture='ExtResource("tex_money")',
-     position="Vector2(24, 34)", size="Vector2(66, 61)",
+     position="Vector2(24, 34)", size="Vector2(61, 56)",
      expand_mode=1, stretch_mode=5, mouse_filter=2)
 label("balance_label", "machine", "0", 26, "ffe9b8",
       position="Vector2(98, 44)", size="Vector2(240, 36)",
@@ -274,10 +274,10 @@ tbtn("spin_btn", "bottom_bar", "at_spin", (1088, 520), (177, 192))
 tbtn("paytable_btn", "bottom_bar", "at_paytable", (1152, 152), (115, 127))
 tbtn("sound_btn", "bottom_bar", "at_sound", (1144, 0), (130, 139))
 node("clicker_glow", "Panel", "bottom_bar",
-     position="Vector2(1122, 267)", size="Vector2(239, 247)",
+     position="Vector2(1140, 277)", size="Vector2(140, 140)",
      visible="false", mouse_filter=2,
      theme_override_styles_panel='SubResource("sb_glow")')
-tbtn("clicker_btn", "bottom_bar", "at_bag", (1132, 277), (219, 227))
+tbtn("clicker_btn", "bottom_bar", "at_bag", (1153, 283), (116, 120))
 
 # ---------------------------------------------------------- попап выигрыша
 node("win_popup", "Control", "machine", position="Vector2(364, 173)",
@@ -291,9 +291,15 @@ label("win_popup_label", "win_popup", "", 44, "ffe9b8",
       theme_override_constants_outline_size=10,
       theme_override_colors_font_outline_color=hx("402008"))
 
+# полная ставка (узел заказчика fullbet_label, 79b2277)
+label("fullbet_label", "bottom_bar", "Полная ставка:", 22, "ffe9b8",
+      position="Vector2(342, 602)", size="Vector2(290, 59)",
+      theme_override_constants_outline_size=6,
+      theme_override_colors_font_outline_color=hx("402008"))
+
 # отладочная кнопка полного сброса прогресса
 node("reset_btn", "Button", "machine", text='"СБРОС (ОТЛАДКА)"',
-     position="Vector2(32, 180)", size="Vector2(150, 36)",
+     position="Vector2(-241, 176)", size="Vector2(152, 36)",
      theme_override_font_sizes_font_size=14,
      theme_override_styles_normal='SubResource("sb_btn_n")',
      theme_override_styles_hover='SubResource("sb_btn_h")',
