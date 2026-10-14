@@ -88,6 +88,7 @@ var _wins_tex: Texture2D
 @onready var paytable_btn: TextureButton = $machine/bottom_bar/paytable_btn
 @onready var intro_popup: Control = $machine/intro_popup
 @onready var intro_btn: Button = $machine/intro_popup/intro_btn
+@onready var intro_label: Label = $machine/intro_popup/intro_label
 @onready var clicker_glow: Panel = $machine/bottom_bar/clicker_glow
 @onready var clicker_btn: TextureButton = $machine/bottom_bar/clicker_btn
 @onready var fx_layer: Control = $machine/grid_panel/fx_layer
@@ -241,6 +242,12 @@ func _flag_set(key: String, val: Variant) -> void:
 
 ## Первый заход: сюжетный долг, баланс 0, подсветка кнопки кликера.
 func _setup_intro() -> void:
+	# страховка: редактор может сбросить autowrap/размер — ставим из кода
+	intro_label.size = Vector2(620, 240)
+	intro_label.position = Vector2(330, 200)
+	intro_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	intro_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	intro_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	if not bool(_flag_get("intro_seen", false)):
 		balance = 0
 		_save()
