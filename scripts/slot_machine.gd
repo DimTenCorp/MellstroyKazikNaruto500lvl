@@ -676,4 +676,3 @@ func _banner(text: String, color: Color) -> void:
 		t2.tween_property(msg_label, "modulate", Color(1, 1, 1, 0), 0.4)
 		_banner_tw = t2
 	)
-
