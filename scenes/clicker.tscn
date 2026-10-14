@@ -104,31 +104,208 @@ position = Vector2(1000, 674)
 size = Vector2(270, 28)
 horizontal_alignment = 1
 
-[node name="upg0_btn" type="TextureButton" parent="machine"]
+[node name="upg_scroll" type="ScrollContainer" parent="machine"]
+position = Vector2(900, 20)
+size = Vector2(372, 420)
+
+[node name="upg_vbox" type="VBoxContainer" parent="machine/upg_scroll"]
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
+
+[node name="upg0_row" type="HBoxContainer" parent="machine/upg_scroll/upg_vbox"]
+theme_override_constants/separation = 6
+
+[node name="upg0_btn" type="TextureButton" parent="machine/upg_scroll/upg_vbox/upg0_row"]
 ignore_texture_size = true
 stretch_mode = 5
-position = Vector2(906, 31)
-size = Vector2(98, 91)
+custom_minimum_size = Vector2(56, 56)
 
-[node name="upg0_info" type="Label" parent="machine"]
+[node name="upg0_info" type="Label" parent="machine/upg_scroll/upg_vbox/upg0_row"]
 text = ""
-theme_override_font_sizes/font_size = 14
+theme_override_font_sizes/font_size = 13
 theme_override_colors/font_color = Color(0.615686, 0.560784, 0.721569, 1)
-position = Vector2(1041, 44)
-size = Vector2(229, 68)
+size_flags_horizontal = 3
+vertical_alignment = 1
 
-[node name="upg1_btn" type="TextureButton" parent="machine"]
+[node name="upg1_row" type="HBoxContainer" parent="machine/upg_scroll/upg_vbox"]
+theme_override_constants/separation = 6
+
+[node name="upg1_btn" type="TextureButton" parent="machine/upg_scroll/upg_vbox/upg1_row"]
 ignore_texture_size = true
 stretch_mode = 5
-position = Vector2(905, 175)
-size = Vector2(98, 91)
+custom_minimum_size = Vector2(56, 56)
 
-[node name="upg1_info" type="Label" parent="machine"]
+[node name="upg1_info" type="Label" parent="machine/upg_scroll/upg_vbox/upg1_row"]
 text = ""
-theme_override_font_sizes/font_size = 14
+theme_override_font_sizes/font_size = 13
 theme_override_colors/font_color = Color(0.615686, 0.560784, 0.721569, 1)
-position = Vector2(1040, 188)
-size = Vector2(230, 68)
+size_flags_horizontal = 3
+vertical_alignment = 1
+
+[node name="upg2_row" type="HBoxContainer" parent="machine/upg_scroll/upg_vbox"]
+theme_override_constants/separation = 6
+
+[node name="upg2_btn" type="TextureButton" parent="machine/upg_scroll/upg_vbox/upg2_row"]
+ignore_texture_size = true
+stretch_mode = 5
+custom_minimum_size = Vector2(56, 56)
+
+[node name="upg2_info" type="Label" parent="machine/upg_scroll/upg_vbox/upg2_row"]
+text = ""
+theme_override_font_sizes/font_size = 13
+theme_override_colors/font_color = Color(0.615686, 0.560784, 0.721569, 1)
+size_flags_horizontal = 3
+vertical_alignment = 1
+
+[node name="upg3_row" type="HBoxContainer" parent="machine/upg_scroll/upg_vbox"]
+theme_override_constants/separation = 6
+
+[node name="upg3_btn" type="TextureButton" parent="machine/upg_scroll/upg_vbox/upg3_row"]
+ignore_texture_size = true
+stretch_mode = 5
+custom_minimum_size = Vector2(56, 56)
+
+[node name="upg3_info" type="Label" parent="machine/upg_scroll/upg_vbox/upg3_row"]
+text = ""
+theme_override_font_sizes/font_size = 13
+theme_override_colors/font_color = Color(0.615686, 0.560784, 0.721569, 1)
+size_flags_horizontal = 3
+vertical_alignment = 1
+
+[node name="upg4_row" type="HBoxContainer" parent="machine/upg_scroll/upg_vbox"]
+theme_override_constants/separation = 6
+
+[node name="upg4_btn" type="TextureButton" parent="machine/upg_scroll/upg_vbox/upg4_row"]
+ignore_texture_size = true
+stretch_mode = 5
+custom_minimum_size = Vector2(56, 56)
+
+[node name="upg4_info" type="Label" parent="machine/upg_scroll/upg_vbox/upg4_row"]
+text = ""
+theme_override_font_sizes/font_size = 13
+theme_override_colors/font_color = Color(0.615686, 0.560784, 0.721569, 1)
+size_flags_horizontal = 3
+vertical_alignment = 1
+
+[node name="upg5_row" type="HBoxContainer" parent="machine/upg_scroll/upg_vbox"]
+theme_override_constants/separation = 6
+
+[node name="upg5_btn" type="TextureButton" parent="machine/upg_scroll/upg_vbox/upg5_row"]
+ignore_texture_size = true
+stretch_mode = 5
+custom_minimum_size = Vector2(56, 56)
+
+[node name="upg5_info" type="Label" parent="machine/upg_scroll/upg_vbox/upg5_row"]
+text = ""
+theme_override_font_sizes/font_size = 13
+theme_override_colors/font_color = Color(0.615686, 0.560784, 0.721569, 1)
+size_flags_horizontal = 3
+vertical_alignment = 1
+
+[node name="upg6_row" type="HBoxContainer" parent="machine/upg_scroll/upg_vbox"]
+theme_override_constants/separation = 6
+
+[node name="upg6_btn" type="TextureButton" parent="machine/upg_scroll/upg_vbox/upg6_row"]
+ignore_texture_size = true
+stretch_mode = 5
+custom_minimum_size = Vector2(56, 56)
+
+[node name="upg6_info" type="Label" parent="machine/upg_scroll/upg_vbox/upg6_row"]
+text = ""
+theme_override_font_sizes/font_size = 13
+theme_override_colors/font_color = Color(0.615686, 0.560784, 0.721569, 1)
+size_flags_horizontal = 3
+vertical_alignment = 1
+
+[node name="upg7_row" type="HBoxContainer" parent="machine/upg_scroll/upg_vbox"]
+theme_override_constants/separation = 6
+
+[node name="upg7_btn" type="TextureButton" parent="machine/upg_scroll/upg_vbox/upg7_row"]
+ignore_texture_size = true
+stretch_mode = 5
+custom_minimum_size = Vector2(56, 56)
+
+[node name="upg7_info" type="Label" parent="machine/upg_scroll/upg_vbox/upg7_row"]
+text = ""
+theme_override_font_sizes/font_size = 13
+theme_override_colors/font_color = Color(0.615686, 0.560784, 0.721569, 1)
+size_flags_horizontal = 3
+vertical_alignment = 1
+
+[node name="upg8_row" type="HBoxContainer" parent="machine/upg_scroll/upg_vbox"]
+theme_override_constants/separation = 6
+
+[node name="upg8_btn" type="TextureButton" parent="machine/upg_scroll/upg_vbox/upg8_row"]
+ignore_texture_size = true
+stretch_mode = 5
+custom_minimum_size = Vector2(56, 56)
+
+[node name="upg8_info" type="Label" parent="machine/upg_scroll/upg_vbox/upg8_row"]
+text = ""
+theme_override_font_sizes/font_size = 13
+theme_override_colors/font_color = Color(0.615686, 0.560784, 0.721569, 1)
+size_flags_horizontal = 3
+vertical_alignment = 1
+
+[node name="upg9_row" type="HBoxContainer" parent="machine/upg_scroll/upg_vbox"]
+theme_override_constants/separation = 6
+
+[node name="upg9_btn" type="TextureButton" parent="machine/upg_scroll/upg_vbox/upg9_row"]
+ignore_texture_size = true
+stretch_mode = 5
+custom_minimum_size = Vector2(56, 56)
+
+[node name="upg9_info" type="Label" parent="machine/upg_scroll/upg_vbox/upg9_row"]
+text = ""
+theme_override_font_sizes/font_size = 13
+theme_override_colors/font_color = Color(0.615686, 0.560784, 0.721569, 1)
+size_flags_horizontal = 3
+vertical_alignment = 1
+
+[node name="upg10_row" type="HBoxContainer" parent="machine/upg_scroll/upg_vbox"]
+theme_override_constants/separation = 6
+
+[node name="upg10_btn" type="TextureButton" parent="machine/upg_scroll/upg_vbox/upg10_row"]
+ignore_texture_size = true
+stretch_mode = 5
+custom_minimum_size = Vector2(56, 56)
+
+[node name="upg10_info" type="Label" parent="machine/upg_scroll/upg_vbox/upg10_row"]
+text = ""
+theme_override_font_sizes/font_size = 13
+theme_override_colors/font_color = Color(0.615686, 0.560784, 0.721569, 1)
+size_flags_horizontal = 3
+vertical_alignment = 1
+
+[node name="upg11_row" type="HBoxContainer" parent="machine/upg_scroll/upg_vbox"]
+theme_override_constants/separation = 6
+
+[node name="upg11_btn" type="TextureButton" parent="machine/upg_scroll/upg_vbox/upg11_row"]
+ignore_texture_size = true
+stretch_mode = 5
+custom_minimum_size = Vector2(56, 56)
+
+[node name="upg11_info" type="Label" parent="machine/upg_scroll/upg_vbox/upg11_row"]
+text = ""
+theme_override_font_sizes/font_size = 13
+theme_override_colors/font_color = Color(0.615686, 0.560784, 0.721569, 1)
+size_flags_horizontal = 3
+vertical_alignment = 1
+
+[node name="upg12_row" type="HBoxContainer" parent="machine/upg_scroll/upg_vbox"]
+theme_override_constants/separation = 6
+
+[node name="upg12_btn" type="TextureButton" parent="machine/upg_scroll/upg_vbox/upg12_row"]
+ignore_texture_size = true
+stretch_mode = 5
+custom_minimum_size = Vector2(56, 56)
+
+[node name="upg12_info" type="Label" parent="machine/upg_scroll/upg_vbox/upg12_row"]
+text = ""
+theme_override_font_sizes/font_size = 13
+theme_override_colors/font_color = Color(0.615686, 0.560784, 0.721569, 1)
+size_flags_horizontal = 3
+vertical_alignment = 1
 
 [node name="auto_stat" type="Label" parent="machine"]
 text = "авт. бабло: 0/с"

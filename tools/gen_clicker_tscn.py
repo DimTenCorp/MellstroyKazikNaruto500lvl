@@ -145,18 +145,104 @@ label("play_caption", "machine", "РЕКЛАМА: +500", 20, "8dffa0",
       position="Vector2(1000, 674)", size="Vector2(270, 28)",
       horizontal_alignment=1)
 
-# витрина улучшений (2 слота): иконку и тексты ставит скрипт в рантайме,
-# сюда после полной прокачки приходит следующее улучшение из очереди
-node("upg0_btn", "TextureButton", "machine",
+# прокручиваемый список всех улучшений (строки — узлы сцены)
+node("upg_scroll", "ScrollContainer", "machine",
+     position="Vector2(900, 20)", size="Vector2(372, 420)")
+node("upg_vbox", "VBoxContainer", "upg_scroll",
+     size_flags_horizontal=3,
+     theme_override_constants_separation=6)
+node("upg0_row", "HBoxContainer", "upg_vbox",
+     theme_override_constants_separation=6)
+node("upg0_btn", "TextureButton", "upg0_row",
      ignore_texture_size="true", stretch_mode=5,
-     position="Vector2(906, 31)", size="Vector2(98, 91)")
-label("upg0_info", "machine", "", 14, "9d8fb8",
-      position="Vector2(1041, 44)", size="Vector2(229, 68)")
-node("upg1_btn", "TextureButton", "machine",
+     custom_minimum_size="Vector2(56, 56)")
+label("upg0_info", "upg0_row", "", 13, "9d8fb8",
+      size_flags_horizontal=3, vertical_alignment=1)
+node("upg1_row", "HBoxContainer", "upg_vbox",
+     theme_override_constants_separation=6)
+node("upg1_btn", "TextureButton", "upg1_row",
      ignore_texture_size="true", stretch_mode=5,
-     position="Vector2(905, 175)", size="Vector2(98, 91)")
-label("upg1_info", "machine", "", 14, "9d8fb8",
-      position="Vector2(1040, 188)", size="Vector2(230, 68)")
+     custom_minimum_size="Vector2(56, 56)")
+label("upg1_info", "upg1_row", "", 13, "9d8fb8",
+      size_flags_horizontal=3, vertical_alignment=1)
+node("upg2_row", "HBoxContainer", "upg_vbox",
+     theme_override_constants_separation=6)
+node("upg2_btn", "TextureButton", "upg2_row",
+     ignore_texture_size="true", stretch_mode=5,
+     custom_minimum_size="Vector2(56, 56)")
+label("upg2_info", "upg2_row", "", 13, "9d8fb8",
+      size_flags_horizontal=3, vertical_alignment=1)
+node("upg3_row", "HBoxContainer", "upg_vbox",
+     theme_override_constants_separation=6)
+node("upg3_btn", "TextureButton", "upg3_row",
+     ignore_texture_size="true", stretch_mode=5,
+     custom_minimum_size="Vector2(56, 56)")
+label("upg3_info", "upg3_row", "", 13, "9d8fb8",
+      size_flags_horizontal=3, vertical_alignment=1)
+node("upg4_row", "HBoxContainer", "upg_vbox",
+     theme_override_constants_separation=6)
+node("upg4_btn", "TextureButton", "upg4_row",
+     ignore_texture_size="true", stretch_mode=5,
+     custom_minimum_size="Vector2(56, 56)")
+label("upg4_info", "upg4_row", "", 13, "9d8fb8",
+      size_flags_horizontal=3, vertical_alignment=1)
+node("upg5_row", "HBoxContainer", "upg_vbox",
+     theme_override_constants_separation=6)
+node("upg5_btn", "TextureButton", "upg5_row",
+     ignore_texture_size="true", stretch_mode=5,
+     custom_minimum_size="Vector2(56, 56)")
+label("upg5_info", "upg5_row", "", 13, "9d8fb8",
+      size_flags_horizontal=3, vertical_alignment=1)
+node("upg6_row", "HBoxContainer", "upg_vbox",
+     theme_override_constants_separation=6)
+node("upg6_btn", "TextureButton", "upg6_row",
+     ignore_texture_size="true", stretch_mode=5,
+     custom_minimum_size="Vector2(56, 56)")
+label("upg6_info", "upg6_row", "", 13, "9d8fb8",
+      size_flags_horizontal=3, vertical_alignment=1)
+node("upg7_row", "HBoxContainer", "upg_vbox",
+     theme_override_constants_separation=6)
+node("upg7_btn", "TextureButton", "upg7_row",
+     ignore_texture_size="true", stretch_mode=5,
+     custom_minimum_size="Vector2(56, 56)")
+label("upg7_info", "upg7_row", "", 13, "9d8fb8",
+      size_flags_horizontal=3, vertical_alignment=1)
+node("upg8_row", "HBoxContainer", "upg_vbox",
+     theme_override_constants_separation=6)
+node("upg8_btn", "TextureButton", "upg8_row",
+     ignore_texture_size="true", stretch_mode=5,
+     custom_minimum_size="Vector2(56, 56)")
+label("upg8_info", "upg8_row", "", 13, "9d8fb8",
+      size_flags_horizontal=3, vertical_alignment=1)
+node("upg9_row", "HBoxContainer", "upg_vbox",
+     theme_override_constants_separation=6)
+node("upg9_btn", "TextureButton", "upg9_row",
+     ignore_texture_size="true", stretch_mode=5,
+     custom_minimum_size="Vector2(56, 56)")
+label("upg9_info", "upg9_row", "", 13, "9d8fb8",
+      size_flags_horizontal=3, vertical_alignment=1)
+node("upg10_row", "HBoxContainer", "upg_vbox",
+     theme_override_constants_separation=6)
+node("upg10_btn", "TextureButton", "upg10_row",
+     ignore_texture_size="true", stretch_mode=5,
+     custom_minimum_size="Vector2(56, 56)")
+label("upg10_info", "upg10_row", "", 13, "9d8fb8",
+      size_flags_horizontal=3, vertical_alignment=1)
+node("upg11_row", "HBoxContainer", "upg_vbox",
+     theme_override_constants_separation=6)
+node("upg11_btn", "TextureButton", "upg11_row",
+     ignore_texture_size="true", stretch_mode=5,
+     custom_minimum_size="Vector2(56, 56)")
+label("upg11_info", "upg11_row", "", 13, "9d8fb8",
+      size_flags_horizontal=3, vertical_alignment=1)
+node("upg12_row", "HBoxContainer", "upg_vbox",
+     theme_override_constants_separation=6)
+node("upg12_btn", "TextureButton", "upg12_row",
+     ignore_texture_size="true", stretch_mode=5,
+     custom_minimum_size="Vector2(56, 56)")
+label("upg12_info", "upg12_row", "", 13, "9d8fb8",
+      size_flags_horizontal=3, vertical_alignment=1)
+
 # строки статуса заработка слева под балансом (разметка заказчика)
 label("auto_stat", "machine", "авт. бабло: 0/с", 20, "ffe9b8",
       position="Vector2(30, 91)", size="Vector2(300, 24)",
