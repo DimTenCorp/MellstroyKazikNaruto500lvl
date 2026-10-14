@@ -139,6 +139,7 @@ def atlassub(sid, ext_id, rect):
 def tbtn(name, parent, sid, pos, size):
     node(name, "TextureButton", parent,
          texture_normal=f'SubResource("{sid}")',
+         ignore_texture_size="true",  # можно уменьшать в редакторе
          stretch_mode=5,
          position=f"Vector2({pos[0]}, {pos[1]})",
          size=f"Vector2({size[0]}, {size[1]})")
@@ -257,8 +258,8 @@ node("bottom_bar", "Control", "machine",
      mouse_filter=2)
 # Раскладка кнопок перенесена из правки заказчика (91dc2e5): позиции те же,
 # но размеры заданы через Size (без Scale), чтобы хитбокс совпадал со спрайтом.
-tbtn("bet_btn", "bottom_bar", "at_bet", (8, 544), (265, 293))
-tbtn("max_btn", "bottom_bar", "at_max", (168, 568), (266, 293))
+tbtn("bet_btn", "bottom_bar", "at_bet", (8, 544), (150, 166))
+tbtn("max_btn", "bottom_bar", "at_max", (168, 568), (129, 142))
 label("bet_label", "bottom_bar", "Ставка/линия: 1", 20, "ffe9b8",
       position="Vector2(264, 48)", size="Vector2(220, 28)")
 label("auto_label", "bottom_bar", "", 26, "7ef3ff",
@@ -266,12 +267,12 @@ label("auto_label", "bottom_bar", "", 26, "7ef3ff",
       theme_override_constants_outline_size=8,
       theme_override_colors_font_outline_color=hx("1d3a6e"),
       visible="false")
-tbtn("auto_btn", "bottom_bar", "at_auto", (800, 576), (319, 293))
-tbtn("speed_btn", "bottom_bar", "at_speed", (968, 592), (265, 283))
-tbtn("spin_btn", "bottom_bar", "at_spin", (1088, 520), (270, 293))
-tbtn("paytable_btn", "bottom_bar", "at_paytable", (1152, 152), (256, 283))
-tbtn("sound_btn", "bottom_bar", "at_sound", (1144, 0), (266, 283))
-tbtn("clicker_btn", "bottom_bar", "at_bag", (1132, 277), (274, 284))
+tbtn("auto_btn", "bottom_bar", "at_auto", (800, 576), (163, 144))
+tbtn("speed_btn", "bottom_bar", "at_speed", (968, 592), (113, 120))
+tbtn("spin_btn", "bottom_bar", "at_spin", (1088, 520), (177, 192))
+tbtn("paytable_btn", "bottom_bar", "at_paytable", (1152, 152), (115, 127))
+tbtn("sound_btn", "bottom_bar", "at_sound", (1144, 0), (130, 139))
+tbtn("clicker_btn", "bottom_bar", "at_bag", (1132, 277), (219, 227))
 node("bonus_btn", "Button", "bottom_bar", text='"БОНУС +1000"',
      position="Vector2(360, 608)", size="Vector2(190, 40)",
      theme_override_font_sizes_font_size=18,

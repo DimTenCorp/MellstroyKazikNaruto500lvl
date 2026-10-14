@@ -12,11 +12,6 @@ const SAVE_PATH := "user://slot_save.cfg"
 
 ## Визуальный размер кнопок: в сцене спрайты лежат в родном размере региона
 ## (TextureButton не даёт Size меньше текстуры), масштаб ставим здесь.
-const VISUAL := {
-	"coin_btn": Vector2(320, 330),
-	"play_btn": Vector2(200, 197),
-}
-
 const DEBUG := true  ## отладочные логи в консоль (print)
 
 var balance := 1000
@@ -43,10 +38,6 @@ func _dbg(msg: String) -> void:
 func _ready() -> void:
 	_load()
 	_dbg("сцена готова, баланс=%d" % balance)
-	for key in VISUAL:
-		var btn: TextureButton = get_node("machine/" + key)
-		btn.pivot_offset = Vector2.ZERO
-		btn.scale = VISUAL[key] / btn.size
 	coin_btn.pressed.connect(_on_coin)
 	play_btn.pressed.connect(_on_play)
 	back_btn.pressed.connect(_on_back)
@@ -99,6 +90,7 @@ func _fmt(v: int) -> String:
 
 
 func _bind_press_anim(btn: BaseButton) -> void:
+	btn.pivot_offset = btn.size * 0.5  # сжатие при нажатии от центра
 	var base: Vector2 = btn.scale
 	btn.button_down.connect(func() -> void:
 		var old_tw: Tween = btn.get_meta("press_tw") if btn.has_meta("press_tw") else null
@@ -138,7 +130,7 @@ func _on_coin() -> void:
 	_dbg("клик по монете: +%d, баланс=%d" % [CLICK_VALUE, balance])
 	_save()
 	_update()
-	_float("+%d" % CLICK_VALUE, coin_btn.position + VISUAL["coin_btn"] * 0.5,
+	_float("+%d" % CLICK_VALUE, coin_btn.position + coin_btn.size * 0.5,
 			Color("#ffe9b8"))
 
 
@@ -176,7 +168,7 @@ func _on_play() -> void:
 		_update()
 		_banner("БАБЛО ЗА РЕКЛАМУ: +%s" % _fmt(AD_REWARD), Color("#8dffa0"))
 		_float("+%d" % AD_REWARD,
-				play_btn.position + VISUAL["play_btn"] * 0.5, Color("#8dffa0"))
+				play_btn.position + play_btn.size * 0.5, Color("#8dffa0"))
 	else:
 		_banner("РЕКЛАМА НЕ ДОСМОТРЕНА — НЕТ НАГРАДЫ", Color("#ff7b7b"))
 	_watching = false

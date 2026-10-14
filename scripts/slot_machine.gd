@@ -50,17 +50,6 @@ const WIN_TIERS: Array[Array] = [
 ## Визуальный размер кнопок (кликовая область совпадает с картинкой):
 ## в сцене кнопки лежат в родном размере спрайта, т.к. TextureButton
 ## не позволяет Size меньше текстуры.
-const BTN_VISUAL := {
-	"bet_btn": Vector2(150, 166),
-	"max_btn": Vector2(129, 142),
-	"auto_btn": Vector2(163, 144),
-	"speed_btn": Vector2(113, 120),
-	"spin_btn": Vector2(177, 192),
-	"paytable_btn": Vector2(115, 127),
-	"sound_btn": Vector2(130, 139),
-	"clicker_btn": Vector2(219, 227),
-}
-
 const DEBUG := true  ## отладочные логи в консоль (print)
 
 var rng := RandomNumberGenerator.new()
@@ -180,7 +169,6 @@ func _ready() -> void:
 		_save()
 	)
 
-	_apply_button_visuals()
 	for btn in _find_buttons(self):
 		_bind_press_anim(btn)
 	_load_save()
@@ -198,6 +186,7 @@ func _ready() -> void:
 
 ## Анимация нажатия: кнопка чуть сжимается и отпружинивает обратно.
 func _bind_press_anim(btn: BaseButton) -> void:
+	btn.pivot_offset = btn.size * 0.5  # сжатие при нажатии от центра
 	var base: Vector2 = btn.scale
 	btn.button_down.connect(func() -> void:
 		var old: Tween = btn.get_meta("press_tw") if btn.has_meta("press_tw") else null
@@ -233,13 +222,6 @@ func _find_buttons(root: Node) -> Array[BaseButton]:
 ## Рисует кнопки в задуманном размере: в сцене спрайт лежит в родном
 ## размере, здесь ставим масштаб от левого верхнего угла. Кликабельная
 ## область учитывает трансформ контроля, то есть совпадает с картинкой.
-func _apply_button_visuals() -> void:
-	for btn_key in BTN_VISUAL:
-		var btn: TextureButton = get_node("machine/bottom_bar/" + btn_key)
-		btn.pivot_offset = Vector2.ZERO
-		btn.scale = BTN_VISUAL[btn_key] / btn.size
-
-
 func _dbg(msg: String) -> void:
 	if DEBUG:
 		print("[slot] " + msg)

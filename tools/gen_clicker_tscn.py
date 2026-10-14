@@ -85,6 +85,7 @@ def atlassub(sid, ext_id, rect):
 def tbtn(name, parent, sid, pos, size):
     node(name, "TextureButton", parent,
          texture_normal=f'SubResource("{sid}")',
+         ignore_texture_size="true",  # можно уменьшать в редакторе
          stretch_mode=5,
          position=f"Vector2({pos[0]}, {pos[1]})",
          size=f"Vector2({size[0]}, {size[1]})")
@@ -131,7 +132,7 @@ label("hud_balance", "machine", "0", 28, "ffe9b8",
       theme_override_colors_font_outline_color=hx("402008"))
 
 # монета-кликер (в сцене родной размер региона, визуальный ставит скрипт)
-tbtn("coin_btn", "machine", "at_coin", (480, 165), CLICKER_REGIONS["coin"][2:])
+tbtn("coin_btn", "machine", "at_coin", (480, 165), (320, 330))
 label("click_hint", "machine", "+5 за клик", 22, "9d8fb8",
       position="Vector2(480, 508)", size="Vector2(320, 30)",
       horizontal_alignment=1)

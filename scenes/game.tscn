@@ -410,15 +410,17 @@ mouse_filter = 2
 
 [node name="bet_btn" type="TextureButton" parent="machine/bottom_bar"]
 texture_normal = SubResource("at_bet")
+ignore_texture_size = true
 stretch_mode = 5
 position = Vector2(8, 544)
-size = Vector2(265, 293)
+size = Vector2(150, 166)
 
 [node name="max_btn" type="TextureButton" parent="machine/bottom_bar"]
 texture_normal = SubResource("at_max")
+ignore_texture_size = true
 stretch_mode = 5
 position = Vector2(168, 568)
-size = Vector2(266, 293)
+size = Vector2(129, 142)
 
 [node name="bet_label" type="Label" parent="machine/bottom_bar"]
 text = "Ставка/линия: 1"
@@ -439,39 +441,45 @@ visible = false
 
 [node name="auto_btn" type="TextureButton" parent="machine/bottom_bar"]
 texture_normal = SubResource("at_auto")
+ignore_texture_size = true
 stretch_mode = 5
 position = Vector2(800, 576)
-size = Vector2(319, 293)
+size = Vector2(163, 144)
 
 [node name="speed_btn" type="TextureButton" parent="machine/bottom_bar"]
 texture_normal = SubResource("at_speed")
+ignore_texture_size = true
 stretch_mode = 5
 position = Vector2(968, 592)
-size = Vector2(265, 283)
+size = Vector2(113, 120)
 
 [node name="spin_btn" type="TextureButton" parent="machine/bottom_bar"]
 texture_normal = SubResource("at_spin")
+ignore_texture_size = true
 stretch_mode = 5
 position = Vector2(1088, 520)
-size = Vector2(270, 293)
+size = Vector2(177, 192)
 
 [node name="paytable_btn" type="TextureButton" parent="machine/bottom_bar"]
 texture_normal = SubResource("at_paytable")
+ignore_texture_size = true
 stretch_mode = 5
 position = Vector2(1152, 152)
-size = Vector2(256, 283)
+size = Vector2(115, 127)
 
 [node name="sound_btn" type="TextureButton" parent="machine/bottom_bar"]
 texture_normal = SubResource("at_sound")
+ignore_texture_size = true
 stretch_mode = 5
 position = Vector2(1144, 0)
-size = Vector2(266, 283)
+size = Vector2(130, 139)
 
 [node name="clicker_btn" type="TextureButton" parent="machine/bottom_bar"]
 texture_normal = SubResource("at_bag")
+ignore_texture_size = true
 stretch_mode = 5
 position = Vector2(1132, 277)
-size = Vector2(274, 284)
+size = Vector2(219, 227)
 
 [node name="bonus_btn" type="Button" parent="machine/bottom_bar"]
 text = "БОНУС +1000"
