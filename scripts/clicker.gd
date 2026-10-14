@@ -9,46 +9,7 @@ const VSIZE := Vector2(1280, 720)
 const AD_REWARD := 500
 const CLICK_BASE := 5        ## базовый заработок за клик без улучшений
 
-## Очередь улучшений (порядок = порядок появления в витрине).
-## click/auto — прибавка к статом за один уровень, max — потолок уровней,
-## cost/mult — цена первого уровня и рост цены за уровень.
-const UPGRADES := [
-	{"name": "Смазка контактов", "icon": 0, "click": 2, "auto": 0,
-	 "max": 5, "cost": 50, "mult": 1.6},
-	{"name": "Механический переключатель", "icon": 1, "click": 5, "auto": 0,
-	 "max": 5, "cost": 120, "mult": 1.6},
-	{"name": "Турбо-скрипт", "icon": 2, "click": 0, "auto": 5,
-	 "max": 5, "cost": 150, "mult": 1.6},
-	{"name": "Макрос на клик", "icon": 3, "click": 10, "auto": 0,
-	 "max": 5, "cost": 300, "mult": 1.7},
-	{"name": "Обход антикликера", "icon": 4, "click": 25, "auto": 0,
-	 "max": 3, "cost": 800, "mult": 1.8},
-	{"name": "Разгон процессора", "icon": 5, "click": 0, "auto": 15,
-	 "max": 5, "cost": 600, "mult": 1.7},
-	{"name": "Усилитель импульса", "icon": 6, "click": 15, "auto": 5,
-	 "max": 5, "cost": 900, "mult": 1.7},
-	{"name": "Инъекция кода", "icon": 7, "click": 0, "auto": 40,
-	 "max": 5, "cost": 2000, "mult": 1.8},
-	{"name": "Взлом реестра", "icon": 8, "click": 50, "auto": 0,
-	 "max": 3, "cost": 3500, "mult": 1.8},
-	{"name": "Теневой сервер", "icon": 9, "click": 0, "auto": 100,
-	 "max": 3, "cost": 8000, "mult": 1.9},
-	{"name": "Драйвер подмены", "icon": 10, "click": 40, "auto": 40,
-	 "max": 3, "cost": 12000, "mult": 1.9},
-	{"name": "Нейросетевой кликер", "icon": 11, "click": 150, "auto": 50,
-	 "max": 2, "cost": 30000, "mult": 2.0},
-	{"name": "Квантовый контроллер", "icon": 12, "click": 200, "auto": 200,
-	 "max": 1, "cost": 100000, "mult": 2.0},
-]
-
-## Регионы иконок в img/upgrades/upgrades.png (1344x717, сетка 5x3).
-const UPGRADE_REGIONS := [
-	Rect2(4, 2, 213, 211), Rect2(283, 2, 214, 211), Rect2(562, 2, 214, 211),
-	Rect2(841, 2, 214, 211), Rect2(1121, 2, 213, 211),
-	Rect2(4, 255, 213, 212), Rect2(283, 255, 214, 212), Rect2(562, 255, 214, 212),
-	Rect2(841, 255, 214, 212), Rect2(1121, 255, 213, 212),
-	Rect2(4, 499, 213, 211), Rect2(283, 499, 214, 211), Rect2(562, 499, 214, 211),
-]     ## монет за досмотренную рекламу
+     ## монет за досмотренную рекламу
 const SAVE_PATH := "user://slot_save.cfg"
 
 ## Визуальный размер кнопок: в сцене спрайты лежат в родном размере региона
@@ -79,29 +40,22 @@ var upg_infos: Array = []  ## подписи строк списка улучш�
 
 
 func click_gain() -> int:
-	var v := CLICK_BASE
-	for i in UPGRADES.size():
-		v += int(UPGRADES[i].click) * upg_levels[i]
-	return v
+	return CLICK_BASE + Upgrades.click_add(upg_levels)
 
 
 func auto_gain() -> int:
-	var v := 0
-	for i in UPGRADES.size():
-		v += int(UPGRADES[i].auto) * upg_levels[i]
-	return v
+	return Upgrades.auto_per_sec(upg_levels)
 
 
 func _upg_cost(i: int) -> int:
-	var u: Dictionary = UPGRADES[i]
-	return int(round(float(u.cost) * pow(float(u.mult), upg_levels[i]) / 10.0)) * 10
+	return Upgrades.cost(i, upg_levels[i])
 
 
 ## Список показывает все улучшения сверху вниз; прокачанные до упора
 ## строки помечаются МАКС и их кнопка гаснет.
 func _refresh_shop() -> void:
-	for i in UPGRADES.size():
-		var u: Dictionary = UPGRADES[i]
+	for i in Upgrades.UPGRADES.size():
+		var u: Dictionary = Upgrades.UPGRADES[i]
 		upg_btns[i].texture_normal = _icons[int(u.icon)]
 		upg_btns[i].disabled = upg_levels[i] >= int(u.max)
 		if upg_levels[i] >= int(u.max):
@@ -122,7 +76,7 @@ func _upg_effect_text(u: Dictionary) -> String:
 
 
 func _on_upg(i: int) -> void:
-	var u: Dictionary = UPGRADES[i]
+	var u: Dictionary = Upgrades.UPGRADES[i]
 	if upg_levels[i] >= int(u.max):
 		return
 	var c := _upg_cost(i)
@@ -169,12 +123,12 @@ func _ready() -> void:
 	play_btn.pressed.connect(_on_play)
 	back_btn.pressed.connect(_on_back)
 	var sheet: Texture2D = load("res://img/upgrades/upgrades.png")
-	for r in UPGRADE_REGIONS:
+	for r in Upgrades.REGIONS:
 		var at := AtlasTexture.new()
 		at.atlas = sheet
 		at.region = r
 		_icons.append(at)
-	for i in UPGRADES.size():
+	for i in Upgrades.UPGRADES.size():
 		var btn: TextureButton = get_node(
 				"machine/upg_scroll/upg_vbox/upg%d_row/upg%d_btn" % [i, i])
 		var info: Label = get_node(
@@ -207,11 +161,11 @@ func _load() -> void:
 		balance = int(_cfg.get_value("save", "balance", balance))
 		var arr: Array = _cfg.get_value("save", "upg_levels", [])
 		upg_levels.clear()
-		for k in UPGRADES.size():
+		for k in Upgrades.UPGRADES.size():
 			upg_levels.append(int(arr[k]) if k < arr.size() else 0)
-	if upg_levels.size() != UPGRADES.size():
+	if upg_levels.size() != Upgrades.UPGRADES.size():
 		upg_levels.clear()
-		for k in UPGRADES.size():
+		for k in Upgrades.UPGRADES.size():
 			upg_levels.append(0)
 
 

@@ -70,6 +70,8 @@ var _win_tween: Tween
 var _banner_tw: Tween
 var _glow_tw: Tween
 var _reset_armed := false
+var upg_levels: Array[int] = []  ## уровни улучшений кликера (для авто-бабла)
+var _auto_acc := 0.0
 var _popup_tw: Tween
 var _wins_tex: Texture2D
 
@@ -294,6 +296,22 @@ func _on_intro_ok() -> void:
 	_flag_set("intro_seen", true)
 	intro_popup.visible = false
 	_dbg("интро закрыто игроком")
+
+
+## Авто-бабло капает и в сцене слотов: улучшения куплены в кликере,
+## а доход общий — иначе при возврате с кликера прибавка "засыпает".
+func _process(delta: float) -> void:
+	var g := Upgrades.auto_per_sec(upg_levels)
+	if g <= 0:
+		return
+	_auto_acc += delta
+	var add := 0
+	while _auto_acc >= 1.0:
+		_auto_acc -= 1.0
+		add += g
+	if add > 0:
+		balance += add
+		_update_labels()
 
 
 func _dbg(msg: String) -> void:
@@ -522,6 +540,10 @@ func _load_save() -> void:
 		balance = int(cfg.get_value("save", "balance", START_BALANCE))
 		var old_idx := clampi(int(cfg.get_value("save", "bet", 0)), 0, BETS.size() - 1)
 		bet_line = maxi(1, int(cfg.get_value("save", "bet_line", int(BETS[old_idx]))))
+		var arr: Array = cfg.get_value("save", "upg_levels", [])
+		upg_levels.clear()
+		for k in Upgrades.UPGRADES.size():
+			upg_levels.append(int(arr[k]) if k < arr.size() else 0)
 		speed_idx = clampi(int(cfg.get_value("save", "speed", 0)), 0, SPEEDS.size() - 1)
 		vol_sfx = clampi(int(cfg.get_value("save", "vol_sfx", 80)), 0, 100)
 		vol_music = clampi(int(cfg.get_value("save", "vol_music", 80)), 0, 100)
