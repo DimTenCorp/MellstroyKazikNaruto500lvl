@@ -156,7 +156,6 @@ func _on_play() -> void:
 		return
 	_watching = true
 	play_btn.disabled = true
-	_banner("СМОТРИМ РЕКЛАМУ...", Color("#ffd794"))
 	var rewarded := await _watch_rewarded_ad()
 	if rewarded:
 		balance += AD_REWARD
@@ -171,21 +170,30 @@ func _on_play() -> void:
 	play_btn.disabled = false
 
 
-## Показ рекламы с наградой через Playgama Bridge (autoload Bridge).
-## Следим за сигналом rewarded_state_changed: REWARDED = награда,
-## CLOSED/FAILED = конец показа. В редакторе аддон крутит мок-состояния.
+## Показ рекламы с наградой через Playgama Bridge (autoload Bridge):
+## сигнал rewarded_state_changed даёт REWARDED (награда) и CLOSED/FAILED
+## (конец показа). В редакторе аддон крутит мок-состояния — награда приходит
+## сразу, в вебе рекламу показывает SDK площадки (Yandex, Poki, CrazyGames…).
 func _watch_rewarded_ad() -> bool:
 	var br := get_node_or_null("/root/Bridge")
 	if br == null or br.advertisement == null:
 		_banner("BRIDGE НЕ ПОДКЛЮЧЁН", Color("#ff7b7b"))
 		return false
-	var st := {"rewarded": false, "finished": false}
+	if not bool(br.advertisement.is_rewarded_supported):
+		_banner("НЕТ РЕКЛАМЫ НА ПЛАТФОРМЕ: %s" % _platform_name(br),
+				Color("#ff7b7b"))
+		return false
+	var st := {"rewarded": false, "finished": false, "failed": false}
 	var on_state := func(state) -> void:
 		if state == Bridge.RewardedState.REWARDED:
 			st["rewarded"] = true
-		elif state == Bridge.RewardedState.CLOSED 				or state == Bridge.RewardedState.FAILED:
+		elif state == Bridge.RewardedState.FAILED:
+			st["failed"] = true
+			st["finished"] = true
+		elif state == Bridge.RewardedState.CLOSED:
 			st["finished"] = true
 	br.advertisement.rewarded_state_changed.connect(on_state)
+	_banner("СМОТРИМ РЕКЛАМУ... [%s]" % _platform_name(br), Color("#ffd794"))
 	br.advertisement.show_rewarded()
 	var t := 0.0
 	while not st["finished"] and t < 90.0:
@@ -193,7 +201,21 @@ func _watch_rewarded_ad() -> bool:
 		t += 0.15
 	if br.advertisement.rewarded_state_changed.is_connected(on_state):
 		br.advertisement.rewarded_state_changed.disconnect(on_state)
+	if not st["finished"]:
+		_banner("РЕКЛАМА НЕ ОТВЕТИЛА (ТАЙМАУТ)", Color("#ff7b7b"))
+		return false
+	if st["failed"]:
+		_banner("ОШИБКА РЕКЛАМЫ — НЕТ НАГРАДЫ", Color("#ff7b7b"))
+		return false
 	return st["rewarded"]
+
+
+func _platform_name(br: Node) -> String:
+	if not OS.has_feature("web"):
+		return "editor"
+	if br.platform != null:
+		return str(br.platform.platform_id)
+	return "web"
 
 
 # ------------------------------------------------------------------- выход
