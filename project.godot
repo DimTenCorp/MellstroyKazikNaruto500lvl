@@ -17,7 +17,7 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-YandexGames="*uid://cswkmnv5fv8wj"
+YandexGames="*res://addons/yandex_games/yandex_games.gd"
 
 [display]
 
