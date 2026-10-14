@@ -126,7 +126,7 @@ node("machine", "Control", ".", size=f"Vector2({VSIZE[0]}, {VSIZE[1]})")
 # верх: иконка денег + баланс
 node("hud_icon", "TextureRect", "machine",
      texture='ExtResource("tex_money")',
-     position="Vector2(30, 14)", size="Vector2(66.31, 61)",  # размер заказчика — НЕ МЕНЯТЬ
+     position="Vector2(30, 14)", size="Vector2(60.88, 56)",  # размер заказчика — НЕ МЕНЯТЬ
      expand_mode=1, stretch_mode=5, mouse_filter=2)
 label("hud_balance", "machine", "0", 28, "ffe9b8",
       position="Vector2(104, 24)", size="Vector2(320, 38)",
@@ -140,14 +140,14 @@ label("click_hint", "machine", "+5 за клик", 22, "9d8fb8",
       horizontal_alignment=1)
 
 # play = реклама с наградой
-tbtn("play_btn", "machine", "at_play", (1060, 462), (200, 197))
+tbtn("play_btn", "machine", "at_play", (23, 397), (120.81, 119))
 label("play_caption", "machine", "РЕКЛАМА: +500", 20, "8dffa0",
-      position="Vector2(1000, 674)", size="Vector2(270, 28)",
+      position="Vector2(-48, 527)", size="Vector2(270, 28)",
       horizontal_alignment=1)
 
 # прокручиваемый список всех улучшений (строки — узлы сцены)
 node("upg_scroll", "ScrollContainer", "machine",
-     position="Vector2(900, 20)", size="Vector2(372, 420)")
+     position="Vector2(846, 20)", size="Vector2(422, 688)")
 node("upg_vbox", "VBoxContainer", "upg_scroll",
      size_flags_horizontal=3,
      theme_override_constants_separation=6)
@@ -255,7 +255,7 @@ label("click_stat", "machine", "бабло за клик: 5", 20, "ffe9b8",
 
 # возврат к слот-машине
 node("back_btn", "Button", "machine", text='"← К СЛОТАМ"',
-     position="Vector2(30, 640)", size="Vector2(230, 56)",
+     position="Vector2(30, 624)", size="Vector2(296, 72)",
      theme_override_font_sizes_font_size=20,
      theme_override_styles_normal='SubResource("sb_btn_n")',
      theme_override_styles_hover='SubResource("sb_btn_n")',

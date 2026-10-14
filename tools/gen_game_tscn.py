@@ -205,7 +205,7 @@ label("freespin_label", "machine", "", 22, "7ef3ff",
 # чтобы их можно было перетаскивать в редакторе.
 node("balance_icon", "TextureRect", "machine",
      texture='ExtResource("tex_money")',
-     position="Vector2(24, 34)", size="Vector2(61.97, 57)",  # размер заказчика — НЕ МЕНЯТЬ
+     position="Vector2(24, 34)", size="Vector2(66.31, 61)",  # размер заказчика — НЕ МЕНЯТЬ
      expand_mode=1, stretch_mode=5, mouse_filter=2)
 label("balance_label", "machine", "0", 26, "ffe9b8",
       position="Vector2(98, 44)", size="Vector2(240, 36)",
@@ -299,7 +299,7 @@ label("fullbet_label", "bottom_bar", "Полная ставка:", 22, "ffe9b8",
 
 # отладочная кнопка полного сброса прогресса
 node("reset_btn", "Button", "machine", text='"СБРОС (ОТЛАДКА)"',
-     position="Vector2(-241, 176)", size="Vector2(152, 36)",
+     position="Vector2(-29, 480)", size="Vector2(152, 36)",
      theme_override_font_sizes_font_size=14,
      theme_override_styles_normal='SubResource("sb_btn_n")',
      theme_override_styles_hover='SubResource("sb_btn_h")',

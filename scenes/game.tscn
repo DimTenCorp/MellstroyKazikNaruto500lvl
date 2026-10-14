@@ -167,7 +167,7 @@ visible = false
 [node name="balance_icon" type="TextureRect" parent="machine"]
 texture = ExtResource("tex_money")
 position = Vector2(24, 34)
-size = Vector2(61.97, 57)
+size = Vector2(66.31, 61)
 expand_mode = 1
 stretch_mode = 5
 mouse_filter = 2
@@ -533,7 +533,7 @@ theme_override_colors/font_outline_color = Color(0.25098, 0.12549, 0.0313725, 1)
 
 [node name="reset_btn" type="Button" parent="machine"]
 text = "СБРОС (ОТЛАДКА)"
-position = Vector2(-241, 176)
+position = Vector2(-29, 480)
 size = Vector2(152, 36)
 theme_override_font_sizes/font_size = 14
 theme_override_styles/normal = SubResource("sb_btn_n")
