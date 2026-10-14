@@ -273,10 +273,27 @@ func _on_play() -> void:
 ## сигнал rewarded_state_changed даёт REWARDED (награда) и CLOSED/FAILED
 ## (конец показа). В редакторе аддон крутит мок-состояния — награда приходит
 ## сразу, в вебе рекламу показывает SDK площадки (Yandex, Poki, CrazyGames…).
-func _watch_rewarded_ad() -> bool:
+## Autoload Bridge из аддона Playgama. Если секция [autoload] потеряна
+## (редактор иногда перезаписывает project.godot из памяти), поднимаем
+## узел Bridge вручную из скрипта аддона — реклама работает всё равно.
+func _get_bridge() -> Node:
 	var br := get_node_or_null("/root/Bridge")
+	if br != null:
+		return br
+	var script: GDScript = load("res://addons/playgama_bridge/bridge.gd")
+	if script == null:
+		return null
+	br = script.new()
+	br.name = "Bridge"
+	get_tree().root.add_child(br)
+	_dbg("autoload Bridge не найден — поднят fallback-узел из скрипта аддона")
+	return br
+
+
+func _watch_rewarded_ad() -> bool:
+	var br := _get_bridge()
 	if br == null or br.advertisement == null:
-		_dbg("ОШИБКА: autoload Bridge не найден")
+		_dbg("ОШИБКА: Bridge недоступен даже fallback-ом")
 		_banner("BRIDGE НЕ ПОДКЛЮЧЁН", Color("#ff7b7b"))
 		return false
 	_dbg("платформа: %s, rewarded supported=%s" % [
