@@ -20,9 +20,11 @@ SPEC.loader.exec_module(SIM)
 
 # ------------------------------------------------------------------ константы
 VSIZE = (1280, 720)
-CELL = 146.0
-GAP = 10.0
-GRID_PAD = 14.0
+CELL = 160.0   ## ячейка символа: крупнее, спрайт влезает целиком
+GAP = 8.0
+GRID_PAD = 12.0
+GRID_X = 60.0  ## сетка левее, чтобы не доставать до правой колонки кнопок
+GRID_Y = 96.0
 INSET = 4.0
 ROWS, COLS = 3, 5
 
@@ -216,9 +218,6 @@ spacer("spacer2", "top_bar")
 grid_w = COLS * CELL + (COLS - 1) * GAP
 grid_h = ROWS * CELL + (ROWS - 1) * GAP
 panel_w, panel_h = grid_w + GRID_PAD * 2, grid_h + GRID_PAD * 2
-# Позиция сетки — по центру области, размеченной заказчиком
-# (красный квадрат на скриншоте: ~(20, 97)-(912, 568)).
-GRID_X, GRID_Y = 66.0, 96.0
 node("grid_panel", "Panel", "machine",
      position=f"Vector2({GRID_X:g}, {GRID_Y:g})",
      size=f"Vector2({panel_w:g}, {panel_h:g})",
@@ -277,7 +276,7 @@ node("bonus_btn", "Button", "bottom_bar", text='"БОНУС +1000"',
      visible="false")
 
 # ---------------------------------------------------------- попап выигрыша
-node("win_popup", "Control", "machine", position="Vector2(215, 174)",
+node("win_popup", "Control", "machine", position="Vector2(238, 191)",
      size="Vector2(500, 330)", visible="false", mouse_filter=2)
 node("win_badge", "TextureRect", "win_popup",
      position="Vector2(0, 0)", size="Vector2(500, 260)",
