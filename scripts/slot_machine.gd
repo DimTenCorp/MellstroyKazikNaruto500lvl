@@ -198,7 +198,7 @@ func _ready() -> void:
 func _bind_press_anim(btn: BaseButton) -> void:
 	var base: Vector2 = btn.scale
 	btn.button_down.connect(func() -> void:
-		var old: Tween = btn.get_meta("press_tw", null)
+		var old: Tween = btn.get_meta("press_tw") if btn.has_meta("press_tw") else null
 		if old != null and old.is_valid():
 			old.kill()
 		var tw := create_tween()
@@ -206,7 +206,7 @@ func _bind_press_anim(btn: BaseButton) -> void:
 		btn.set_meta("press_tw", tw)
 	)
 	btn.button_up.connect(func() -> void:
-		var old: Tween = btn.get_meta("press_tw", null)
+		var old: Tween = btn.get_meta("press_tw") if btn.has_meta("press_tw") else null
 		if old != null and old.is_valid():
 			old.kill()
 		var tw := create_tween()
