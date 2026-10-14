@@ -522,6 +522,15 @@ size = Vector2(500, 66)
 theme_override_constants/outline_size = 10
 theme_override_colors/font_outline_color = Color(0.25098, 0.12549, 0.0313725, 1)
 
+[node name="reset_btn" type="Button" parent="machine"]
+text = "СБРОС (ОТЛАДКА)"
+position = Vector2(32, 180)
+size = Vector2(150, 36)
+theme_override_font_sizes/font_size = 14
+theme_override_styles/normal = SubResource("sb_btn_n")
+theme_override_styles/hover = SubResource("sb_btn_h")
+theme_override_styles/pressed = SubResource("sb_btn_p")
+
 [node name="intro_popup" type="Control" parent="machine"]
 visible = false
 

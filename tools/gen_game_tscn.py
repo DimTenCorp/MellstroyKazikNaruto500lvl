@@ -291,6 +291,14 @@ label("win_popup_label", "win_popup", "", 44, "ffe9b8",
       theme_override_constants_outline_size=10,
       theme_override_colors_font_outline_color=hx("402008"))
 
+# отладочная кнопка полного сброса прогресса
+node("reset_btn", "Button", "machine", text='"СБРОС (ОТЛАДКА)"',
+     position="Vector2(32, 180)", size="Vector2(150, 36)",
+     theme_override_font_sizes_font_size=14,
+     theme_override_styles_normal='SubResource("sb_btn_n")',
+     theme_override_styles_hover='SubResource("sb_btn_h")',
+     theme_override_styles_pressed='SubResource("sb_btn_p")')
+
 # интро при первом заходе: долг 100 000
 node("intro_popup", "Control", "machine", visible="false")
 node("intro_panel", "Panel", "intro_popup",

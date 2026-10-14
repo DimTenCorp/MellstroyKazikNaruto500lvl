@@ -69,6 +69,7 @@ var _fx_nodes: Array[Node] = []
 var _win_tween: Tween
 var _banner_tw: Tween
 var _glow_tw: Tween
+var _reset_armed := false
 var _popup_tw: Tween
 var _wins_tex: Texture2D
 
@@ -90,6 +91,7 @@ var _wins_tex: Texture2D
 @onready var intro_btn: Button = $machine/intro_popup/intro_btn
 @onready var intro_label: Label = $machine/intro_popup/intro_label
 @onready var clicker_glow: Panel = $machine/bottom_bar/clicker_glow
+@onready var reset_btn: Button = $machine/reset_btn
 @onready var clicker_btn: TextureButton = $machine/bottom_bar/clicker_btn
 @onready var fx_layer: Control = $machine/grid_panel/fx_layer
 @onready var lines_overlay: Node2D = $machine/grid_panel/lines_overlay
@@ -138,6 +140,7 @@ func _ready() -> void:
 	speed_btn.pressed.connect(_on_speed_pressed)
 	sound_btn.pressed.connect(func() -> void: _open_menu(sound_menu))
 	intro_btn.pressed.connect(_on_intro_ok)
+	reset_btn.pressed.connect(_on_reset_pressed)
 	clicker_btn.pressed.connect(_on_clicker_pressed)
 	paytable_btn.pressed.connect(func() -> void: _open_menu(paytable_popup))
 
@@ -261,6 +264,26 @@ func _setup_intro() -> void:
 		_glow_tw.tween_property(clicker_glow, "modulate:a", 0.15, 0.7)
 		_glow_tw.tween_property(clicker_glow, "modulate:a", 1.0, 0.7)
 		_dbg("световое выделение кнопки кликера включено")
+
+
+## Отладочный полный сброс: удаляет общий сейв (баланс, уровни кликера,
+## флаги интро) и перезапускает сцену — игра снова «с первого захода».
+## Защита от случайного нажатия: два нажатия подряд за 3 секунды.
+func _on_reset_pressed() -> void:
+	if not _reset_armed:
+		_reset_armed = true
+		reset_btn.text = "ТОЧНО? ЕЩЁ РАЗ"
+		_dbg("сброс: первое нажатие, жду подтверждение 3 c")
+		await get_tree().create_timer(3.0).timeout
+		_reset_armed = false
+		if is_instance_valid(reset_btn):
+			reset_btn.text = "СБРОС (ОТЛАДКА)"
+		return
+	_reset_armed = false
+	_dbg("ПОЛНЫЙ СБРОС ПРОГРЕССА: удаляю сейв %s" % SAVE_PATH)
+	if FileAccess.file_exists(SAVE_PATH):
+		DirAccess.remove_absolute(SAVE_PATH)
+	get_tree().reload_current_scene()
 
 
 func _on_intro_ok() -> void:
