@@ -1,8 +1,10 @@
+
+const BridgeTypes := preload("res://addons/playgama_bridge/bridge_types.gd")
 var type : get = _type_getter
 
 func _type_getter():
 	match OS.get_name():
 		"Android":
-			return Bridge.DeviceType.MOBILE
+			return BridgeTypes.DeviceType.MOBILE
 		_:
-			return Bridge.DeviceType.DESKTOP
+			return BridgeTypes.DeviceType.DESKTOP

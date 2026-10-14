@@ -1,3 +1,5 @@
+
+const BridgeTypes := preload("res://addons/playgama_bridge/bridge_types.gd")
 signal banner_state_changed
 signal interstitial_state_changed
 signal rewarded_state_changed
@@ -43,31 +45,31 @@ var _rewarded_state
 var _rewarded_placement
 
 func _init():
-	_banner_state = Bridge.BannerState.HIDDEN
-	_interstitial_state = Bridge.InterstitialState.CLOSED
-	_rewarded_state = Bridge.RewardedState.CLOSED
+	_banner_state = BridgeTypes.BannerState.HIDDEN
+	_interstitial_state = BridgeTypes.InterstitialState.CLOSED
+	_rewarded_state = BridgeTypes.RewardedState.CLOSED
 
 func set_minimum_delay_between_interstitial(value):
 	_minimum_delay_between_interstitial = value
 
-func show_banner(position = Bridge.BannerPosition.BOTTOM, placement = null):
-	_set_banner_state(Bridge.BannerState.LOADING)
-	_set_banner_state(Bridge.BannerState.SHOWN)
+func show_banner(position = BridgeTypes.BannerPosition.BOTTOM, placement = null):
+	_set_banner_state(BridgeTypes.BannerState.LOADING)
+	_set_banner_state(BridgeTypes.BannerState.SHOWN)
 
 func hide_banner():
-	_set_banner_state(Bridge.BannerState.HIDDEN)
+	_set_banner_state(BridgeTypes.BannerState.HIDDEN)
 
 func show_interstitial(placement = null):
-	_set_interstitial_state(Bridge.InterstitialState.LOADING)
-	_set_interstitial_state(Bridge.InterstitialState.OPENED)
-	_set_interstitial_state(Bridge.InterstitialState.CLOSED)
+	_set_interstitial_state(BridgeTypes.InterstitialState.LOADING)
+	_set_interstitial_state(BridgeTypes.InterstitialState.OPENED)
+	_set_interstitial_state(BridgeTypes.InterstitialState.CLOSED)
 
 func show_rewarded(placement = null):
 	_rewarded_placement = placement
-	_set_rewarded_state(Bridge.RewardedState.LOADING)
-	_set_rewarded_state(Bridge.RewardedState.OPENED)
-	_set_rewarded_state(Bridge.RewardedState.REWARDED)
-	_set_rewarded_state(Bridge.RewardedState.CLOSED)
+	_set_rewarded_state(BridgeTypes.RewardedState.LOADING)
+	_set_rewarded_state(BridgeTypes.RewardedState.OPENED)
+	_set_rewarded_state(BridgeTypes.RewardedState.REWARDED)
+	_set_rewarded_state(BridgeTypes.RewardedState.CLOSED)
 
 func check_adblock(callback):
 	if callback != null:

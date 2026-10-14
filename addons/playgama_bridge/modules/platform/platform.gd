@@ -1,3 +1,5 @@
+
+const BridgeTypes := preload("res://addons/playgama_bridge/bridge_types.gd")
 signal audio_state_changed
 signal pause_state_changed
 
@@ -34,7 +36,7 @@ func _language_getter():
 func _tld_getter():
 	return _js_platform.tld
 
-# Where the game was opened from, see Bridge.LaunchSource; null when the
+# Where the game was opened from, see BridgeTypes.LaunchSource; null when the
 # platform did not say.
 func _launch_source_getter():
 	return _js_platform.launchSource

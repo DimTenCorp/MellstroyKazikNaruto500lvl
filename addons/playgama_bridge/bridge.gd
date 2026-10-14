@@ -1,70 +1,20 @@
 extends Node
 
+const BridgeTypes := preload("res://addons/playgama_bridge/bridge_types.gd")
 
-const DeviceType = {
-	DESKTOP = "desktop",
-	MOBILE = "mobile",
-	TABLET = "tablet",
-	TV = "tv"
-}
 
-const PlatformMessage = {
-	GAME_READY = "game_ready",
-	IN_GAME_LOADING_STARTED = "in_game_loading_started",
-	IN_GAME_LOADING_STOPPED = "in_game_loading_stopped",
-	GAMEPLAY_STARTED = "gameplay_started",
-	GAMEPLAY_STOPPED = "gameplay_stopped",
-	PLAYER_GOT_ACHIEVEMENT = "player_got_achievement",
-	LEVEL_STARTED = "level_started",
-	LEVEL_COMPLETED = "level_completed",
-	LEVEL_FAILED = "level_failed",
-	LEVEL_PAUSED = "level_paused",
-	LEVEL_RESUMED = "level_resumed"
-}
+# Константы вынесены в bridge_types.gd (компиляция без autoload);
+# здесь алиасы для совместимости API.
+const DeviceType = BridgeTypes.DeviceType
+const PlatformMessage = BridgeTypes.PlatformMessage
+const LeaderboardType = BridgeTypes.LeaderboardType
+const BannerPosition = BridgeTypes.BannerPosition
+const BannerState = BridgeTypes.BannerState
+const InterstitialState = BridgeTypes.InterstitialState
+const RewardedState = BridgeTypes.RewardedState
+const LaunchSource = BridgeTypes.LaunchSource
+const PostRewardType = BridgeTypes.PostRewardType
 
-const LeaderboardType = {
-	NOT_AVAILABLE = "not_available",
-	IN_GAME = "in_game",
-	NATIVE = "native",
-	NATIVE_POPUP = "native_popup"
-}
-
-const BannerPosition = {
-	TOP = "top",
-	BOTTOM = "bottom"
-}
-
-const BannerState = {
-	LOADING = "loading",
-	SHOWN = "shown",
-	HIDDEN = "hidden",
-	FAILED = "failed"
-}
-
-const InterstitialState = {
-	LOADING = "loading",
-	OPENED = "opened",
-	CLOSED = "closed",
-	FAILED = "failed"
-}
-
-const RewardedState = {
-	LOADING = "loading",
-	OPENED = "opened",
-	REWARDED = "rewarded",
-	CLOSED = "closed",
-	FAILED = "failed"
-}
-
-const LaunchSource = {
-	NOTIFICATION = "notification",
-	POST = "post"
-}
-
-const PostRewardType = {
-	VISIT = "visit",
-	AUTHOR = "author"
-}
 
 
 var platform : get = _platform_getter

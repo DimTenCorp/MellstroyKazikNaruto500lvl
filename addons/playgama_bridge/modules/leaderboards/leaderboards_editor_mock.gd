@@ -1,8 +1,10 @@
+
+const BridgeTypes := preload("res://addons/playgama_bridge/bridge_types.gd")
 var type : get = _type_getter
 
 
 func _type_getter():
-	return Bridge.LeaderboardType.NOT_AVAILABLE
+	return BridgeTypes.LeaderboardType.NOT_AVAILABLE
 
 
 func set_score(id, score, callback = null):

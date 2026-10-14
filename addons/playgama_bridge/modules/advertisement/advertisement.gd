@@ -1,3 +1,5 @@
+
+const BridgeTypes := preload("res://addons/playgama_bridge/bridge_types.gd")
 signal banner_state_changed
 signal interstitial_state_changed
 signal rewarded_state_changed
@@ -59,7 +61,7 @@ var _js_check_adblock_catch = JavaScriptBridge.create_callback(self._on_js_check
 func set_minimum_delay_between_interstitial(value):
 	_js_advertisement.setMinimumDelayBetweenInterstitial(value)
 
-func show_banner(position = Bridge.BannerPosition.BOTTOM, placement = null):
+func show_banner(position = BridgeTypes.BannerPosition.BOTTOM, placement = null):
 	_js_advertisement.showBanner(position, placement)
 
 func hide_banner():
