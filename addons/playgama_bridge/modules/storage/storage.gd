@@ -1,0 +1,155 @@
+var _utils = load("res://addons/playgama_bridge/utils.gd").new()
+
+var _js_storage = null
+var _is_getting = false
+var _get_callback = null
+var _get_try_parse_json = false
+var _js_get_then = JavaScriptBridge.create_callback(self._on_js_get_then)
+var _js_get_catch = JavaScriptBridge.create_callback(self._on_js_get_catch)
+
+var _is_setting = false
+var _set_callback = null
+var _js_set_then = JavaScriptBridge.create_callback(self._on_js_set_then)
+var _js_set_catch = JavaScriptBridge.create_callback(self._on_js_set_catch)
+
+var _is_deleting = false
+var _delete_callback = null
+var _js_delete_then = JavaScriptBridge.create_callback(self._on_js_delete_then)
+var _js_delete_catch = JavaScriptBridge.create_callback(self._on_js_delete_catch)
+
+
+func get(key, callback = null, try_parse_json = false):
+	if _is_getting:
+		return null
+
+	if callback == null:
+		return null
+
+	var js_key
+	var key_type = typeof(key)
+	match key_type:
+		TYPE_STRING:
+			js_key = key
+		TYPE_ARRAY:
+			js_key = JavaScriptBridge.create_object("Array")
+			for k in key:
+				js_key.push(k)
+		_:
+			return null
+
+	_is_getting = true
+	_get_callback = callback
+	_get_try_parse_json = try_parse_json
+
+	# JSON is parsed on the GDScript side, so the web and the editor mock behave the same
+	_js_storage.get(js_key, false).then(_js_get_then).catch(_js_get_catch)
+	return null
+
+func set(key, value = null, callback = null):
+	if _is_setting:
+		return
+
+	var js_key
+	var js_value
+	var key_type = typeof(key)
+	match key_type:
+		TYPE_STRING:
+			js_key = key
+			js_value = _utils.serialize_value(value)
+		TYPE_ARRAY:
+			js_key = JavaScriptBridge.create_object("Array")
+			js_value = JavaScriptBridge.create_object("Array")
+			if typeof(value) != TYPE_ARRAY or value.size() != key.size():
+				push_error("Bridge storage: value must be an array of the same size as key")
+				return
+			for k in key:
+				js_key.push(k)
+			for v in value:
+				js_value.push(_utils.serialize_value(v))
+		TYPE_DICTIONARY:
+			# set(data, callback) — the second argument is the callback in this form
+			if callback == null:
+				callback = value
+
+			js_key = JavaScriptBridge.create_object("Array")
+			js_value = JavaScriptBridge.create_object("Array")
+			for k in key:
+				js_key.push(k)
+				js_value.push(_utils.serialize_value(key[k]))
+		_:
+			return
+
+	_is_setting = true
+	_set_callback = callback
+	_js_storage.set(js_key, js_value).then(_js_set_then).catch(_js_set_catch)
+
+func delete(key, callback = null):
+	if _is_deleting:
+		return
+
+	var js_key
+	var key_type = typeof(key)
+	match key_type:
+		TYPE_STRING:
+			js_key = key
+		TYPE_ARRAY:
+			js_key = JavaScriptBridge.create_object("Array")
+			for k in key:
+				js_key.push(k)
+		_:
+			return
+
+	_is_deleting = true
+	_delete_callback = callback
+	_js_storage.delete(js_key).then(_js_delete_then).catch(_js_delete_catch)
+
+
+func _init(js_storage):
+	_js_storage = js_storage
+
+func _deserialize(value):
+	if not _get_try_parse_json:
+		return value
+
+	return _utils.deserialize_value(value)
+
+func _on_js_get_then(args):
+	_is_getting = false
+	if _get_callback == null:
+		return
+
+	var data = args[0]
+	var data_type = typeof(data)
+	match data_type:
+		TYPE_OBJECT:
+			var array = []
+			for i in range(data.length):
+				array.append(_deserialize(data[i]))
+			_get_callback.call(true, array)
+		_:
+			_get_callback.call(true, _deserialize(data))
+
+func _on_js_get_catch(args):
+	_is_getting = false
+	if _get_callback != null:
+		_get_callback.call(false, null)
+
+func _on_js_set_then(args):
+	_is_setting = false
+	if _set_callback != null:
+		_set_callback.call(true)
+
+func _on_js_set_catch(args):
+	_is_setting = false
+	if _set_callback != null:
+		_set_callback.call(false)
+
+func _on_js_delete_then(args):
+	_is_deleting = false
+	if _delete_callback != null:
+		_delete_callback.call(true)
+
+func _on_js_delete_catch(args):
+	_is_deleting = false
+	if _delete_callback != null:
+		_delete_callback.call(false)

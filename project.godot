@@ -17,7 +17,7 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-YandexGames="*res://addons/yandex_games/yandex_games.gd"
+Bridge="*uid://cx4klxojbw6ck"
 
 [display]
 
@@ -32,7 +32,7 @@ project/assembly_name="MellstroyKazikNaruto500lvl"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/godot_git/plugin.cfg", "res://addons/yandex_games/plugin.cfg")
+enabled=PackedStringArray("res://addons/godot_git/plugin.cfg", "res://addons/playgama_bridge/plugin.cfg")
 
 [physics]
 
