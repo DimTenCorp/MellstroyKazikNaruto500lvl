@@ -23,8 +23,8 @@ VSIZE = (1280, 720)
 CELL = 160.0   ## ячейка символа: крупнее, спрайт влезает целиком
 GAP = 8.0
 GRID_PAD = 12.0
-GRID_X = 60.0  ## сетка левее, чтобы не доставать до правой колонки кнопок
-GRID_Y = 96.0
+GRID_X = 185.58  ## позиция сетки перенесена заказчиком (e598c15)
+GRID_Y = 78.375
 INSET = 4.0
 ROWS, COLS = 3, 5
 
@@ -203,16 +203,21 @@ label("freespin_label", "machine", "", 22, "7ef3ff",
 # чтобы их можно было перетаскивать в редакторе.
 node("balance_icon", "TextureRect", "machine",
      texture='ExtResource("tex_money")',
-     position="Vector2(24, 34)", size="Vector2(65, 60)",
+     position="Vector2(24, 34)", size="Vector2(66, 61)",
      expand_mode=1, stretch_mode=5, mouse_filter=2)
 label("balance_label", "machine", "0", 26, "ffe9b8",
       position="Vector2(98, 44)", size="Vector2(240, 36)",
       vertical_alignment=1)
 
+# Выигрыш пишется сверху над сеткой: поверх панели его плохо видно.
+label("win_label", "machine", "", 26, "8dffa0",
+      position="Vector2(340, 6)", size="Vector2(600, 44)",
+      horizontal_alignment=1,
+      theme_override_constants_outline_size=8,
+      theme_override_colors_font_outline_color=hx("1d4d1d"))
 hbox("top_bar", "machine", 12, position="Vector2(30, 56)",
      size=f"Vector2({VSIZE[0] - 60}, 46)")
 spacer("spacer1", "top_bar")
-label("win_label", "top_bar", "", 26, "8dffa0", horizontal_alignment=1)
 spacer("spacer2", "top_bar")
 
 grid_w = COLS * CELL + (COLS - 1) * GAP
@@ -276,7 +281,7 @@ node("bonus_btn", "Button", "bottom_bar", text='"БОНУС +1000"',
      visible="false")
 
 # ---------------------------------------------------------- попап выигрыша
-node("win_popup", "Control", "machine", position="Vector2(238, 191)",
+node("win_popup", "Control", "machine", position="Vector2(364, 173)",
      size="Vector2(500, 330)", visible="false", mouse_filter=2)
 node("win_badge", "TextureRect", "win_popup",
      position="Vector2(0, 0)", size="Vector2(500, 260)",

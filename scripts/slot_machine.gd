@@ -85,7 +85,7 @@ var _wins_tex: Texture2D
 
 @onready var machine: Control = $machine
 @onready var balance_label: Label = $machine/balance_label
-@onready var win_label: Label = $machine/top_bar/win_label
+@onready var win_label: Label = $machine/win_label
 @onready var freespin_label: Label = $machine/freespin_label
 @onready var bet_label: Label = $machine/bottom_bar/bet_label
 @onready var auto_label: Label = $machine/bottom_bar/auto_label
