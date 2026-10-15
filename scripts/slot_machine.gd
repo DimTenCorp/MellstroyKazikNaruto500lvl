@@ -276,6 +276,11 @@ func _ready() -> void:
 	_refresh_paytable()
 	_update_labels()
 	_setup_intro()
+	for p in ["win_label", "balance_label", "freespin_label",
+			"bottom_bar/auto_label", "bottom_bar/bet_label",
+			"bottom_bar/fullbet_label", "grid_panel/msg_label",
+			"balance_icon", "bottom_bar/clicker_glow"]:
+		machine.get_node(p).mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_capture_defaults()
 	_layout()
 	get_viewport().size_changed.connect(_layout)
@@ -439,68 +444,72 @@ func _restore_defaults() -> void:
 		(machine.get_node("grid_panel/Reel%d" % c) as SlotReel).relayout()
 
 
-## Портретная раскладка (9:16): частые кнопки внизу крупные,
-## редкие (таблица, звук, язык, мешок) — колонками по бокам.
+## Портретная раскладка (9:16): все размеры через u = ширина/1280, низ
+## якорится к низу экрана — не зависит от конвенции масштаба canvas_items.
 func _layout_portrait(W: float, H: float) -> void:
-	var m := 24.0
-	var g := 16.0
+	var u := W / 1280.0
+	var m := 24.0 * u
+	var g := 16.0 * u
 	var gw := W - 2 * m
 	var cell := (gw - 4 * g) / 5.0
 	var gh := 3 * cell + 2 * g
-	_set_r("balance_icon", m, m, 150, 138)
-	_set_r("balance_label", m + 160, m + 10, W - 184 - m, 90)
-	_set_r("win_label", m, 168, W - 260, 80)
-	_set_r("freespin_label", m, 252, (W - 2 * m) * 0.5, 60)
-	_set_r("bottom_bar/auto_label", m + (W - 2 * m) * 0.5, 252,
-			(W - 2 * m) * 0.5, 60)
-	_set_r("grid_panel", m, 320, gw, gh)
+	_set_r("balance_icon", m, m, 150 * u, 138 * u)
+	_set_r("balance_label", m + 160 * u, m + 10 * u, W - 184 * u - m, 90 * u)
+	_set_r("win_label", m, 168 * u, W - 260 * u, 80 * u)
+	_set_r("freespin_label", m, 252 * u, (W - 2 * m) * 0.5, 60 * u)
+	_set_r("bottom_bar/auto_label", m + (W - 2 * m) * 0.5, 252 * u,
+			(W - 2 * m) * 0.5, 60 * u)
+	_set_r("grid_panel", m, 320 * u, gw, gh)
 	for c in SlotData.COLS:
 		var rl: SlotReel = machine.get_node("grid_panel/Reel%d" % c)
 		rl.position = Vector2(c * (cell + g), 0)
 		rl.size = Vector2(cell, gh)
 		rl.relayout()
-	_set_r("grid_panel/msg_label", 0, gh * 0.5 - 60, gw, 120)
-	_set_r("bottom_bar/fullbet_label", m, 328 + gh, W - 2 * m, 70)
-	_set_r("bottom_bar/bet_label", m, 402 + gh, W - 2 * m, 60)
+	_set_r("grid_panel/msg_label", 0, gh * 0.5 - 60 * u, gw, 120 * u)
+	_set_r("bottom_bar/fullbet_label", m, 328 * u + gh, W - 2 * m, 70 * u)
+	_set_r("bottom_bar/bet_label", m, 402 * u + gh, W - 2 * m, 60 * u)
 	# редкие кнопки — колонки по бокам нижней зоны
-	_set_r("bottom_bar/paytable_btn", m, H - 720, 200, 200)
-	_set_r("bottom_bar/sound_btn", m, H - 510, 200, 200)
-	_set_r("bottom_bar/lang_btn", W - 224, H - 720, 200, 200)
-	_set_r("bottom_bar/clicker_btn", W - 224, H - 510, 200, 200)
-	_set_r("bottom_bar/clicker_glow", W - 232, H - 518, 216, 216)
+	_set_r("bottom_bar/paytable_btn", m, H - 720 * u, 200 * u, 200 * u)
+	_set_r("bottom_bar/sound_btn", m, H - 510 * u, 200 * u, 200 * u)
+	_set_r("bottom_bar/lang_btn", W - 224 * u, H - 720 * u, 200 * u, 200 * u)
+	_set_r("bottom_bar/clicker_btn", W - 224 * u, H - 510 * u, 200 * u, 200 * u)
+	_set_r("bottom_bar/clicker_glow", W - 232 * u, H - 518 * u, 216 * u, 216 * u)
 	# частые — центр низа: ставка/макс/авто, турбо, ПУСК во всю ширину
-	var cx := m + 216
-	var cw := W - 2 * m - 432
+	var cx := m + 216 * u
+	var cw := W - 2 * m - 432 * u
 	var w3 := (cw - 2 * g) / 3.0
-	_set_r("bottom_bar/bet_btn", cx, H - 720, w3, 210)
-	_set_r("bottom_bar/max_btn", cx + w3 + g, H - 720, w3, 210)
-	_set_r("bottom_bar/auto_btn", cx + 2 * (w3 + g), H - 720, w3, 210)
-	_set_r("bottom_bar/speed_btn", cx, H - 500, cw, 190)
-	_set_r("bottom_bar/spin_btn", m, H - 290, W - 2 * m, 270)
-	_set_r("debug_btn", W - 220, 168, 200, 50)
-	_set_r("reset_btn", W - 220, 224, 200, 50)
+	_set_r("bottom_bar/bet_btn", cx, H - 720 * u, w3, 210 * u)
+	_set_r("bottom_bar/max_btn", cx + w3 + g, H - 720 * u, w3, 210 * u)
+	_set_r("bottom_bar/auto_btn", cx + 2 * (w3 + g), H - 720 * u, w3, 210 * u)
+	_set_r("bottom_bar/speed_btn", cx, H - 500 * u, cw, 190 * u)
+	_set_r("bottom_bar/spin_btn", m, H - 290 * u, W - 2 * m, 270 * u)
+	_set_r("debug_btn", W - 220 * u, 168 * u, 200 * u, 50 * u)
+	_set_r("reset_btn", W - 220 * u, 224 * u, 200 * u, 50 * u)
 	for mp in ["bet_menu/panel", "auto_menu/panel", "sound_menu/panel",
 			"debug_menu/panel"]:
-		var ph: float = minf((_def_rects[mp] as Rect2).size.y, H - 80)
-		var pw := minf(900.0, W - 48)
+		var ph := minf((_def_rects[mp] as Rect2).size.y * u, H - 80 * u)
+		var pw := minf(900.0 * u, W - 48 * u)
 		_set_r(mp, (W - pw) * 0.5, (H - ph) * 0.5, pw, ph)
-	_set_r("paytable_popup/popup_panel", 24, 120, W - 48, H - 240)
-	var ps := minf(1.0, (W - 48) / 500.0)
+	_set_r("paytable_popup/popup_panel", 24 * u, 120 * u, W - 48 * u,
+			H - 240 * u)
+	var ps := minf(1.0, (W - 48 * u) / 500.0)
 	_pop_scale = ps
 	win_popup.scale = Vector2(ps, ps)
 	win_popup.position = Vector2((W - 500 * ps) * 0.5, H * 0.3)
-	_set_r("intro_popup/intro_panel", 40, 400, W - 80, 900)
-	_set_r("intro_popup/intro_label", 70, 480, W - 140, 560)
-	_set_r("intro_popup/intro_btn", (W - 560) * 0.5, 1060, 560, 120)
-	_set_r("debt_popup/debt_panel", 40, 450, W - 80, 850)
-	_set_r("debt_popup/debt_label", 70, 520, W - 140, 480)
-	var dbw := minf(700.0, W - 80)
-	_set_r("debt_popup/debt_btn", (W - dbw) * 0.5, 1030, dbw, 120)
+	_set_r("intro_popup/intro_panel", 40 * u, 400 * u, W - 80 * u, 900 * u)
+	_set_r("intro_popup/intro_label", 70 * u, 480 * u, W - 140 * u, 560 * u)
+	_set_r("intro_popup/intro_btn", (W - 560 * u) * 0.5, 1060 * u, 560 * u,
+			120 * u)
+	_set_r("debt_popup/debt_panel", 40 * u, 450 * u, W - 80 * u, 850 * u)
+	_set_r("debt_popup/debt_label", 70 * u, 520 * u, W - 140 * u, 480 * u)
+	var dbw := minf(700.0 * u, W - 80 * u)
+	_set_r("debt_popup/debt_btn", (W - dbw) * 0.5, 1030 * u, dbw, 120 * u)
 	_cell_w = cell
 	_gap_w = g
 	for p in PORTRAIT_FS:
 		var l: Label = machine.get_node(p)
-		l.add_theme_font_size_override("font_size", PORTRAIT_FS[p])
+		l.add_theme_font_size_override("font_size",
+				int(PORTRAIT_FS[p] * u))
 
 
 func _layout() -> void:
@@ -517,6 +526,7 @@ func _layout() -> void:
 	if vs.x < vs.y:  # портрет (9:16): своя раскладка вместо уменьшения всей
 		machine.scale = Vector2.ONE
 		machine.position = off
+		_dbg("портрет: логический вьюпорт %s" % vs)
 		_layout_portrait(vs.x, vs.y)
 		return
 	_restore_defaults()

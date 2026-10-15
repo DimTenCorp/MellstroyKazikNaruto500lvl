@@ -178,6 +178,9 @@ func _ready() -> void:
 		_bind_press_anim(btn)
 	play_caption.text = L10n.t("ad_caption") % AD_REWARD
 	_update()
+	for p in ["hud_balance", "click_hint", "auto_stat", "click_stat",
+			"play_caption", "msg_label", "hud_icon", "float_layer"]:
+		machine.get_node(p).mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_capture_defaults()
 	_layout()
 	get_viewport().size_changed.connect(_layout)
@@ -227,31 +230,35 @@ func _restore_defaults() -> void:
 			l.add_theme_font_size_override("font_size", _def_fonts[p])
 
 
-## Портрет 9:16: монета по центру экрана, реклама и выход по бокам,
-## список улучшений — во всю ширину внизу, шрифты крупнее.
+## Портрет 9:16: монета по центру, реклама/выход по бокам, улучшения внизу
+## во всю ширину; размеры через u = ширина/1280 (независимо от масштаба).
 func _layout_portrait(W: float, H: float) -> void:
-	var m := 24.0
-	_set_r("hud_icon", m, m, 150, 138)
-	_set_r("hud_balance", m + 160, m + 10, W - 184 - m, 90)
-	_set_r("coin_btn", (W - 700) * 0.5, 300, 700, 722)
-	_set_r("click_hint", (W - 700) * 0.5, 1030, 700, 64)
-	_set_r("auto_stat", m, 1100, (W - 2 * m) * 0.5, 60)
-	_set_r("click_stat", m + (W - 2 * m) * 0.5, 1100, (W - 2 * m) * 0.5, 60)
-	_set_r("play_btn", m, 480, 230, 225)
-	_set_r("play_caption", m, 712, 320, 56)
-	_set_r("back_btn", W - 380, 480, 356, 130)
-	_set_r("msg_label", 0, 1170, W, 80)
-	_set_r("upg_scroll", 0, 1260, W, H - 1260)
+	var u := W / 1280.0
+	var m := 24.0 * u
+	_set_r("hud_icon", m, m, 150 * u, 138 * u)
+	_set_r("hud_balance", m + 160 * u, m + 10 * u, W - 184 * u - m, 90 * u)
+	_set_r("coin_btn", (W - 700 * u) * 0.5, 300 * u, 700 * u, 722 * u)
+	_set_r("click_hint", (W - 700 * u) * 0.5, 1030 * u, 700 * u, 64 * u)
+	_set_r("auto_stat", m, 1100 * u, (W - 2 * m) * 0.5, 60 * u)
+	_set_r("click_stat", m + (W - 2 * m) * 0.5, 1100 * u,
+			(W - 2 * m) * 0.5, 60 * u)
+	_set_r("play_btn", m, 480 * u, 230 * u, 225 * u)
+	_set_r("play_caption", m, 712 * u, 320 * u, 56 * u)
+	_set_r("back_btn", W - 380 * u, 480 * u, 356 * u, 130 * u)
+	var sh := 1016.0 * u
+	_set_r("msg_label", 0, H - sh - 90 * u, W, 80 * u)
+	_set_r("upg_scroll", 0, H - sh, W, sh)
 	for p in PORTRAIT_FS:
 		var l: Label = machine.get_node(p)
-		l.add_theme_font_size_override("font_size", PORTRAIT_FS[p])
+		l.add_theme_font_size_override("font_size",
+				int(PORTRAIT_FS[p] * u))
 	for i in Upgrades.UPGRADES.size():
 		var l: Label = machine.get_node(
 				"upg_scroll/upg_vbox/upg%d_row/upg%d_info" % [i, i])
-		l.add_theme_font_size_override("font_size", UPG_INFO_FS)
+		l.add_theme_font_size_override("font_size", int(UPG_INFO_FS * u))
 		var b: TextureButton = machine.get_node(
 				"upg_scroll/upg_vbox/upg%d_row/upg%d_btn" % [i, i])
-		b.custom_minimum_size = Vector2(UPG_ICON_MIN, UPG_ICON_MIN)
+		b.custom_minimum_size = Vector2(UPG_ICON_MIN * u, UPG_ICON_MIN * u)
 
 
 func _layout() -> void:
@@ -268,6 +275,7 @@ func _layout() -> void:
 	if vs.x < vs.y:  # портрет (9:16): своя раскладка
 		machine.scale = Vector2.ONE
 		machine.position = off
+		_dbg("портрет: логический вьюпорт %s" % vs)
 		_layout_portrait(vs.x, vs.y)
 		return
 	_restore_defaults()
