@@ -463,20 +463,20 @@ func _layout_portrait(W: float, H: float) -> void:
 	_set_r("bottom_bar/fullbet_label", m, 328 + gh, W - 2 * m, 70)
 	_set_r("bottom_bar/bet_label", m, 402 + gh, W - 2 * m, 60)
 	# редкие кнопки — колонки по бокам нижней зоны
-	_set_r("bottom_bar/paytable_btn", m, H - 420, 170, 170)
-	_set_r("bottom_bar/sound_btn", m, H - 240, 170, 170)
-	_set_r("bottom_bar/lang_btn", W - 194, H - 420, 170, 170)
-	_set_r("bottom_bar/clicker_btn", W - 194, H - 240, 170, 170)
-	_set_r("bottom_bar/clicker_glow", W - 202, H - 248, 186, 186)
-	# частые — центр низа: ставка/макс/авто рядом, ТУРБО и ПУСК ниже
-	var cx := m + 186
-	var cw := W - 2 * m - 372
+	_set_r("bottom_bar/paytable_btn", m, H - 720, 200, 200)
+	_set_r("bottom_bar/sound_btn", m, H - 510, 200, 200)
+	_set_r("bottom_bar/lang_btn", W - 224, H - 720, 200, 200)
+	_set_r("bottom_bar/clicker_btn", W - 224, H - 510, 200, 200)
+	_set_r("bottom_bar/clicker_glow", W - 232, H - 518, 216, 216)
+	# частые — центр низа: ставка/макс/авто, турбо, ПУСК во всю ширину
+	var cx := m + 216
+	var cw := W - 2 * m - 432
 	var w3 := (cw - 2 * g) / 3.0
-	_set_r("bottom_bar/bet_btn", cx, H - 420, w3, 170)
-	_set_r("bottom_bar/max_btn", cx + w3 + g, H - 420, w3, 170)
-	_set_r("bottom_bar/auto_btn", cx + 2 * (w3 + g), H - 420, w3, 170)
-	_set_r("bottom_bar/speed_btn", cx, H - 240, w3, 216)
-	_set_r("bottom_bar/spin_btn", cx + w3 + g, H - 240, 2 * w3 + g, 216)
+	_set_r("bottom_bar/bet_btn", cx, H - 720, w3, 210)
+	_set_r("bottom_bar/max_btn", cx + w3 + g, H - 720, w3, 210)
+	_set_r("bottom_bar/auto_btn", cx + 2 * (w3 + g), H - 720, w3, 210)
+	_set_r("bottom_bar/speed_btn", cx, H - 500, cw, 190)
+	_set_r("bottom_bar/spin_btn", m, H - 290, W - 2 * m, 270)
 	_set_r("debug_btn", W - 220, 168, 200, 50)
 	_set_r("reset_btn", W - 220, 224, 200, 50)
 	for mp in ["bet_menu/panel", "auto_menu/panel", "sound_menu/panel",
