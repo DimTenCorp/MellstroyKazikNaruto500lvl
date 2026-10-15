@@ -16,6 +16,14 @@ const SAVE_PATH := "user://slot_save.cfg"
 ## (TextureButton не даёт Size меньше текстуры), масштаб ставим здесь.
 const DEBUG := true  ## отладочные логи в консоль (print)
 
+## Монета кликера нарисована с надписью: БАБЛО / CASH / PARA — второй ряд
+## листа img/buttons_clicker.png, регион меняем по языку.
+const COIN_REGIONS := {
+	"ru": Rect2(20, 323, 278, 287),
+	"en": Rect2(366, 325, 289, 287),
+	"tr": Rect2(719, 326, 285, 287),
+}
+
 var balance := 1000
 var upg_levels: Array[int] = []   ## уровни улучшений (индекс = номер в UPGRADES)
 var _icons: Array[AtlasTexture] = []
@@ -115,6 +123,9 @@ func _process(delta: float) -> void:
 
 
 func _apply_lang() -> void:
+	var at := coin_btn.texture_normal as AtlasTexture
+	if at != null:
+		at.region = COIN_REGIONS[L10n.lang]
 	back_btn.text = L10n.t("back")
 	play_caption.text = L10n.t("ad_caption") % AD_REWARD
 	_refresh_shop()

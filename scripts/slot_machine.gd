@@ -76,6 +76,28 @@ var upg_levels: Array[int] = []  ## уровни улучшений кликер
 var _lang_icons := {}
 var _auto_acc := 0.0
 var _popup_tw: Tween
+## Переведённые листы бейджей выигрыша.
+const WIN_SHEETS := {
+	"ru": "res://img/win/wins_spritessheet.png",
+	"en": "res://img/win/wins_spritessheet_EN.png",
+	"tr": "res://img/win/wins_spritessheet_TR.png",
+}
+
+## Регионы бейджей EN/TR-листов (порядок 3×3 как у RU).
+const WIN_REGIONS_LANG := {
+	"ru": WIN_REGIONS,
+	"en": [
+		Rect2(10, 24, 412, 216), Rect2(459, 9, 436, 228), Rect2(903, 11, 461, 229),
+		Rect2(25, 240, 382, 240), Rect2(488, 278, 405, 201), Rect2(995, 250, 345, 190),
+		Rect2(6, 505, 420, 250), Rect2(493, 547, 390, 188), Rect2(965, 536, 410, 182),
+	],
+	"tr": [
+		Rect2(10, 24, 412, 216), Rect2(459, 9, 436, 227), Rect2(903, 11, 461, 229),
+		Rect2(26, 240, 381, 240), Rect2(488, 279, 405, 200), Rect2(995, 250, 345, 190),
+		Rect2(6, 505, 420, 251), Rect2(494, 547, 388, 188), Rect2(965, 536, 410, 182),
+	],
+}
+
 var _wins_tex: Texture2D
 
 @onready var machine: Control = $machine
@@ -430,6 +452,13 @@ func _close_menus() -> void:
 
 # ------------------------------------------------------------------- хелперы UI
 
+## Переведённые листы арт-кнопок: меняем атлас у AtlasTexture кнопок.
+const BTN_SHEETS := {
+	"ru": "res://img/buttons_spr/buttons_sprites.png",
+	"en": "res://img/buttons/buttons_sprites_EN.png",
+	"tr": "res://img/buttons/buttons_sprites_TR.png",
+}
+
 const LANG_REGIONS := {
 	"ru": Rect2(8, 10, 285, 305),
 	"en": Rect2(330, 10, 300, 305),
@@ -519,6 +548,13 @@ func _apply_lang() -> void:
 	debt_btn.text = L10n.t("debt_btn")
 	reset_btn.text = L10n.t("reset_btn")
 	debug_btn.text = L10n.t("debug_btn")
+	var sheet: Texture2D = load(BTN_SHEETS[L10n.lang])
+	for b in [spin_btn, auto_btn, max_btn, bet_btn, speed_btn, paytable_btn,
+			sound_btn]:
+		var at := b.texture_normal as AtlasTexture
+		if at != null:
+			at.atlas = sheet
+	_wins_tex = load(WIN_SHEETS[L10n.lang])
 
 
 ## Отладочная выдача денег: пресеты или своё число в меню.
@@ -846,7 +882,7 @@ func _popup(badge_idx: int, text: String) -> void:
 		_popup_tw.kill()
 	var at := AtlasTexture.new()
 	at.atlas = _wins_tex
-	at.region = WIN_REGIONS[badge_idx]
+	at.region = WIN_REGIONS_LANG[L10n.lang][badge_idx]
 	win_badge.texture = at
 	win_popup_label.text = text
 	win_popup.show()
