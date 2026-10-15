@@ -96,9 +96,9 @@ const MANAGED := [
 	"debt_popup/debt_panel", "debt_popup/debt_label", "debt_popup/debt_btn",
 ]
 const PORTRAIT_FS := {
-	"balance_label": 22, "win_label": 20, "freespin_label": 15,
-	"bottom_bar/auto_label": 15, "bottom_bar/fullbet_label": 17,
-	"bottom_bar/bet_label": 15, "grid_panel/msg_label": 24,
+	"balance_label": 26, "win_label": 22, "freespin_label": 18,
+	"bottom_bar/auto_label": 18, "bottom_bar/fullbet_label": 20,
+	"bottom_bar/bet_label": 18, "grid_panel/msg_label": 26,
 }
 var _auto_acc := 0.0
 var _popup_tw: Tween
@@ -437,40 +437,46 @@ func _restore_defaults() -> void:
 		(machine.get_node("grid_panel/Reel%d" % c) as SlotReel).relayout()
 
 
-## Портретная раскладка (9:16 и похожие): колонка сверху вниз — баланс,
-## сетка, ставки, два ряда кнопок, ПУСК во всю ширину.
+## Портретная раскладка (9:16): частые кнопки внизу крупные,
+## редкие (таблица, звук, язык, мешок) — колонками по бокам.
 func _layout_portrait(W: float, H: float) -> void:
 	var m := 6.0
 	var g := 6.0
 	var gw := W - 2 * m
 	var cell := (gw - 4 * g) / 5.0
 	var gh := 3 * cell + 2 * g
-	_set_r("balance_icon", m, m, 44, 40)
-	_set_r("balance_label", m + 48, m + 4, W - 54 - m, 32)
-	_set_r("win_label", m, 44, W - 2 * m, 30)
-	_set_r("freespin_label", m, 76, (W - 2 * m) * 0.5, 24)
-	_set_r("bottom_bar/auto_label", m + (W - 2 * m) * 0.5, 76, (W - 2 * m) * 0.5, 24)
-	_set_r("grid_panel", m, 104, gw, gh)
+	_set_r("balance_icon", m, m, 48, 44)
+	_set_r("balance_label", m + 52, m + 6, W - 58 - m, 34)
+	_set_r("win_label", m, 50, W - 100, 32)
+	_set_r("freespin_label", m, 84, (W - 2 * m) * 0.5, 26)
+	_set_r("bottom_bar/auto_label", m + (W - 2 * m) * 0.5, 84,
+			(W - 2 * m) * 0.5, 26)
+	_set_r("grid_panel", m, 112, gw, gh)
 	for c in SlotData.COLS:
 		var rl: SlotReel = machine.get_node("grid_panel/Reel%d" % c)
 		rl.position = Vector2(c * (cell + g), 0)
 		rl.size = Vector2(cell, gh)
 		rl.relayout()
 	_set_r("grid_panel/msg_label", 0, gh * 0.5 - 24, gw, 48)
-	_set_r("bottom_bar/fullbet_label", m, 108 + gh, W - 2 * m, 26)
-	_set_r("bottom_bar/bet_label", m, 134 + gh, W - 2 * m, 22)
-	var w4 := (W - 2 * m - 3 * g) / 4.0
-	var row_a := ["bottom_bar/bet_btn", "bottom_bar/max_btn",
-			"bottom_bar/auto_btn", "bottom_bar/speed_btn"]
-	var row_b := ["bottom_bar/paytable_btn", "bottom_bar/sound_btn",
-			"bottom_bar/lang_btn", "bottom_bar/clicker_btn"]
-	for i in 4:
-		_set_r(row_a[i], m + i * (w4 + g), H - 250, w4, 74)
-		_set_r(row_b[i], m + i * (w4 + g), H - 170, w4, 74)
-	_set_r("bottom_bar/clicker_glow", m + 3 * (w4 + g) - 6, H - 176, w4 + 12, 86)
-	_set_r("bottom_bar/spin_btn", m, H - 90, W - 2 * m, 84)
-	_set_r("debug_btn", W - 84, 44, 78, 20)
-	_set_r("reset_btn", W - 84, 66, 78, 20)
+	_set_r("bottom_bar/fullbet_label", m, 116 + gh, W - 2 * m, 28)
+	_set_r("bottom_bar/bet_label", m, 144 + gh, W - 2 * m, 24)
+	# редкие кнопки — колонки по бокам нижней зоны
+	_set_r("bottom_bar/paytable_btn", m, H - 158, 62, 62)
+	_set_r("bottom_bar/sound_btn", m, H - 90, 62, 62)
+	_set_r("bottom_bar/lang_btn", W - 68, H - 158, 62, 62)
+	_set_r("bottom_bar/clicker_btn", W - 68, H - 90, 62, 62)
+	_set_r("bottom_bar/clicker_glow", W - 74, H - 96, 74, 74)
+	# частые — центр низа: ставка/макс/авто рядом, ПУСК во всю ширину
+	var cx := m + 68
+	var cw := W - 2 * m - 136
+	var w3 := (cw - 2 * g) / 3.0
+	_set_r("bottom_bar/bet_btn", cx, H - 158, w3, 62)
+	_set_r("bottom_bar/max_btn", cx + w3 + g, H - 158, w3, 62)
+	_set_r("bottom_bar/auto_btn", cx + 2 * (w3 + g), H - 158, w3, 62)
+	_set_r("bottom_bar/speed_btn", cx, H - 90, w3, 84)
+	_set_r("bottom_bar/spin_btn", cx + w3 + g, H - 90, 2 * w3 + g, 84)
+	_set_r("debug_btn", W - 84, 50, 78, 20)
+	_set_r("reset_btn", W - 84, 72, 78, 20)
 	for mp in ["bet_menu/panel", "auto_menu/panel", "sound_menu/panel",
 			"debug_menu/panel"]:
 		var ph: float = (_def_rects[mp] as Rect2).size.y

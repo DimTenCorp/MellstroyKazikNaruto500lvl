@@ -36,8 +36,9 @@ var _def_fonts := {}
 const MANAGED := ["hud_icon", "hud_balance", "coin_btn", "click_hint",
 		"auto_stat", "click_stat", "play_btn", "play_caption", "back_btn",
 		"msg_label", "upg_scroll"]
-const PORTRAIT_FS := {"hud_balance": 22, "click_hint": 18, "auto_stat": 14,
-		"click_stat": 14, "play_caption": 14, "msg_label": 20}
+const PORTRAIT_FS := {"hud_balance": 26, "click_hint": 20, "auto_stat": 18,
+		"click_stat": 18, "play_caption": 16, "msg_label": 22}
+const UPG_INFO_FS := 16        ## шрифт строк улучшений в портрете
 var _banner_tw: Tween
 
 @onready var machine: Control = $machine
@@ -186,6 +187,10 @@ func _capture_defaults() -> void:
 	for p in PORTRAIT_FS:
 		var l: Label = machine.get_node(p)
 		_def_fonts[p] = int(l.get_theme_font_size("font_size"))
+	for i in Upgrades.UPGRADES.size():
+		var l: Label = machine.get_node(
+				"upg_scroll/upg_vbox/upg%d_row/upg%d_info" % [i, i])
+		_def_fonts["upg%d" % i] = int(l.get_theme_font_size("font_size"))
 
 
 func _set_r(p: String, x: float, y: float, w: float, h: float) -> void:
@@ -200,27 +205,38 @@ func _restore_defaults() -> void:
 		n.position = (_def_rects[p] as Rect2).position
 		n.size = (_def_rects[p] as Rect2).size
 	for p in _def_fonts:
-		var l: Label = machine.get_node(p)
-		l.add_theme_font_size_override("font_size", _def_fonts[p])
+		if p.begins_with("upg"):
+			var i := int(p.trim_prefix("upg"))
+			var l: Label = machine.get_node(
+					"upg_scroll/upg_vbox/upg%d_row/upg%d_info" % [i, i])
+			l.add_theme_font_size_override("font_size", _def_fonts[p])
+		else:
+			var l: Label = machine.get_node(p)
+			l.add_theme_font_size_override("font_size", _def_fonts[p])
 
 
-## Портрет 9:16: монета по центру, улучшение-список внизу во всю ширину.
+## Портрет 9:16: монета по центру экрана, реклама и выход по бокам,
+## список улучшений — во всю ширину внизу, шрифты крупнее.
 func _layout_portrait(W: float, H: float) -> void:
 	var m := 6.0
-	_set_r("hud_icon", m, m, 44, 40)
-	_set_r("hud_balance", m + 48, m + 4, W - 54 - m, 32)
-	_set_r("coin_btn", (W - 260) * 0.5, 70, 260, 268)
-	_set_r("click_hint", (W - 260) * 0.5, 342, 260, 26)
-	_set_r("auto_stat", m, 374, (W - 2 * m) * 0.5, 22)
-	_set_r("click_stat", m + (W - 2 * m) * 0.5, 374, (W - 2 * m) * 0.5, 22)
-	_set_r("play_btn", m, 404, 96, 94)
-	_set_r("play_caption", m, 502, 150, 24)
-	_set_r("back_btn", W - 166, 404, 160, 60)
-	_set_r("msg_label", 0, 540, W, 40)
-	_set_r("upg_scroll", 0, 584, W, H - 590)
+	_set_r("hud_icon", m, m, 48, 44)
+	_set_r("hud_balance", m + 52, m + 6, W - 58 - m, 34)
+	_set_r("coin_btn", (W - 280) * 0.5, 120, 280, 289)
+	_set_r("click_hint", (W - 280) * 0.5, 413, 280, 26)
+	_set_r("auto_stat", m, 443, (W - 2 * m) * 0.5, 24)
+	_set_r("click_stat", m + (W - 2 * m) * 0.5, 443, (W - 2 * m) * 0.5, 24)
+	_set_r("play_btn", m, 190, 92, 90)
+	_set_r("play_caption", m, 284, 130, 22)
+	_set_r("back_btn", W - 158, 190, 152, 56)
+	_set_r("msg_label", 0, 471, W, 32)
+	_set_r("upg_scroll", 0, 507, W, H - 507)
 	for p in PORTRAIT_FS:
 		var l: Label = machine.get_node(p)
 		l.add_theme_font_size_override("font_size", PORTRAIT_FS[p])
+	for i in Upgrades.UPGRADES.size():
+		var l: Label = machine.get_node(
+				"upg_scroll/upg_vbox/upg%d_row/upg%d_info" % [i, i])
+		l.add_theme_font_size_override("font_size", UPG_INFO_FS)
 
 
 func _layout() -> void:
