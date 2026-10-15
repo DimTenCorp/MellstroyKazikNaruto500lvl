@@ -95,10 +95,12 @@ const MANAGED := [
 	"intro_popup/intro_panel", "intro_popup/intro_label", "intro_popup/intro_btn",
 	"debt_popup/debt_panel", "debt_popup/debt_label", "debt_popup/debt_btn",
 ]
+## В портрете логическая ширина остаётся 1280 (canvas_items масштабирует
+## по ширине), поэтому размеры/шрифты крупнее десктопных в ~2.5 раза.
 const PORTRAIT_FS := {
-	"balance_label": 26, "win_label": 22, "freespin_label": 18,
-	"bottom_bar/auto_label": 18, "bottom_bar/fullbet_label": 20,
-	"bottom_bar/bet_label": 18, "grid_panel/msg_label": 26,
+	"balance_label": 64, "win_label": 56, "freespin_label": 44,
+	"bottom_bar/auto_label": 44, "bottom_bar/fullbet_label": 52,
+	"bottom_bar/bet_label": 46, "grid_panel/msg_label": 64,
 }
 var _auto_acc := 0.0
 var _popup_tw: Tween
@@ -440,60 +442,60 @@ func _restore_defaults() -> void:
 ## Портретная раскладка (9:16): частые кнопки внизу крупные,
 ## редкие (таблица, звук, язык, мешок) — колонками по бокам.
 func _layout_portrait(W: float, H: float) -> void:
-	var m := 6.0
-	var g := 6.0
+	var m := 24.0
+	var g := 16.0
 	var gw := W - 2 * m
 	var cell := (gw - 4 * g) / 5.0
 	var gh := 3 * cell + 2 * g
-	_set_r("balance_icon", m, m, 48, 44)
-	_set_r("balance_label", m + 52, m + 6, W - 58 - m, 34)
-	_set_r("win_label", m, 50, W - 100, 32)
-	_set_r("freespin_label", m, 84, (W - 2 * m) * 0.5, 26)
-	_set_r("bottom_bar/auto_label", m + (W - 2 * m) * 0.5, 84,
-			(W - 2 * m) * 0.5, 26)
-	_set_r("grid_panel", m, 112, gw, gh)
+	_set_r("balance_icon", m, m, 150, 138)
+	_set_r("balance_label", m + 160, m + 10, W - 184 - m, 90)
+	_set_r("win_label", m, 168, W - 260, 80)
+	_set_r("freespin_label", m, 252, (W - 2 * m) * 0.5, 60)
+	_set_r("bottom_bar/auto_label", m + (W - 2 * m) * 0.5, 252,
+			(W - 2 * m) * 0.5, 60)
+	_set_r("grid_panel", m, 320, gw, gh)
 	for c in SlotData.COLS:
 		var rl: SlotReel = machine.get_node("grid_panel/Reel%d" % c)
 		rl.position = Vector2(c * (cell + g), 0)
 		rl.size = Vector2(cell, gh)
 		rl.relayout()
-	_set_r("grid_panel/msg_label", 0, gh * 0.5 - 24, gw, 48)
-	_set_r("bottom_bar/fullbet_label", m, 116 + gh, W - 2 * m, 28)
-	_set_r("bottom_bar/bet_label", m, 144 + gh, W - 2 * m, 24)
+	_set_r("grid_panel/msg_label", 0, gh * 0.5 - 60, gw, 120)
+	_set_r("bottom_bar/fullbet_label", m, 328 + gh, W - 2 * m, 70)
+	_set_r("bottom_bar/bet_label", m, 402 + gh, W - 2 * m, 60)
 	# редкие кнопки — колонки по бокам нижней зоны
-	_set_r("bottom_bar/paytable_btn", m, H - 158, 62, 62)
-	_set_r("bottom_bar/sound_btn", m, H - 90, 62, 62)
-	_set_r("bottom_bar/lang_btn", W - 68, H - 158, 62, 62)
-	_set_r("bottom_bar/clicker_btn", W - 68, H - 90, 62, 62)
-	_set_r("bottom_bar/clicker_glow", W - 74, H - 96, 74, 74)
-	# частые — центр низа: ставка/макс/авто рядом, ПУСК во всю ширину
-	var cx := m + 68
-	var cw := W - 2 * m - 136
+	_set_r("bottom_bar/paytable_btn", m, H - 420, 170, 170)
+	_set_r("bottom_bar/sound_btn", m, H - 240, 170, 170)
+	_set_r("bottom_bar/lang_btn", W - 194, H - 420, 170, 170)
+	_set_r("bottom_bar/clicker_btn", W - 194, H - 240, 170, 170)
+	_set_r("bottom_bar/clicker_glow", W - 202, H - 248, 186, 186)
+	# частые — центр низа: ставка/макс/авто рядом, ТУРБО и ПУСК ниже
+	var cx := m + 186
+	var cw := W - 2 * m - 372
 	var w3 := (cw - 2 * g) / 3.0
-	_set_r("bottom_bar/bet_btn", cx, H - 158, w3, 62)
-	_set_r("bottom_bar/max_btn", cx + w3 + g, H - 158, w3, 62)
-	_set_r("bottom_bar/auto_btn", cx + 2 * (w3 + g), H - 158, w3, 62)
-	_set_r("bottom_bar/speed_btn", cx, H - 90, w3, 84)
-	_set_r("bottom_bar/spin_btn", cx + w3 + g, H - 90, 2 * w3 + g, 84)
-	_set_r("debug_btn", W - 84, 50, 78, 20)
-	_set_r("reset_btn", W - 84, 72, 78, 20)
+	_set_r("bottom_bar/bet_btn", cx, H - 420, w3, 170)
+	_set_r("bottom_bar/max_btn", cx + w3 + g, H - 420, w3, 170)
+	_set_r("bottom_bar/auto_btn", cx + 2 * (w3 + g), H - 420, w3, 170)
+	_set_r("bottom_bar/speed_btn", cx, H - 240, w3, 216)
+	_set_r("bottom_bar/spin_btn", cx + w3 + g, H - 240, 2 * w3 + g, 216)
+	_set_r("debug_btn", W - 220, 168, 200, 50)
+	_set_r("reset_btn", W - 220, 224, 200, 50)
 	for mp in ["bet_menu/panel", "auto_menu/panel", "sound_menu/panel",
 			"debug_menu/panel"]:
-		var ph: float = (_def_rects[mp] as Rect2).size.y
-		var pw := minf(340.0, W - 16)
+		var ph: float = minf((_def_rects[mp] as Rect2).size.y, H - 80)
+		var pw := minf(900.0, W - 48)
 		_set_r(mp, (W - pw) * 0.5, (H - ph) * 0.5, pw, ph)
-	_set_r("paytable_popup/popup_panel", 8, 40, W - 16, H - 80)
-	var ps := minf(1.0, (W - 16) / 500.0)
+	_set_r("paytable_popup/popup_panel", 24, 120, W - 48, H - 240)
+	var ps := minf(1.0, (W - 48) / 500.0)
 	_pop_scale = ps
 	win_popup.scale = Vector2(ps, ps)
-	win_popup.position = Vector2((W - 500 * ps) * 0.5, 140)
-	_set_r("intro_popup/intro_panel", 10, 110, W - 20, 400)
-	_set_r("intro_popup/intro_label", 20, 150, W - 40, 240)
-	_set_r("intro_popup/intro_btn", (W - 240) * 0.5, 455, 240, 52)
-	_set_r("debt_popup/debt_panel", 10, 130, W - 20, 380)
-	_set_r("debt_popup/debt_label", 20, 160, W - 40, 200)
-	var dbw := minf(320.0, W - 40)
-	_set_r("debt_popup/debt_btn", (W - dbw) * 0.5, 450, dbw, 52)
+	win_popup.position = Vector2((W - 500 * ps) * 0.5, H * 0.3)
+	_set_r("intro_popup/intro_panel", 40, 400, W - 80, 900)
+	_set_r("intro_popup/intro_label", 70, 480, W - 140, 560)
+	_set_r("intro_popup/intro_btn", (W - 560) * 0.5, 1060, 560, 120)
+	_set_r("debt_popup/debt_panel", 40, 450, W - 80, 850)
+	_set_r("debt_popup/debt_label", 70, 520, W - 140, 480)
+	var dbw := minf(700.0, W - 80)
+	_set_r("debt_popup/debt_btn", (W - dbw) * 0.5, 1030, dbw, 120)
 	_cell_w = cell
 	_gap_w = g
 	for p in PORTRAIT_FS:

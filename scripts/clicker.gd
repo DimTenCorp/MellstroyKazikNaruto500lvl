@@ -36,9 +36,12 @@ var _def_fonts := {}
 const MANAGED := ["hud_icon", "hud_balance", "coin_btn", "click_hint",
 		"auto_stat", "click_stat", "play_btn", "play_caption", "back_btn",
 		"msg_label", "upg_scroll"]
-const PORTRAIT_FS := {"hud_balance": 26, "click_hint": 20, "auto_stat": 18,
-		"click_stat": 18, "play_caption": 16, "msg_label": 22}
-const UPG_INFO_FS := 16        ## шрифт строк улучшений в портрете
+## В портрете логическая ширина = 1280 (масштаб по ширине), поэтому
+## размеры и шрифты крупнее десктопных примерно в 2.5 раза.
+const PORTRAIT_FS := {"hud_balance": 64, "click_hint": 48, "auto_stat": 44,
+		"click_stat": 44, "play_caption": 40, "msg_label": 52}
+const UPG_INFO_FS := 40        ## шрифт строк улучшений в портрете
+const UPG_ICON_MIN := 140.0    ## иконки улучшений в портрете
 var _banner_tw: Tween
 
 @onready var machine: Control = $machine
@@ -191,6 +194,9 @@ func _capture_defaults() -> void:
 		var l: Label = machine.get_node(
 				"upg_scroll/upg_vbox/upg%d_row/upg%d_info" % [i, i])
 		_def_fonts["upg%d" % i] = int(l.get_theme_font_size("font_size"))
+		var b: TextureButton = machine.get_node(
+				"upg_scroll/upg_vbox/upg%d_row/upg%d_btn" % [i, i])
+		_def_rects["upgmin%d" % i] = b.custom_minimum_size
 
 
 func _set_r(p: String, x: float, y: float, w: float, h: float) -> void:
@@ -201,6 +207,8 @@ func _set_r(p: String, x: float, y: float, w: float, h: float) -> void:
 
 func _restore_defaults() -> void:
 	for p in _def_rects:
+		if p.begins_with("upgmin"):
+			continue
 		var n: Control = machine.get_node(p)
 		n.position = (_def_rects[p] as Rect2).position
 		n.size = (_def_rects[p] as Rect2).size
@@ -210,6 +218,10 @@ func _restore_defaults() -> void:
 			var l: Label = machine.get_node(
 					"upg_scroll/upg_vbox/upg%d_row/upg%d_info" % [i, i])
 			l.add_theme_font_size_override("font_size", _def_fonts[p])
+	for i in Upgrades.UPGRADES.size():
+		var b: TextureButton = machine.get_node(
+				"upg_scroll/upg_vbox/upg%d_row/upg%d_btn" % [i, i])
+		b.custom_minimum_size = _def_rects["upgmin%d" % i]
 		else:
 			var l: Label = machine.get_node(p)
 			l.add_theme_font_size_override("font_size", _def_fonts[p])
@@ -218,18 +230,18 @@ func _restore_defaults() -> void:
 ## Портрет 9:16: монета по центру экрана, реклама и выход по бокам,
 ## список улучшений — во всю ширину внизу, шрифты крупнее.
 func _layout_portrait(W: float, H: float) -> void:
-	var m := 6.0
-	_set_r("hud_icon", m, m, 48, 44)
-	_set_r("hud_balance", m + 52, m + 6, W - 58 - m, 34)
-	_set_r("coin_btn", (W - 280) * 0.5, 120, 280, 289)
-	_set_r("click_hint", (W - 280) * 0.5, 413, 280, 26)
-	_set_r("auto_stat", m, 443, (W - 2 * m) * 0.5, 24)
-	_set_r("click_stat", m + (W - 2 * m) * 0.5, 443, (W - 2 * m) * 0.5, 24)
-	_set_r("play_btn", m, 190, 92, 90)
-	_set_r("play_caption", m, 284, 130, 22)
-	_set_r("back_btn", W - 158, 190, 152, 56)
-	_set_r("msg_label", 0, 471, W, 32)
-	_set_r("upg_scroll", 0, 507, W, H - 507)
+	var m := 24.0
+	_set_r("hud_icon", m, m, 150, 138)
+	_set_r("hud_balance", m + 160, m + 10, W - 184 - m, 90)
+	_set_r("coin_btn", (W - 700) * 0.5, 300, 700, 722)
+	_set_r("click_hint", (W - 700) * 0.5, 1030, 700, 64)
+	_set_r("auto_stat", m, 1100, (W - 2 * m) * 0.5, 60)
+	_set_r("click_stat", m + (W - 2 * m) * 0.5, 1100, (W - 2 * m) * 0.5, 60)
+	_set_r("play_btn", m, 480, 230, 225)
+	_set_r("play_caption", m, 712, 320, 56)
+	_set_r("back_btn", W - 380, 480, 356, 130)
+	_set_r("msg_label", 0, 1170, W, 80)
+	_set_r("upg_scroll", 0, 1260, W, H - 1260)
 	for p in PORTRAIT_FS:
 		var l: Label = machine.get_node(p)
 		l.add_theme_font_size_override("font_size", PORTRAIT_FS[p])
@@ -237,6 +249,9 @@ func _layout_portrait(W: float, H: float) -> void:
 		var l: Label = machine.get_node(
 				"upg_scroll/upg_vbox/upg%d_row/upg%d_info" % [i, i])
 		l.add_theme_font_size_override("font_size", UPG_INFO_FS)
+		var b: TextureButton = machine.get_node(
+				"upg_scroll/upg_vbox/upg%d_row/upg%d_btn" % [i, i])
+		b.custom_minimum_size = Vector2(UPG_ICON_MIN, UPG_ICON_MIN)
 
 
 func _layout() -> void:
