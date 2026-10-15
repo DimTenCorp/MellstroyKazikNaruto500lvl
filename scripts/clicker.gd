@@ -54,6 +54,8 @@ func _upg_cost(i: int) -> int:
 ## Список показывает все улучшения сверху вниз; прокачанные до упора
 ## строки помечаются МАКС и их кнопка гаснет.
 func _refresh_shop() -> void:
+	if upg_btns.is_empty():
+		return  # список ещё не построен
 	for i in Upgrades.UPGRADES.size():
 		var u: Dictionary = Upgrades.UPGRADES[i]
 		upg_btns[i].texture_normal = _icons[int(u.icon)]
@@ -126,11 +128,6 @@ func _dbg(msg: String) -> void:
 
 func _ready() -> void:
 	_load()
-	var lg := String(_cfg.get_value("save", "lang", L10n.lang))
-	if lg in L10n.LANGS:
-		L10n.lang = lg
-	_apply_lang()
-	_dbg("сцена готова, баланс=%d, язык=%s" % [balance, L10n.lang])
 	coin_btn.pressed.connect(_on_coin)
 	play_btn.pressed.connect(_on_play)
 	back_btn.pressed.connect(_on_back)
@@ -149,6 +146,11 @@ func _ready() -> void:
 		upg_infos.append(info)
 		btn.pressed.connect(_on_upg.bind(i))
 	_refresh_shop()
+	var lg := String(_cfg.get_value("save", "lang", L10n.lang))
+	if lg in L10n.LANGS:
+		L10n.lang = lg
+	_apply_lang()
+	_dbg("сцена готова, баланс=%d, язык=%s" % [balance, L10n.lang])
 	for btn in _find_buttons(self):
 		_bind_press_anim(btn)
 	play_caption.text = L10n.t("ad_caption") % AD_REWARD

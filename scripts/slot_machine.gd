@@ -632,7 +632,7 @@ func _set_bet_total(t: int) -> void:
 	var rounded := maxi(lines, int(round(float(capped) / float(lines))) * lines)
 	if rounded != t:
 		_banner(L10n.t("bet_round") % rounded, Color("#ffe9b8"))
-	_set_bet(rounded / lines)
+	_set_bet(int(rounded / float(lines)))
 
 
 func _on_bet_apply() -> void:
