@@ -47,14 +47,14 @@ const REGIONS := [
 static func click_add(levels: Array) -> int:
 	var v := 0
 	for i in UPGRADES.size():
-		v += int(UPGRADES[i].click) * int(levels[i])
+		v += int(UPGRADES[i].click) * (int(levels[i]) if i < levels.size() else 0)
 	return v
 
 
 static func auto_per_sec(levels: Array) -> int:
 	var v := 0
 	for i in UPGRADES.size():
-		v += int(UPGRADES[i].auto) * int(levels[i])
+		v += int(UPGRADES[i].auto) * (int(levels[i]) if i < levels.size() else 0)
 	return v
 
 

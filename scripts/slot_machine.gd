@@ -612,6 +612,10 @@ func _load_save() -> void:
 		upg_levels.clear()
 		for k in Upgrades.UPGRADES.size():
 			upg_levels.append(int(arr[k]) if k < arr.size() else 0)
+	if upg_levels.size() != Upgrades.UPGRADES.size():
+		upg_levels.clear()
+		for k in Upgrades.UPGRADES.size():
+			upg_levels.append(0)
 		speed_idx = clampi(int(cfg.get_value("save", "speed", 0)), 0, SPEEDS.size() - 1)
 		vol_sfx = clampi(int(cfg.get_value("save", "vol_sfx", 80)), 0, 100)
 		vol_music = clampi(int(cfg.get_value("save", "vol_music", 80)), 0, 100)
