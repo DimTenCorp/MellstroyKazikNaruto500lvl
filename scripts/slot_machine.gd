@@ -281,6 +281,11 @@ func _flag_set(key: String, val: Variant) -> void:
 ## Первый заход: сюжетный долг, баланс 0, подсветка кнопки кликера.
 func _setup_intro() -> void:
 	# страховка: редактор может сбросить autowrap/размер — ставим из кода
+	debt_label.size = Vector2(640, 200)
+	debt_label.position = Vector2(320, 220)
+	debt_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	debt_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	debt_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	intro_label.size = Vector2(620, 240)
 	intro_label.position = Vector2(330, 200)
 	intro_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
