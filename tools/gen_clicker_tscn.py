@@ -126,17 +126,17 @@ node("machine", "Control", ".", size=f"Vector2({VSIZE[0]}, {VSIZE[1]})")
 # верх: иконка денег + баланс
 node("hud_icon", "TextureRect", "machine",
      texture='ExtResource("tex_money")',
-     position="Vector2(30, 14)", size="Vector2(60.88, 56)",  # размер заказчика — НЕ МЕНЯТЬ
+     position="Vector2(30, 14)", size="Vector2(65.22727, 60)",  # размер заказчика — НЕ МЕНЯТЬ
      expand_mode=1, stretch_mode=5, mouse_filter=2)
 label("hud_balance", "machine", "0", 28, "ffe9b8",
-      position="Vector2(104, 24)", size="Vector2(320, 38)",
+      position="Vector2(104, 24)", size="Vector2(320, 39)",
       theme_override_constants_outline_size=8,
       theme_override_colors_font_outline_color=hx("402008"))
 
 # монета-кликер (в сцене родной размер региона, визуальный ставит скрипт)
-tbtn("coin_btn", "machine", "at_coin", (480, 165), (320, 330))
+tbtn("coin_btn", "machine", "at_coin", (-160, -165), (320, 330))
 label("click_hint", "machine", "+5 за клик", 22, "9d8fb8",
-      position="Vector2(480, 508)", size="Vector2(320, 30)",
+      position="Vector2(-160, -15.73999)", size="Vector2(320, 31)",
       horizontal_alignment=1)
 
 # play = реклама с наградой

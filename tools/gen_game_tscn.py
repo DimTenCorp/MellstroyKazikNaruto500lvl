@@ -205,7 +205,7 @@ label("freespin_label", "machine", "", 22, "7ef3ff",
 # чтобы их можно было перетаскивать в редакторе.
 node("balance_icon", "TextureRect", "machine",
      texture='ExtResource("tex_money")',
-     position="Vector2(24, 34)", size="Vector2(66.31, 61)",  # размер заказчика — НЕ МЕНЯТЬ
+     position="Vector2(24, 34)", size="Vector2(64.14015, 59)",  # размер заказчика — НЕ МЕНЯТЬ
      expand_mode=1, stretch_mode=5, mouse_filter=2)
 label("balance_label", "machine", "0", 26, "ffe9b8",
       position="Vector2(98, 44)", size="Vector2(240, 36)",
@@ -274,8 +274,8 @@ tbtn("spin_btn", "bottom_bar", "at_spin", (1088, 520), (177, 192))
 tbtn("paytable_btn", "bottom_bar", "at_paytable", (1152, 152), (115, 127))
 node("lang_btn", "TextureButton", "bottom_bar",
      ignore_texture_size="true", stretch_mode=5,
-     position="Vector2(1012, 4)", size="Vector2(124, 132)")
-tbtn("sound_btn", "bottom_bar", "at_sound", (1144, 0), (130, 139))
+     position="Vector2(13, 214)", size="Vector2(72, 76.6452)")
+tbtn("sound_btn", "bottom_bar", "at_sound", (5, 123), (86, 91.95386))
 node("clicker_glow", "Panel", "bottom_bar",
      position="Vector2(1140, 277)", size="Vector2(140, 140)",
      visible="false", mouse_filter=2,
@@ -310,7 +310,7 @@ node("reset_btn", "Button", "machine", text='"СБРОС (ОТЛАДКА)"',
 
 # отладочная кнопка и меню выдачи денег
 node("debug_btn", "Button", "machine", text='"ДЕНЬГИ (ОТЛАДКА)"',
-     position="Vector2(-29, 522)", size="Vector2(152, 36)",
+     position="Vector2(-29, 522)", size="Vector2(163, 36)",
      theme_override_font_sizes_font_size=14,
      theme_override_styles_normal='SubResource("sb_btn_n")',
      theme_override_styles_hover='SubResource("sb_btn_h")',
