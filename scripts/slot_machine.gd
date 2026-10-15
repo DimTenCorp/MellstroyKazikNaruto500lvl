@@ -350,7 +350,7 @@ func _layout() -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_cancel"):
-		for m in [paytable_popup, bet_menu, auto_menu, sound_menu]:
+		for m in [paytable_popup, bet_menu, auto_menu, sound_menu, debug_menu]:
 			if m.visible:
 				_close_menus()
 				get_viewport().set_input_as_handled()
