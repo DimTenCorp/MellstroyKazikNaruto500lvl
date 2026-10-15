@@ -14,6 +14,7 @@ const BETS := [1, 2, 5, 10, 25, 50]
 const AUTO_OPTIONS := [10, 25, 50, 100, -1]  ## -1 = без лимита
 const SPEEDS := [1.0, 2.0, 5.0]
 const START_BALANCE := 0  ## первый заход: баланс 0 (долг по сюжету)
+const DEBT := 10000000    ## сюжетный долг: 10 000 000 денег
 const SAVE_PATH := "user://slot_save.cfg"
 
 # Порядок символов в таблице выплат (id из SlotData.Symbol) и их ключи в сцене.
@@ -95,6 +96,9 @@ var _wins_tex: Texture2D
 @onready var intro_label: Label = $machine/intro_popup/intro_label
 @onready var clicker_glow: Panel = $machine/bottom_bar/clicker_glow
 @onready var reset_btn: Button = $machine/reset_btn
+@onready var debt_popup: Control = $machine/debt_popup
+@onready var debt_btn: Button = $machine/debt_popup/debt_btn
+@onready var debt_label: Label = $machine/debt_popup/debt_label
 @onready var clicker_btn: TextureButton = $machine/bottom_bar/clicker_btn
 @onready var fx_layer: Control = $machine/grid_panel/fx_layer
 @onready var lines_overlay: Node2D = $machine/grid_panel/lines_overlay
@@ -145,6 +149,7 @@ func _ready() -> void:
 	speed_btn.pressed.connect(_on_speed_pressed)
 	sound_btn.pressed.connect(func() -> void: _open_menu(sound_menu))
 	intro_btn.pressed.connect(_on_intro_ok)
+	debt_btn.pressed.connect(_on_debt_ok)
 	reset_btn.pressed.connect(_on_reset_pressed)
 	clicker_btn.pressed.connect(_on_clicker_pressed)
 	paytable_btn.pressed.connect(func() -> void: _open_menu(paytable_popup))
@@ -262,7 +267,7 @@ func _setup_intro() -> void:
 		_save()
 		_update_labels()
 		intro_popup.visible = true
-		_dbg("первый заход: баланс обнулён, показано интро о долге 100 000")
+		_dbg("первый заход: баланс обнулён, показано интро о долге 10 000 000")
 	if not bool(_flag_get("clicker_visited", false)):
 		clicker_glow.visible = true
 		clicker_glow.modulate = Color(1, 1, 1, 1)
@@ -392,10 +397,30 @@ func _close_menus() -> void:
 
 # ------------------------------------------------------------------- хелперы UI
 
+## Накопил достаточно — показываем попап расплаты (один раз до согласия).
+func _check_debt() -> void:
+	if bool(_flag_get("debt_paid", false)):
+		return
+	if balance >= DEBT and not debt_popup.visible:
+		debt_popup.visible = true
+		_dbg("баланс %d >= долга %d: показан попап расплаты" % [balance, DEBT])
+
+
+func _on_debt_ok() -> void:
+	balance -= DEBT
+	_flag_set("debt_paid", true)
+	debt_popup.visible = false
+	_save()
+	_update_labels()
+	_banner("ДОЛГ ОПЛАЧЕН: −%s" % _fmt(DEBT), Color("#8dffa0"))
+	_dbg("игрок согласился: списано %d, остаток %d" % [DEBT, balance])
+
+
 func _update_labels() -> void:
 	balance_label.text = _fmt(balance)  # число рядом с иконкой мешка денег
 	bet_label.text = "Ставка/линия: %d" % bet_line
 	fullbet_label.text = "Полная ставка: %d" % total_bet()
+	_check_debt()
 	if _fs_left > 0:
 		freespin_label.show()
 		freespin_label.text = "ФРИСПИНЫ: %d" % _fs_left

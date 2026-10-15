@@ -549,7 +549,7 @@ size = Vector2(680, 360)
 theme_override_styles/panel = SubResource("sb_popup")
 
 [node name="intro_label" type="Label" parent="machine/intro_popup"]
-text = "Ты набрал много кредитов и проиграл всё в казино, теперь тебе нужно собрать 100 000 денег, чтобы расплатится с долгами"
+text = "Ты набрал много кредитов и проиграл всё в казино, теперь тебе нужно собрать 10 000 000 денег, чтобы расплатится с долгами"
 theme_override_font_sizes/font_size = 24
 theme_override_colors/font_color = Color(1, 0.913725, 0.721569, 1)
 position = Vector2(330, 200)
@@ -559,6 +559,35 @@ horizontal_alignment = 1
 vertical_alignment = 1
 theme_override_constants/outline_size = 8
 theme_override_colors/font_outline_color = Color(0.141176, 0.101961, 0.192157, 1)
+
+[node name="debt_popup" type="Control" parent="machine"]
+visible = false
+
+[node name="debt_panel" type="Panel" parent="machine/debt_popup"]
+position = Vector2(290, 190)
+size = Vector2(700, 340)
+theme_override_styles/panel = SubResource("sb_popup")
+
+[node name="debt_label" type="Label" parent="machine/debt_popup"]
+text = "Вы успешно раслатились с долгами, вы можете продолжить зарабатывать деньги чтобы быть крутыми"
+theme_override_font_sizes/font_size = 24
+theme_override_colors/font_color = Color(0.552941, 1, 0.627451, 1)
+position = Vector2(320, 220)
+size = Vector2(640, 200)
+autowrap_mode = 3
+horizontal_alignment = 1
+vertical_alignment = 1
+theme_override_constants/outline_size = 8
+theme_override_colors/font_outline_color = Color(0.113725, 0.301961, 0.113725, 1)
+
+[node name="debt_btn" type="Button" parent="machine/debt_popup"]
+text = "СОГЛАСЕН (−10 000 000)"
+position = Vector2(480, 440)
+size = Vector2(320, 52)
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("sb_btn_n")
+theme_override_styles/hover = SubResource("sb_btn_h")
+theme_override_styles/pressed = SubResource("sb_btn_p")
 
 [node name="intro_btn" type="Button" parent="machine/intro_popup"]
 text = "ПОНЯТНО, ПОГНАЛИ"
