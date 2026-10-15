@@ -74,6 +74,32 @@ var _glow_tw: Tween
 var _reset_armed := false
 var upg_levels: Array[int] = []  ## уровни улучшений кликера (для авто-бабла)
 var _lang_icons := {}
+var _pop_scale := 1.0          ## масштаб попапа выигрыша в портрете
+var _cell_w := CELL            ## текущая метрика ячейки (портрет меняет)
+var _gap_w := GAP
+var _def_rects := {}           ## дефолтные rect'ы узлов для возврата из портрета
+var _def_fonts := {}
+
+## Узлы, которые переставляются в портретном режиме (пути от machine).
+const MANAGED := [
+	"balance_icon", "balance_label", "win_label", "freespin_label",
+	"bottom_bar/bet_label", "bottom_bar/auto_label", "bottom_bar/fullbet_label",
+	"grid_panel", "grid_panel/Reel0", "grid_panel/Reel1", "grid_panel/Reel2",
+	"grid_panel/Reel3", "grid_panel/Reel4", "grid_panel/msg_label",
+	"bottom_bar/bet_btn", "bottom_bar/max_btn", "bottom_bar/auto_btn",
+	"bottom_bar/speed_btn", "bottom_bar/spin_btn", "bottom_bar/paytable_btn",
+	"bottom_bar/sound_btn", "bottom_bar/lang_btn", "bottom_bar/clicker_btn",
+	"bottom_bar/clicker_glow", "debug_btn", "reset_btn", "win_popup",
+	"bet_menu/panel", "auto_menu/panel", "sound_menu/panel", "debug_menu/panel",
+	"paytable_popup/popup_panel",
+	"intro_popup/intro_panel", "intro_popup/intro_label", "intro_popup/intro_btn",
+	"debt_popup/debt_panel", "debt_popup/debt_label", "debt_popup/debt_btn",
+]
+const PORTRAIT_FS := {
+	"balance_label": 22, "win_label": 20, "freespin_label": 15,
+	"bottom_bar/auto_label": 15, "bottom_bar/fullbet_label": 17,
+	"bottom_bar/bet_label": 15, "grid_panel/msg_label": 24,
+}
 var _auto_acc := 0.0
 var _popup_tw: Tween
 ## Переведённые листы бейджей выигрыша.
@@ -248,6 +274,7 @@ func _ready() -> void:
 	_refresh_paytable()
 	_update_labels()
 	_setup_intro()
+	_capture_defaults()
 	_layout()
 	get_viewport().size_changed.connect(_layout)
 
@@ -379,6 +406,95 @@ func _dbg(msg: String) -> void:
 		print("[slot] " + msg)
 
 
+func _capture_defaults() -> void:
+	for p in MANAGED:
+		var n: Control = machine.get_node(p)
+		_def_rects[p] = Rect2(n.position, n.size)
+	for p in PORTRAIT_FS:
+		var l: Label = machine.get_node(p)
+		_def_fonts[p] = int(l.get_theme_font_size("font_size"))
+
+
+func _set_r(p: String, x: float, y: float, w: float, h: float) -> void:
+	var n: Control = machine.get_node(p)
+	n.position = Vector2(x, y)
+	n.size = Vector2(w, h)
+
+
+func _restore_defaults() -> void:
+	for p in _def_rects:
+		var n: Control = machine.get_node(p)
+		n.position = (_def_rects[p] as Rect2).position
+		n.size = (_def_rects[p] as Rect2).size
+	for p in _def_fonts:
+		var l: Label = machine.get_node(p)
+		l.add_theme_font_size_override("font_size", _def_fonts[p])
+	win_popup.scale = Vector2.ONE
+	_pop_scale = 1.0
+	_cell_w = CELL
+	_gap_w = GAP
+	for c in SlotData.COLS:
+		(machine.get_node("grid_panel/Reel%d" % c) as SlotReel).relayout()
+
+
+## Портретная раскладка (9:16 и похожие): колонка сверху вниз — баланс,
+## сетка, ставки, два ряда кнопок, ПУСК во всю ширину.
+func _layout_portrait(W: float, H: float) -> void:
+	var m := 6.0
+	var g := 6.0
+	var gw := W - 2 * m
+	var cell := (gw - 4 * g) / 5.0
+	var gh := 3 * cell + 2 * g
+	_set_r("balance_icon", m, m, 44, 40)
+	_set_r("balance_label", m + 48, m + 4, W - 54 - m, 32)
+	_set_r("win_label", m, 44, W - 2 * m, 30)
+	_set_r("freespin_label", m, 76, (W - 2 * m) * 0.5, 24)
+	_set_r("bottom_bar/auto_label", m + (W - 2 * m) * 0.5, 76, (W - 2 * m) * 0.5, 24)
+	_set_r("grid_panel", m, 104, gw, gh)
+	for c in SlotData.COLS:
+		var rl: SlotReel = machine.get_node("grid_panel/Reel%d" % c)
+		rl.position = Vector2(c * (cell + g), 0)
+		rl.size = Vector2(cell, gh)
+		rl.relayout()
+	_set_r("grid_panel/msg_label", 0, gh * 0.5 - 24, gw, 48)
+	_set_r("bottom_bar/fullbet_label", m, 108 + gh, W - 2 * m, 26)
+	_set_r("bottom_bar/bet_label", m, 134 + gh, W - 2 * m, 22)
+	var w4 := (W - 2 * m - 3 * g) / 4.0
+	var row_a := ["bottom_bar/bet_btn", "bottom_bar/max_btn",
+			"bottom_bar/auto_btn", "bottom_bar/speed_btn"]
+	var row_b := ["bottom_bar/paytable_btn", "bottom_bar/sound_btn",
+			"bottom_bar/lang_btn", "bottom_bar/clicker_btn"]
+	for i in 4:
+		_set_r(row_a[i], m + i * (w4 + g), H - 250, w4, 74)
+		_set_r(row_b[i], m + i * (w4 + g), H - 170, w4, 74)
+	_set_r("bottom_bar/clicker_glow", m + 3 * (w4 + g) - 6, H - 176, w4 + 12, 86)
+	_set_r("bottom_bar/spin_btn", m, H - 90, W - 2 * m, 84)
+	_set_r("debug_btn", W - 84, 44, 78, 20)
+	_set_r("reset_btn", W - 84, 66, 78, 20)
+	for mp in ["bet_menu/panel", "auto_menu/panel", "sound_menu/panel",
+			"debug_menu/panel"]:
+		var ph: float = (_def_rects[mp] as Rect2).size.y
+		var pw := minf(340.0, W - 16)
+		_set_r(mp, (W - pw) * 0.5, (H - ph) * 0.5, pw, ph)
+	_set_r("paytable_popup/popup_panel", 8, 40, W - 16, H - 80)
+	var ps := minf(1.0, (W - 16) / 500.0)
+	_pop_scale = ps
+	win_popup.scale = Vector2(ps, ps)
+	win_popup.position = Vector2((W - 500 * ps) * 0.5, 140)
+	_set_r("intro_popup/intro_panel", 10, 110, W - 20, 400)
+	_set_r("intro_popup/intro_label", 20, 150, W - 40, 240)
+	_set_r("intro_popup/intro_btn", (W - 240) * 0.5, 455, 240, 52)
+	_set_r("debt_popup/debt_panel", 10, 130, W - 20, 380)
+	_set_r("debt_popup/debt_label", 20, 160, W - 40, 200)
+	var dbw := minf(320.0, W - 40)
+	_set_r("debt_popup/debt_btn", (W - dbw) * 0.5, 450, dbw, 52)
+	_cell_w = cell
+	_gap_w = g
+	for p in PORTRAIT_FS:
+		var l: Label = machine.get_node(p)
+		l.add_theme_font_size_override("font_size", PORTRAIT_FS[p])
+
+
 func _layout() -> void:
 	var vs := get_viewport_rect().size
 	var off := Vector2.ZERO
@@ -390,6 +506,12 @@ func _layout() -> void:
 			vs = sa.size
 	if vs.x <= 0 or vs.y <= 0:
 		return
+	if vs.x < vs.y:  # портрет (9:16): своя раскладка вместо уменьшения всей
+		machine.scale = Vector2.ONE
+		machine.position = off
+		_layout_portrait(vs.x, vs.y)
+		return
+	_restore_defaults()
 	var s := minf(vs.x / VSIZE.x, vs.y / VSIZE.y)
 	machine.scale = Vector2(s, s)
 	machine.position = off + (vs - VSIZE * s) * 0.5
@@ -894,11 +1016,11 @@ func _popup(badge_idx: int, text: String) -> void:
 	win_popup_label.text = text
 	win_popup.show()
 	win_popup.pivot_offset = win_popup.size * 0.5
-	win_popup.scale = Vector2(0.5, 0.5)
+	win_popup.scale = Vector2(0.5, 0.5) * _pop_scale
 	win_popup.modulate = Color(1, 1, 1, 0)
 	_popup_tw = create_tween()
 	_popup_tw.set_parallel(true)
-	_popup_tw.tween_property(win_popup, "scale", Vector2(1, 1), 0.35) \
+	_popup_tw.tween_property(win_popup, "scale", Vector2.ONE * _pop_scale, 0.35) \
 		.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 	_popup_tw.tween_property(win_popup, "modulate", Color(1, 1, 1, 1), 0.25)
 	_popup_tw.chain().tween_interval(0.45 if SPEEDS[speed_idx] > 1.0 else 1.1)
@@ -909,7 +1031,7 @@ func _popup(badge_idx: int, text: String) -> void:
 
 
 func _cell_center(col: int, row: int) -> Vector2:
-	return Vector2(col * (CELL + GAP) + CELL * 0.5, row * (CELL + GAP) + CELL * 0.5)
+	return Vector2(col * (_cell_w + _gap_w) + _cell_w * 0.5, row * (_cell_w + _gap_w) + _cell_w * 0.5)
 
 
 func _show_win_fx(res: Dictionary) -> void:
@@ -919,8 +1041,8 @@ func _show_win_fx(res: Dictionary) -> void:
 		for cellv in w.cells:
 			pts.append(_cell_center(cellv.x, cellv.y))
 			var hl := ColorRect.new()
-			hl.size = Vector2(CELL, CELL)
-			hl.position = Vector2(cellv.x * (CELL + GAP), cellv.y * (CELL + GAP))
+			hl.size = Vector2(_cell_w, _cell_w)
+			hl.position = Vector2(cellv.x * (_cell_w + _gap_w), cellv.y * (_cell_w + _gap_w))
 			hl.color = Color(color.r, color.g, color.b, 0.32)
 			fx_layer.add_child(hl)
 			_fx_nodes.append(hl)
@@ -938,8 +1060,8 @@ func _show_win_fx(res: Dictionary) -> void:
 		_fx_nodes.append(line)
 	for cellv in _scatter_cells(res):
 		var hl := ColorRect.new()
-		hl.size = Vector2(CELL, CELL)
-		hl.position = Vector2(cellv.x * (CELL + GAP), cellv.y * (CELL + GAP))
+		hl.size = Vector2(_cell_w, _cell_w)
+		hl.position = Vector2(cellv.x * (_cell_w + _gap_w), cellv.y * (_cell_w + _gap_w))
 		hl.color = Color(1.0, 0.85, 0.3, 0.4)
 		fx_layer.add_child(hl)
 		_fx_nodes.append(hl)

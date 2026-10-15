@@ -49,6 +49,13 @@ func _force_cells() -> void:
 		cell.mouse_filter = Control.MOUSE_FILTER_IGNORE
 
 
+## Пересчитать геометрию ячеек после ресайза барабана (портретный режим).
+func relayout() -> void:
+	cell_size = Vector2(size.x, size.y / float(SlotData.ROWS))
+	_force_cells()
+	_apply()
+
+
 ## Выдать барабану текстуры символов и генератор случайных чисел.
 func configure(p_textures: Array[Texture2D], p_rng: RandomNumberGenerator) -> void:
 	textures = p_textures
