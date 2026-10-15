@@ -73,6 +73,7 @@ var _banner_tw: Tween
 var _glow_tw: Tween
 var _reset_armed := false
 var upg_levels: Array[int] = []  ## уровни улучшений кликера (для авто-бабла)
+var _lang_icons := {}
 var _auto_acc := 0.0
 var _popup_tw: Tween
 var _wins_tex: Texture2D
@@ -98,6 +99,7 @@ var _wins_tex: Texture2D
 @onready var clicker_glow: Panel = $machine/bottom_bar/clicker_glow
 @onready var reset_btn: Button = $machine/reset_btn
 @onready var debug_btn: Button = $machine/debug_btn
+@onready var lang_btn: TextureButton = $machine/bottom_bar/lang_btn
 @onready var debt_popup: Control = $machine/debt_popup
 @onready var debt_btn: Button = $machine/debt_popup/debt_btn
 @onready var debt_label: Label = $machine/debt_popup/debt_label
@@ -156,6 +158,8 @@ func _ready() -> void:
 	intro_btn.pressed.connect(_on_intro_ok)
 	debt_btn.pressed.connect(_on_debt_ok)
 	debug_btn.pressed.connect(func() -> void: _open_menu(debug_menu))
+	_setup_lang()
+	_apply_lang()
 	_connect_menu(debug_menu)
 	# страховка: закрытие меню выдачи даже если список _close_menus устареет
 	debug_menu.get_node("panel/vbox/head/close_btn").pressed.connect(
@@ -312,12 +316,12 @@ func _setup_intro() -> void:
 func _on_reset_pressed() -> void:
 	if not _reset_armed:
 		_reset_armed = true
-		reset_btn.text = "ТОЧНО? ЕЩЁ РАЗ"
+		reset_btn.text = L10n.t("reset_confirm")
 		_dbg("сброс: первое нажатие, жду подтверждение 3 c")
 		await get_tree().create_timer(3.0).timeout
 		_reset_armed = false
 		if is_instance_valid(reset_btn):
-			reset_btn.text = "СБРОС (ОТЛАДКА)"
+			reset_btn.text = L10n.t("reset_btn")
 		return
 	_reset_armed = false
 	_dbg("ПОЛНЫЙ СБРОС ПРОГРЕССА: удаляю сейв %s" % SAVE_PATH)
@@ -412,7 +416,7 @@ func _open_menu(menu: Control) -> void:
 func _open_bet_menu() -> void:
 	if _spinning:
 		return
-	bet_total_label.text = "Полная ставка: %s" % _fmt(total_bet())
+	bet_total_label.text = L10n.t("full_bet_menu") % _fmt(total_bet())
 	_open_menu(bet_menu)
 	bet_input.text = str(total_bet())
 
@@ -426,6 +430,97 @@ func _close_menus() -> void:
 
 # ------------------------------------------------------------------- хелперы UI
 
+const LANG_REGIONS := {
+	"ru": Rect2(8, 10, 285, 305),
+	"en": Rect2(330, 10, 300, 305),
+	"tr": Rect2(676, 10, 293, 305),
+}
+
+
+## Язык: из сейва; при первом заходе в вебе — авто через Playgama Bridge.
+func _setup_lang() -> void:
+	var sheet: Texture2D = load("res://img/buttons/buttons_lang.png")
+	for code in LANG_REGIONS:
+		var at := AtlasTexture.new()
+		at.atlas = sheet
+		at.region = LANG_REGIONS[code]
+		_lang_icons[code] = at
+	var saved := String(_flag_get("lang", ""))
+	if saved == "":
+		saved = _detect_lang()
+		_flag_set("lang", saved)
+	L10n.lang = saved if saved in L10n.LANGS else "ru"
+	_dbg("язык: %s" % L10n.lang)
+	lang_btn.texture_normal = _lang_icons[L10n.lang]
+	lang_btn.pressed.connect(_on_lang_pressed)
+
+
+func _detect_lang() -> String:
+	if not OS.has_feature("web"):
+		return "ru"  # в редакторе мок-платформа, авто только в вебе
+	var br := get_node_or_null("/root/Bridge")
+	if br == null:
+		var s: GDScript = load("res://addons/playgama_bridge/bridge.gd")
+		if s != null:
+			br = s.new()
+			br.name = "Bridge"
+			get_tree().root.add_child(br)
+	if br != null and br.platform != null:
+		var code := str(br.platform.language).to_lower()
+		for l in L10n.LANGS:
+			if code.begins_with(l):
+				return l
+	return "ru"
+
+
+func _on_lang_pressed() -> void:
+	var i := L10n.LANGS.find(L10n.lang)
+	L10n.lang = L10n.LANGS[(i + 1) % L10n.LANGS.size()]
+	_flag_set("lang", L10n.lang)
+	lang_btn.texture_normal = _lang_icons[L10n.lang]
+	_apply_lang()
+	_update_labels()
+	_banner(L10n.t("lang_banner"), Color("#ffe9b8"))
+	_dbg("язык переключён: %s" % L10n.lang)
+
+
+## Все статические надписи сцены — по текущему языку.
+func _apply_lang() -> void:
+	var m := $machine
+	m.get_node("bet_menu/panel/vbox/head/head_title").text = L10n.t("m_bet")
+	m.get_node("auto_menu/panel/vbox/head/head_title").text = L10n.t("m_auto")
+	m.get_node("sound_menu/panel/vbox/head/head_title").text = L10n.t("m_sound")
+	m.get_node("debug_menu/panel/vbox/head/head_title").text = L10n.t("m_debug")
+	var pt := "paytable_popup/popup_panel/scroll/vbox/"
+	m.get_node(pt + "head/head_title").text = L10n.t("m_pay")
+	m.get_node(pt + "head/close_btn").text = L10n.t("close")
+	m.get_node(pt + "rules").text = L10n.t("rules")
+	m.get_node(pt + "row_bonus/name").text = L10n.t("scatter_name")
+	m.get_node(pt + "row_bonus/val").text = L10n.t("bonus_val")
+	m.get_node(pt + "lines_title").text = L10n.t("lines_title")
+	for key in ["cherry", "lemon", "orange", "plum", "watermelon", "star",
+			"horseshoe", "moneysack", "bell"]:
+		m.get_node(pt + "row_%s/name" % key).text = L10n.t("sym_" + key)
+	for menu in ["bet_menu", "auto_menu", "sound_menu", "debug_menu"]:
+		m.get_node("%s/panel/vbox/head/close_btn" % menu).text = L10n.t("close")
+	m.get_node("bet_menu/panel/vbox/bet_row/bet_apply").text = L10n.t("apply")
+	m.get_node("bet_menu/panel/vbox/bet_row/bet_input").placeholder_text = L10n.t("ph_bet")
+	m.get_node("bet_menu/panel/vbox/bet_total").text = \
+			L10n.t("full_bet_menu") % _fmt(total_bet())
+	m.get_node("auto_menu/panel/vbox/grid/auto_cancel").text = L10n.t("cancel")
+	m.get_node("auto_menu/panel/vbox/auto_hint").text = L10n.t("auto_hint")
+	m.get_node("sound_menu/panel/vbox/row_sfx/sfx_name").text = L10n.t("sfx")
+	m.get_node("sound_menu/panel/vbox/row_music/music_name").text = L10n.t("music")
+	m.get_node("debug_menu/panel/vbox/dbg_row/dbg_apply").text = L10n.t("give")
+	m.get_node("debug_menu/panel/vbox/dbg_row/dbg_input").placeholder_text = L10n.t("ph_sum")
+	intro_label.text = L10n.t("intro_text")
+	intro_btn.text = L10n.t("intro_btn")
+	debt_label.text = L10n.t("debt_text")
+	debt_btn.text = L10n.t("debt_btn")
+	reset_btn.text = L10n.t("reset_btn")
+	debug_btn.text = L10n.t("debug_btn")
+
+
 ## Отладочная выдача денег: пресеты или своё число в меню.
 func _give_money(v: int) -> void:
 	if v <= 0:
@@ -433,14 +528,14 @@ func _give_money(v: int) -> void:
 	balance += v
 	_save()
 	_update_labels()
-	_banner("ВЫДАНО +%s (ОТЛАДКА)" % _fmt(v), Color("#8dffa0"))
+	_banner(L10n.t("give_done") % _fmt(v), Color("#8dffa0"))
 	_dbg("отладочная выдача: +%d, баланс=%d" % [v, balance])
 
 
 func _on_dbg_apply() -> void:
 	var s := dbg_input.text.replace(" ", "").replace("\t", "")
 	if not s.is_valid_int():
-		_banner("ВПИШИ ЧИСЛО: НАПРИМЕР 5000", Color("#ff7b7b"))
+		_banner(L10n.t("enter_num_sum"), Color("#ff7b7b"))
 		return
 	_give_money(int(s))
 
@@ -460,23 +555,23 @@ func _on_debt_ok() -> void:
 	debt_popup.visible = false
 	_save()
 	_update_labels()
-	_banner("ДОЛГ ОПЛАЧЕН: −%s" % _fmt(DEBT), Color("#8dffa0"))
+	_banner(L10n.t("debt_paid") % _fmt(DEBT), Color("#8dffa0"))
 	_dbg("игрок согласился: списано %d, остаток %d" % [DEBT, balance])
 
 
 func _update_labels() -> void:
 	balance_label.text = _fmt(balance)  # число рядом с иконкой мешка денег
-	bet_label.text = "Ставка/линия: %d" % bet_line
-	fullbet_label.text = "Полная ставка: %d" % total_bet()
+	bet_label.text = L10n.t("bet_line") % bet_line
+	fullbet_label.text = L10n.t("full_bet") % total_bet()
 	_check_debt()
 	if _fs_left > 0:
 		freespin_label.show()
-		freespin_label.text = "ФРИСПИНЫ: %d" % _fs_left
+		freespin_label.text = L10n.t("freespins") % _fs_left
 	else:
 		freespin_label.hide()
 	if autospin:
 		auto_label.show()
-		auto_label.text = "АВТО: %s" % ("∞" if _auto_left < 0 else str(_auto_left))
+		auto_label.text = L10n.t("auto_banner") % ("∞" if _auto_left < 0 else str(_auto_left))
 	else:
 		auto_label.hide()
 
@@ -519,7 +614,7 @@ func total_bet() -> int:
 func _set_bet(v: int) -> void:
 	var capped := clampi(v, 1, maxi(1, balance))
 	if v > balance:
-		_banner("СТАВКА НЕ БОЛЬШЕ БАЛАНСА: %s" % _fmt(balance), Color("#ff7b7b"))
+		_banner(L10n.t("bet_cap") % _fmt(balance), Color("#ff7b7b"))
 	bet_line = capped
 	bet_input.text = str(total_bet())
 	_save()
@@ -532,18 +627,18 @@ func _set_bet(v: int) -> void:
 func _set_bet_total(t: int) -> void:
 	var capped := clampi(t, 1, maxi(1, balance))
 	if t > balance:
-		_banner("СТАВКА НЕ БОЛЬШЕ БАЛАНСА: %s" % _fmt(balance), Color("#ff7b7b"))
+		_banner(L10n.t("bet_cap") % _fmt(balance), Color("#ff7b7b"))
 	var lines := SlotData.PAYLINES.size()
 	var rounded := maxi(lines, int(round(float(capped) / float(lines))) * lines)
 	if rounded != t:
-		_banner("ПОЛНАЯ СТАВКА ОКРУГЛЕНА ДО %d (9 ЛИНИЙ)" % rounded, Color("#ffe9b8"))
+		_banner(L10n.t("bet_round") % rounded, Color("#ffe9b8"))
 	_set_bet(rounded / lines)
 
 
 func _on_bet_apply() -> void:
 	var s := bet_input.text.replace(" ", "").replace("\t", "")
 	if not s.is_valid_int():
-		_banner("ВПИШИ ЧИСЛО: НАПРИМЕР 90", Color("#ff7b7b"))
+		_banner(L10n.t("enter_num_bet"), Color("#ff7b7b"))
 		return
 	_set_bet_total(int(s))
 
@@ -552,7 +647,7 @@ func _on_max_bet() -> void:
 	if _spinning:
 		return
 	_set_bet(int(BETS[BETS.size() - 1]))
-	_banner("МАКС. СТАВКА: %s" % _fmt(total_bet()), Color("#ffe9b8"))
+	_banner(L10n.t("max_bet") % _fmt(total_bet()), Color("#ffe9b8"))
 
 
 func _on_clicker_pressed() -> void:
@@ -572,7 +667,7 @@ func _on_clicker_pressed() -> void:
 
 func _on_auto_pressed() -> void:
 	if autospin:
-		_stop_autospin("АВТОИГРА ОСТАНОВЛЕНА")
+		_stop_autospin(L10n.t("auto_stop"))
 		return
 	if _spinning:
 		return
@@ -602,7 +697,7 @@ func _on_speed_pressed() -> void:
 	_dbg("скорость -> x%d" % int(SPEEDS[speed_idx]))
 	_save()
 	_apply_toggles()
-	_banner("СКОРОСТЬ ×%d" % int(SPEEDS[speed_idx]), Color("#ffd794"))
+	_banner(L10n.t("speed") % int(SPEEDS[speed_idx]), Color("#ffd794"))
 
 
 # ------------------------------------------------------------------- сейв
@@ -643,7 +738,7 @@ func _on_spin_pressed() -> void:
 	if _spinning:
 		return
 	if autospin:  # ПУСК во время автоигры останавливает серию
-		_stop_autospin("АВТОИГРА ОСТАНОВЛЕНА")
+		_stop_autospin(L10n.t("auto_stop"))
 		return
 	_run_session()
 
@@ -666,7 +761,7 @@ func _run_session() -> void:
 				await _spin(true)
 				if _fs_left > 0:
 					await get_tree().create_timer(0.5 if SPEEDS[speed_idx] > 1.0 else 0.9).timeout
-			_banner("ФРИСПИНЫ ЗАВЕРШЕНЫ", Color("#7ef3ff"))
+			_banner(L10n.t("fs_done"), Color("#7ef3ff"))
 			await get_tree().create_timer(0.8).timeout
 		if not autospin:
 			break
@@ -674,10 +769,10 @@ func _run_session() -> void:
 			_auto_left -= 1
 			_update_labels()
 			if _auto_left == 0:
-				_stop_autospin("АВТОИГРА ЗАВЕРШЕНА")
+				_stop_autospin(L10n.t("auto_done"))
 				break
 		if balance < total_bet():
-			_stop_autospin("НЕДОСТАТОЧНО МОНЕТ!")
+			_stop_autospin(L10n.t("no_coins"))
 			break
 		await get_tree().create_timer(0.3 if SPEEDS[speed_idx] > 1.0 else 0.6).timeout
 	_spinning = false
@@ -690,7 +785,7 @@ func _spin(is_free: bool) -> void:
 	_clear_fx()
 	if not is_free:
 		if balance < total_bet():
-			_banner("НЕДОСТАТОЧНО МОНЕТ!", Color("#ff7b7b"))
+			_banner(L10n.t("no_coins"), Color("#ff7b7b"))
 			_update_labels()
 			return
 		balance -= total_bet()
@@ -722,7 +817,7 @@ func _spin(is_free: bool) -> void:
 
 	# Всплывающие уведомления: скаттер -> большой выигрыш.
 	if res.scatter >= 3:
-		await _popup(5, "+%d ФРИСПИНОВ" % res.free_spins)
+		await _popup(5, L10n.t("fs_add") % res.free_spins)
 	if won > 0:
 		var ratio := float(won) / float(total_bet())
 		var tier := -1
@@ -733,9 +828,9 @@ func _spin(is_free: bool) -> void:
 		if tier >= 0:
 			if is_free and tier != 6:
 				tier = 8  # выигрыш в бонусной игре (фриспины)
-			await _popup(tier, "ВЫИГРЫШ: %s" % _fmt(won))
+			await _popup(tier, L10n.t("win_total") % _fmt(won))
 	if is_free and res.free_spins > 0:
-		await _popup(7, "+%d ФРИСПИНОВ" % res.free_spins)
+		await _popup(7, L10n.t("fs_add") % res.free_spins)
 	if res.free_spins > 0:
 		if is_free:
 			_fs_left += res.free_spins
@@ -838,7 +933,7 @@ func _count_up(amount: int) -> void:
 		_win_tween.kill()
 	_win_tween = create_tween()
 	var set_win := func(v: float) -> void:
-		win_label.text = "Выигрыш: %s" % _fmt(int(round(v)))
+		win_label.text = L10n.t("win_total_low") % _fmt(int(round(v)))
 	_win_tween.tween_method(set_win, 0.0, float(amount), 0.7)
 
 

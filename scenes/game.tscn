@@ -479,6 +479,12 @@ stretch_mode = 5
 position = Vector2(1152, 152)
 size = Vector2(115, 127)
 
+[node name="lang_btn" type="TextureButton" parent="machine/bottom_bar"]
+ignore_texture_size = true
+stretch_mode = 5
+position = Vector2(1012, 4)
+size = Vector2(124, 132)
+
 [node name="sound_btn" type="TextureButton" parent="machine/bottom_bar"]
 texture_normal = SubResource("at_sound")
 ignore_texture_size = true

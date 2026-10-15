@@ -59,19 +59,20 @@ func _refresh_shop() -> void:
 		upg_btns[i].texture_normal = _icons[int(u.icon)]
 		upg_btns[i].disabled = upg_levels[i] >= int(u.max)
 		if upg_levels[i] >= int(u.max):
-			upg_infos[i].text = "%s\n%s | ур.%d/%d | МАКС" % [
-					u.name, _upg_effect_text(u), upg_levels[i], u.max]
+			upg_infos[i].text = L10n.t("upg_max") % [
+					L10n.t("upg%d" % i), _upg_effect_text(u), upg_levels[i], u.max]
 		else:
-			upg_infos[i].text = "%s\n%s | ур.%d/%d | цена %d" % [
-					u.name, _upg_effect_text(u), upg_levels[i], u.max, _upg_cost(i)]
+			upg_infos[i].text = L10n.t("upg_line") % [
+					L10n.t("upg%d" % i), _upg_effect_text(u), upg_levels[i], u.max,
+					_upg_cost(i)]
 
 
 func _upg_effect_text(u: Dictionary) -> String:
 	var parts: Array[String] = []
 	if int(u.click) > 0:
-		parts.append("+%d/клик" % u.click)
+		parts.append(L10n.t("eff_click") % u.click)
 	if int(u.auto) > 0:
-		parts.append("+%d/с" % u.auto)
+		parts.append(L10n.t("eff_auto") % u.auto)
 	return " ".join(parts)
 
 
@@ -82,7 +83,7 @@ func _on_upg(i: int) -> void:
 	var c := _upg_cost(i)
 	if balance < c:
 		_dbg("улучшение %s: не хватает бабла (нужно %d, есть %d)" % [u.name, c, balance])
-		_banner("НЕ ХВАТАЕТ БАБЛА: НУЖНО %d" % c, Color("#ff7b7b"))
+		_banner(L10n.t("need_money") % c, Color("#ff7b7b"))
 		return
 	balance -= c
 	upg_levels[i] += 1
@@ -111,6 +112,13 @@ func _process(delta: float) -> void:
 		_update()
 
 
+func _apply_lang() -> void:
+	back_btn.text = L10n.t("back")
+	play_caption.text = L10n.t("ad_caption") % AD_REWARD
+	_refresh_shop()
+	_update()
+
+
 func _dbg(msg: String) -> void:
 	if DEBUG:
 		print("[clicker] " + msg)
@@ -118,7 +126,11 @@ func _dbg(msg: String) -> void:
 
 func _ready() -> void:
 	_load()
-	_dbg("сцена готова, баланс=%d" % balance)
+	var lg := String(_cfg.get_value("save", "lang", L10n.lang))
+	if lg in L10n.LANGS:
+		L10n.lang = lg
+	_apply_lang()
+	_dbg("сцена готова, баланс=%d, язык=%s" % [balance, L10n.lang])
 	coin_btn.pressed.connect(_on_coin)
 	play_btn.pressed.connect(_on_play)
 	back_btn.pressed.connect(_on_back)
@@ -139,7 +151,7 @@ func _ready() -> void:
 	_refresh_shop()
 	for btn in _find_buttons(self):
 		_bind_press_anim(btn)
-	play_caption.text = "РЕКЛАМА: +%d" % AD_REWARD
+	play_caption.text = L10n.t("ad_caption") % AD_REWARD
 	_update()
 	_layout()
 	get_viewport().size_changed.connect(_layout)
@@ -179,9 +191,9 @@ func _save() -> void:
 
 func _update() -> void:
 	hud_balance.text = _fmt(balance)
-	click_hint.text = "+%d за клик" % click_gain()
-	click_stat.text = "бабло за клик: %d" % click_gain()
-	auto_stat.text = "авт. бабло: %d/с" % auto_gain()
+	click_hint.text = L10n.t("per_click") % click_gain()
+	click_stat.text = L10n.t("stat_click") % click_gain()
+	auto_stat.text = L10n.t("stat_auto") % auto_gain()
 
 
 func _fmt(v: int) -> String:
@@ -273,11 +285,11 @@ func _on_play() -> void:
 		_dbg("награда начислена: +%d, баланс=%d" % [AD_REWARD, balance])
 		_save()
 		_update()
-		_banner("БАБЛО ЗА РЕКЛАМУ: +%s" % _fmt(AD_REWARD), Color("#8dffa0"))
+		_banner(L10n.t("ad_win") % _fmt(AD_REWARD), Color("#8dffa0"))
 		_float("+%d" % AD_REWARD,
 				play_btn.position + play_btn.size * 0.5, Color("#8dffa0"))
 	else:
-		_banner("РЕКЛАМА НЕ ДОСМОТРЕНА — НЕТ НАГРАДЫ", Color("#ff7b7b"))
+		_banner(L10n.t("ad_skip"), Color("#ff7b7b"))
 	_watching = false
 	play_btn.disabled = false
 
@@ -307,12 +319,12 @@ func _watch_rewarded_ad() -> bool:
 	var br := _get_bridge()
 	if br == null or br.advertisement == null:
 		_dbg("ОШИБКА: Bridge недоступен даже fallback-ом")
-		_banner("BRIDGE НЕ ПОДКЛЮЧЁН", Color("#ff7b7b"))
+		_banner(L10n.t("bridge_off"), Color("#ff7b7b"))
 		return false
 	_dbg("платформа: %s, rewarded supported=%s" % [
 			_platform_name(br), br.advertisement.is_rewarded_supported])
 	if not bool(br.advertisement.is_rewarded_supported):
-		_banner("НЕТ РЕКЛАМЫ НА ПЛАТФОРМЕ: %s" % _platform_name(br),
+		_banner(L10n.t("ad_unsup") % _platform_name(br),
 				Color("#ff7b7b"))
 		return false
 	var st := {"rewarded": false, "finished": false, "failed": false}
@@ -326,7 +338,7 @@ func _watch_rewarded_ad() -> bool:
 		elif state == br.RewardedState.CLOSED:
 			st["finished"] = true
 	br.advertisement.rewarded_state_changed.connect(on_state)
-	_banner("СМОТРИМ РЕКЛАМУ... [%s]" % _platform_name(br), Color("#ffd794"))
+	_banner(L10n.t("ad_watch") % _platform_name(br), Color("#ffd794"))
 	_dbg("вызов Bridge.advertisement.show_rewarded()")
 	br.advertisement.show_rewarded()
 	var t := 0.0
@@ -337,11 +349,11 @@ func _watch_rewarded_ad() -> bool:
 		br.advertisement.rewarded_state_changed.disconnect(on_state)
 	if not st["finished"]:
 		_dbg("ОШИБКА: таймаут ожидания рекламы (90 c)")
-		_banner("РЕКЛАМА НЕ ОТВЕТИЛА (ТАЙМАУТ)", Color("#ff7b7b"))
+		_banner(L10n.t("ad_timeout"), Color("#ff7b7b"))
 		return false
 	if st["failed"]:
 		_dbg("ОШИБКА: реклама завершилась с FAILED")
-		_banner("ОШИБКА РЕКЛАМЫ — НЕТ НАГРАДЫ", Color("#ff7b7b"))
+		_banner(L10n.t("ad_fail"), Color("#ff7b7b"))
 		return false
 	return st["rewarded"]
 

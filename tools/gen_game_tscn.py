@@ -272,6 +272,9 @@ tbtn("auto_btn", "bottom_bar", "at_auto", (800, 576), (163, 144))
 tbtn("speed_btn", "bottom_bar", "at_speed", (968, 592), (113, 120))
 tbtn("spin_btn", "bottom_bar", "at_spin", (1088, 520), (177, 192))
 tbtn("paytable_btn", "bottom_bar", "at_paytable", (1152, 152), (115, 127))
+node("lang_btn", "TextureButton", "bottom_bar",
+     ignore_texture_size="true", stretch_mode=5,
+     position="Vector2(1012, 4)", size="Vector2(124, 132)")
 tbtn("sound_btn", "bottom_bar", "at_sound", (1144, 0), (130, 139))
 node("clicker_glow", "Panel", "bottom_bar",
      position="Vector2(1140, 277)", size="Vector2(140, 140)",
