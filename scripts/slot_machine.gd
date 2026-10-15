@@ -77,7 +77,9 @@ var _lang_icons := {}
 var _pop_scale := 1.0          ## масштаб попапа выигрыша в портрете
 var _cell_w := CELL            ## текущая метрика ячейки (портрет меняет)
 var _gap_w := GAP
-var _def_rects := {}           ## дефолтные rect'ы узлов для возврата из портрета
+var _def_rects := {}
+var _def_anchors := {}
+var _def_offsets := {}           ## дефолтные rect'ы узлов для возврата из портрета
 var _def_fonts := {}
 
 ## Узлы, которые переставляются в портретном режиме (пути от machine).
@@ -417,13 +419,23 @@ func _capture_defaults() -> void:
 	for p in MANAGED:
 		var n: Control = machine.get_node(p)
 		_def_rects[p] = Rect2(n.position, n.size)
+		_def_anchors[p] = Vector4(n.anchor_left, n.anchor_top,
+				n.anchor_right, n.anchor_bottom)
+		_def_offsets[p] = Vector4(n.offset_left, n.offset_top,
+				n.offset_right, n.offset_bottom)
 	for p in PORTRAIT_FS:
 		var l: Label = machine.get_node(p)
 		_def_fonts[p] = int(l.get_theme_font_size("font_size"))
 
 
+## Ставим rect узлу: сначала гасим якоря, иначе size перезапишется.
 func _set_r(p: String, x: float, y: float, w: float, h: float) -> void:
 	var n: Control = machine.get_node(p)
+	if n.anchor_left != n.anchor_right or n.anchor_top != n.anchor_bottom:
+		n.anchor_left = 0.0
+		n.anchor_top = 0.0
+		n.anchor_right = 0.0
+		n.anchor_bottom = 0.0
 	n.position = Vector2(x, y)
 	n.size = Vector2(w, h)
 
@@ -431,8 +443,16 @@ func _set_r(p: String, x: float, y: float, w: float, h: float) -> void:
 func _restore_defaults() -> void:
 	for p in _def_rects:
 		var n: Control = machine.get_node(p)
-		n.position = (_def_rects[p] as Rect2).position
-		n.size = (_def_rects[p] as Rect2).size
+		var a: Vector4 = _def_anchors[p]
+		n.anchor_left = a.x
+		n.anchor_top = a.y
+		n.anchor_right = a.z
+		n.anchor_bottom = a.w
+		var o: Vector4 = _def_offsets[p]
+		n.offset_left = o.x
+		n.offset_top = o.y
+		n.offset_right = o.z
+		n.offset_bottom = o.w
 	for p in _def_fonts:
 		var l: Label = machine.get_node(p)
 		l.add_theme_font_size_override("font_size", _def_fonts[p])
