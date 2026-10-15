@@ -172,11 +172,18 @@ func _ready() -> void:
 
 func _layout() -> void:
 	var vs := get_viewport_rect().size
+	var off := Vector2.ZERO
+	if OS.has_feature("mobile") or OS.has_feature("android") \
+			or OS.has_feature("ios"):
+		var sa := DisplayServer.get_display_safe_area()
+		if sa.size.x > 0 and sa.size.y > 0:
+			off = sa.position
+			vs = sa.size
 	if vs.x <= 0 or vs.y <= 0:
 		return
 	var s := minf(vs.x / VSIZE.x, vs.y / VSIZE.y)
 	machine.scale = Vector2(s, s)
-	machine.position = (vs - VSIZE * s) * 0.5
+	machine.position = off + (vs - VSIZE * s) * 0.5
 
 
 # ------------------------------------------------------------------- баланс
