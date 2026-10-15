@@ -30,6 +30,7 @@ var _icons: Array[AtlasTexture] = []
 var _auto_acc := 0.0         ## накопитель секунд для авто-заработка
 var _cfg := ConfigFile.new()
 var _watching := false
+var _row_down := {}          ## старт нажатия в строке улучшения (драг-порог)
 var _def_rects := {}
 var _def_anchors := {}
 var _def_offsets := {}
@@ -98,6 +99,19 @@ func _upg_effect_text(u: Dictionary) -> String:
 	if int(u.auto) > 0:
 		parts.append(L10n.t("eff_auto") % u.auto)
 	return " ".join(parts)
+
+
+## Нажатие на строку улучшения: палец/курсор не уехал (порог 40) — покупка;
+## уехал (драг) — значит листали список, покупку не считаем.
+func _on_row_input(ev: InputEvent, i: int) -> void:
+	if ev is InputEventMouseButton and ev.button_index == MOUSE_BUTTON_LEFT:
+		if ev.pressed:
+			_row_down[i] = ev.position
+		elif _row_down.has(i):
+			var st: Vector2 = _row_down[i]
+			_row_down.erase(i)
+			if ev.position.distance_to(st) < 40.0:
+				_on_upg(i)
 
 
 func _on_upg(i: int) -> void:
@@ -169,7 +183,14 @@ func _ready() -> void:
 				"machine/upg_scroll/upg_vbox/upg%d_row/upg%d_info" % [i, i])
 		upg_btns.append(btn)
 		upg_infos.append(info)
-		btn.pressed.connect(_on_upg.bind(i))
+		# покупку ловит вся строка целиком; PASS пропускает событие дальше
+		# в ScrollContainer, поэтому драгом по строке можно листать список
+		btn.mouse_filter = Control.MOUSE_FILTER_PASS
+		info.mouse_filter = Control.MOUSE_FILTER_PASS
+		var row: Control = get_node(
+				"machine/upg_scroll/upg_vbox/upg%d_row" % i)
+		row.mouse_filter = Control.MOUSE_FILTER_PASS
+		row.gui_input.connect(_on_row_input.bind(i))
 	_refresh_shop()
 	var lg := String(_cfg.get_value("save", "lang", L10n.lang))
 	if lg in L10n.LANGS:
