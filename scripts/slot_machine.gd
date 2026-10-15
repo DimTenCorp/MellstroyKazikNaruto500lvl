@@ -15,6 +15,7 @@ const AUTO_OPTIONS := [10, 25, 50, 100, -1]  ## -1 = без лимита
 const SPEEDS := [1.0, 2.0, 5.0]
 const START_BALANCE := 0  ## первый заход: баланс 0 (долг по сюжету)
 const DEBT := 10000000    ## сюжетный долг: 10 000 000 денег
+const DEBUG_SUMS := [1000, 10000, 100000, 1000000, 10000000]
 const SAVE_PATH := "user://slot_save.cfg"
 
 # Порядок символов в таблице выплат (id из SlotData.Symbol) и их ключи в сцене.
@@ -96,9 +97,13 @@ var _wins_tex: Texture2D
 @onready var intro_label: Label = $machine/intro_popup/intro_label
 @onready var clicker_glow: Panel = $machine/bottom_bar/clicker_glow
 @onready var reset_btn: Button = $machine/reset_btn
+@onready var debug_btn: Button = $machine/debug_btn
 @onready var debt_popup: Control = $machine/debt_popup
 @onready var debt_btn: Button = $machine/debt_popup/debt_btn
 @onready var debt_label: Label = $machine/debt_popup/debt_label
+@onready var debug_menu: Control = $machine/debug_menu
+@onready var dbg_input: LineEdit = $machine/debug_menu/panel/vbox/dbg_row/dbg_input
+@onready var dbg_apply: Button = $machine/debug_menu/panel/vbox/dbg_row/dbg_apply
 @onready var clicker_btn: TextureButton = $machine/bottom_bar/clicker_btn
 @onready var fx_layer: Control = $machine/grid_panel/fx_layer
 @onready var lines_overlay: Node2D = $machine/grid_panel/lines_overlay
@@ -150,6 +155,16 @@ func _ready() -> void:
 	sound_btn.pressed.connect(func() -> void: _open_menu(sound_menu))
 	intro_btn.pressed.connect(_on_intro_ok)
 	debt_btn.pressed.connect(_on_debt_ok)
+	debug_btn.pressed.connect(func() -> void: _open_menu(debug_menu))
+	_connect_menu(debug_menu)
+	for i in DEBUG_SUMS.size():
+		var opt: Button = get_node("machine/debug_menu/panel/vbox/grid/dbg_opt%d" % i)
+		opt.pressed.connect(func() -> void:
+			_give_money(int(DEBUG_SUMS[i]))
+			_close_menus()
+		)
+	dbg_apply.pressed.connect(_on_dbg_apply)
+	dbg_input.text_submitted.connect(func(_t: String) -> void: _on_dbg_apply())
 	reset_btn.pressed.connect(_on_reset_pressed)
 	clicker_btn.pressed.connect(_on_clicker_pressed)
 	paytable_btn.pressed.connect(func() -> void: _open_menu(paytable_popup))
@@ -396,6 +411,25 @@ func _close_menus() -> void:
 
 
 # ------------------------------------------------------------------- хелперы UI
+
+## Отладочная выдача денег: пресеты или своё число в меню.
+func _give_money(v: int) -> void:
+	if v <= 0:
+		return
+	balance += v
+	_save()
+	_update_labels()
+	_banner("ВЫДАНО +%s (ОТЛАДКА)" % _fmt(v), Color("#8dffa0"))
+	_dbg("отладочная выдача: +%d, баланс=%d" % [v, balance])
+
+
+func _on_dbg_apply() -> void:
+	var s := dbg_input.text.replace(" ", "").replace("\t", "")
+	if not s.is_valid_int():
+		_banner("ВПИШИ ЧИСЛО: НАПРИМЕР 5000", Color("#ff7b7b"))
+		return
+	_give_money(int(s))
+
 
 ## Накопил достаточно — показываем попап расплаты (один раз до согласия).
 func _check_debt() -> void:

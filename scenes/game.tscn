@@ -540,6 +540,120 @@ theme_override_styles/normal = SubResource("sb_btn_n")
 theme_override_styles/hover = SubResource("sb_btn_h")
 theme_override_styles/pressed = SubResource("sb_btn_p")
 
+[node name="debug_btn" type="Button" parent="machine"]
+text = "ДЕНЬГИ (ОТЛАДКА)"
+position = Vector2(-29, 522)
+size = Vector2(152, 36)
+theme_override_font_sizes/font_size = 14
+theme_override_styles/normal = SubResource("sb_btn_n")
+theme_override_styles/hover = SubResource("sb_btn_h")
+theme_override_styles/pressed = SubResource("sb_btn_p")
+
+[node name="debug_menu" type="Control" parent="machine"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="dim" type="ColorRect" parent="machine/debug_menu"]
+color = Color(0, 0, 0, 0.7)
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="panel" type="Panel" parent="machine/debug_menu"]
+position = Vector2(470, 150)
+size = Vector2(340, 420)
+theme_override_styles/panel = SubResource("sb_popup")
+
+[node name="vbox" type="VBoxContainer" parent="machine/debug_menu/panel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 16
+offset_top = 12
+offset_right = -16
+offset_bottom = -12
+theme_override_constants/separation = 12
+
+[node name="head" type="HBoxContainer" parent="machine/debug_menu/panel/vbox"]
+theme_override_constants/separation = 0
+
+[node name="head_title" type="Label" parent="machine/debug_menu/panel/vbox/head"]
+text = "ВЫДАЧА ДЕНЕГ"
+theme_override_font_sizes/font_size = 26
+theme_override_colors/font_color = Color(1, 0.843137, 0.580392, 1)
+
+[node name="spacer_dbg" type="Control" parent="machine/debug_menu/panel/vbox/head"]
+size_flags_horizontal = 3
+
+[node name="close_btn" type="Button" parent="machine/debug_menu/panel/vbox/head"]
+text = "ЗАКРЫТЬ"
+custom_minimum_size = Vector2(140, 42)
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("sb_btn_n")
+theme_override_styles/hover = SubResource("sb_btn_n")
+theme_override_styles/pressed = SubResource("sb_btn_n")
+
+[node name="grid" type="GridContainer" parent="machine/debug_menu/panel/vbox"]
+columns = 2
+theme_override_constants/h_separation = 10
+theme_override_constants/v_separation = 10
+
+[node name="dbg_opt0" type="Button" parent="machine/debug_menu/panel/vbox/grid"]
+text = "+ 1000"
+custom_minimum_size = Vector2(140, 56)
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("sb_btn_n")
+theme_override_styles/hover = SubResource("sb_btn_h")
+theme_override_styles/pressed = SubResource("sb_btn_p")
+
+[node name="dbg_opt1" type="Button" parent="machine/debug_menu/panel/vbox/grid"]
+text = "+ 10000"
+custom_minimum_size = Vector2(140, 56)
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("sb_btn_n")
+theme_override_styles/hover = SubResource("sb_btn_h")
+theme_override_styles/pressed = SubResource("sb_btn_p")
+
+[node name="dbg_opt2" type="Button" parent="machine/debug_menu/panel/vbox/grid"]
+text = "+ 100000"
+custom_minimum_size = Vector2(140, 56)
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("sb_btn_n")
+theme_override_styles/hover = SubResource("sb_btn_h")
+theme_override_styles/pressed = SubResource("sb_btn_p")
+
+[node name="dbg_opt3" type="Button" parent="machine/debug_menu/panel/vbox/grid"]
+text = "+ 1000000"
+custom_minimum_size = Vector2(140, 56)
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("sb_btn_n")
+theme_override_styles/hover = SubResource("sb_btn_h")
+theme_override_styles/pressed = SubResource("sb_btn_p")
+
+[node name="dbg_opt4" type="Button" parent="machine/debug_menu/panel/vbox/grid"]
+text = "+ 10000000"
+custom_minimum_size = Vector2(140, 56)
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("sb_btn_n")
+theme_override_styles/hover = SubResource("sb_btn_h")
+theme_override_styles/pressed = SubResource("sb_btn_p")
+
+[node name="dbg_row" type="HBoxContainer" parent="machine/debug_menu/panel/vbox"]
+theme_override_constants/separation = 10
+
+[node name="dbg_input" type="LineEdit" parent="machine/debug_menu/panel/vbox/dbg_row"]
+size_flags_horizontal = 3
+custom_minimum_size = Vector2(0, 46)
+placeholder_text = "СВОЯ СУММА"
+theme_override_font_sizes/font_size = 20
+
+[node name="dbg_apply" type="Button" parent="machine/debug_menu/panel/vbox/dbg_row"]
+text = "ВЫДАТЬ"
+custom_minimum_size = Vector2(120, 46)
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("sb_btn_n")
+theme_override_styles/hover = SubResource("sb_btn_h")
+theme_override_styles/pressed = SubResource("sb_btn_p")
+
 [node name="intro_popup" type="Control" parent="machine"]
 visible = false
 

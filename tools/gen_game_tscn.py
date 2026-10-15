@@ -305,7 +305,57 @@ node("reset_btn", "Button", "machine", text='"СБРОС (ОТЛАДКА)"',
      theme_override_styles_hover='SubResource("sb_btn_h")',
      theme_override_styles_pressed='SubResource("sb_btn_p")')
 
-# интро при первом заходе: долг 100 000
+# отладочная кнопка и меню выдачи денег
+node("debug_btn", "Button", "machine", text='"ДЕНЬГИ (ОТЛАДКА)"',
+     position="Vector2(-29, 522)", size="Vector2(152, 36)",
+     theme_override_font_sizes_font_size=14,
+     theme_override_styles_normal='SubResource("sb_btn_n")',
+     theme_override_styles_hover='SubResource("sb_btn_h")',
+     theme_override_styles_pressed='SubResource("sb_btn_p")')
+node("debug_menu", "Control", "machine", visible="false",
+     anchor_right=1.0, anchor_bottom=1.0)
+node("dim", "ColorRect", "debug_menu", color=hx("000000", 0.7),
+     anchor_right=1.0, anchor_bottom=1.0)
+node("panel", "Panel", "debug_menu", position="Vector2(470, 150)",
+     size="Vector2(340, 420)",
+     theme_override_styles_panel='SubResource("sb_popup")')
+node("vbox", "VBoxContainer", "panel",
+     anchor_right=1.0, anchor_bottom=1.0,
+     offset_left=16, offset_top=12, offset_right=-16, offset_bottom=-12,
+     theme_override_constants_separation=12)
+hbox("head", "vbox", 0)
+label("head_title", "head", "ВЫДАЧА ДЕНЕГ", 26, "ffd794")
+spacer("spacer_dbg", "head")
+node("close_btn", "Button", "head", text='"ЗАКРЫТЬ"',
+     custom_minimum_size="Vector2(140, 42)",
+     theme_override_font_sizes_font_size=18,
+     theme_override_styles_normal='SubResource("sb_btn_n")',
+     theme_override_styles_hover='SubResource("sb_btn_n")',
+     theme_override_styles_pressed='SubResource("sb_btn_n")')
+node("grid", "GridContainer", "vbox", columns=2,
+     theme_override_constants_h_separation=10,
+     theme_override_constants_v_separation=10)
+for i, b in enumerate([1000, 10000, 100000, 1000000, 10000000]):
+    node(f"dbg_opt{i}", "Button", "grid", text='"+%s"' % format(b, " ").replace(" ", " "),
+         custom_minimum_size="Vector2(140, 56)",
+         theme_override_font_sizes_font_size=20,
+         theme_override_styles_normal='SubResource("sb_btn_n")',
+         theme_override_styles_hover='SubResource("sb_btn_h")',
+         theme_override_styles_pressed='SubResource("sb_btn_p")')
+hbox("dbg_row", "vbox", 10)
+node("dbg_input", "LineEdit", "dbg_row",
+     size_flags_horizontal=3,
+     custom_minimum_size="Vector2(0, 46)",
+     placeholder_text='"СВОЯ СУММА"',
+     theme_override_font_sizes_font_size=20)
+node("dbg_apply", "Button", "dbg_row", text='"ВЫДАТЬ"',
+     custom_minimum_size="Vector2(120, 46)",
+     theme_override_font_sizes_font_size=18,
+     theme_override_styles_normal='SubResource("sb_btn_n")',
+     theme_override_styles_hover='SubResource("sb_btn_h")',
+     theme_override_styles_pressed='SubResource("sb_btn_p")')
+
+# интро при первом заходе: долг 10 000 000
 node("intro_popup", "Control", "machine", visible="false")
 node("intro_panel", "Panel", "intro_popup",
      position="Vector2(300, 170)", size="Vector2(680, 360)",
