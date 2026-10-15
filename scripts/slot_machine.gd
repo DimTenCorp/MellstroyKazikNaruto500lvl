@@ -157,6 +157,15 @@ func _ready() -> void:
 	debt_btn.pressed.connect(_on_debt_ok)
 	debug_btn.pressed.connect(func() -> void: _open_menu(debug_menu))
 	_connect_menu(debug_menu)
+	# страховка: закрытие меню выдачи даже если список _close_menus устареет
+	debug_menu.get_node("panel/vbox/head/close_btn").pressed.connect(
+			func() -> void: debug_menu.hide())
+	debug_menu.get_node("dim").gui_input.connect(func(ev: InputEvent) -> void:
+		if ev is InputEventMouseButton and ev.pressed \
+				and ev.button_index == MOUSE_BUTTON_LEFT:
+			debug_menu.hide())
+	# меню выдачи — верхним слоем, чтобы ничего не перехватывало клики
+	debug_menu.get_parent().move_child(debug_menu, -1)
 	for i in DEBUG_SUMS.size():
 		var opt: Button = get_node("machine/debug_menu/panel/vbox/grid/dbg_opt%d" % i)
 		opt.pressed.connect(func() -> void:

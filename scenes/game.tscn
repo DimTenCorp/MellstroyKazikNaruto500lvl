@@ -578,7 +578,7 @@ theme_override_constants/separation = 0
 
 [node name="head_title" type="Label" parent="machine/debug_menu/panel/vbox/head"]
 text = "ВЫДАЧА ДЕНЕГ"
-theme_override_font_sizes/font_size = 26
+theme_override_font_sizes/font_size = 22
 theme_override_colors/font_color = Color(1, 0.843137, 0.580392, 1)
 
 [node name="spacer_dbg" type="Control" parent="machine/debug_menu/panel/vbox/head"]
@@ -586,8 +586,8 @@ size_flags_horizontal = 3
 
 [node name="close_btn" type="Button" parent="machine/debug_menu/panel/vbox/head"]
 text = "ЗАКРЫТЬ"
-custom_minimum_size = Vector2(140, 42)
-theme_override_font_sizes/font_size = 18
+custom_minimum_size = Vector2(120, 40)
+theme_override_font_sizes/font_size = 16
 theme_override_styles/normal = SubResource("sb_btn_n")
 theme_override_styles/hover = SubResource("sb_btn_n")
 theme_override_styles/pressed = SubResource("sb_btn_n")

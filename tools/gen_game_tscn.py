@@ -324,11 +324,11 @@ node("vbox", "VBoxContainer", "panel",
      offset_left=16, offset_top=12, offset_right=-16, offset_bottom=-12,
      theme_override_constants_separation=12)
 hbox("head", "vbox", 0)
-label("head_title", "head", "ВЫДАЧА ДЕНЕГ", 26, "ffd794")
+label("head_title", "head", "ВЫДАЧА ДЕНЕГ", 22, "ffd794")
 spacer("spacer_dbg", "head")
 node("close_btn", "Button", "head", text='"ЗАКРЫТЬ"',
-     custom_minimum_size="Vector2(140, 42)",
-     theme_override_font_sizes_font_size=18,
+     custom_minimum_size="Vector2(120, 40)",
+     theme_override_font_sizes_font_size=16,
      theme_override_styles_normal='SubResource("sb_btn_n")',
      theme_override_styles_hover='SubResource("sb_btn_n")',
      theme_override_styles_pressed='SubResource("sb_btn_n")')
