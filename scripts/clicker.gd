@@ -191,6 +191,10 @@ func _ready() -> void:
 				"machine/upg_scroll/upg_vbox/upg%d_row" % i)
 		row.mouse_filter = Control.MOUSE_FILTER_PASS
 		row.gui_input.connect(_on_row_input.bind(i))
+	# цепочка пропагации драга: строка(PASS) -> vbox(PASS) -> ScrollContainer,
+	# иначе контейнер со STOP съест событие и скролл не поедет
+	machine.get_node("upg_scroll/upg_vbox").mouse_filter = \
+			Control.MOUSE_FILTER_PASS
 	_refresh_shop()
 	var lg := String(_cfg.get_value("save", "lang", L10n.lang))
 	if lg in L10n.LANGS:

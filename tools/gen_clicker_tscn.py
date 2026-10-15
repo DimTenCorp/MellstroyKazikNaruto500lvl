@@ -148,8 +148,8 @@ label("play_caption", "machine", "РЕКЛАМА: +500", 20, "8dffa0",
 # прокручиваемый список всех улучшений (строки — узлы сцены)
 node("upg_scroll", "ScrollContainer", "machine",
      position="Vector2(846, 20)", size="Vector2(422, 688)")
-node("upg_vbox", "VBoxContainer", "upg_scroll",
-     size_flags_horizontal=3,
+node("upg_vbox", "VBoxContainer", "upg_scroll", mouse_filter=2,
+          size_flags_horizontal=3,
      theme_override_constants_separation=6)
 node("upg0_row", "HBoxContainer", "upg_vbox",
      theme_override_constants_separation=6)
