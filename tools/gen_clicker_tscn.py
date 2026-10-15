@@ -134,9 +134,9 @@ label("hud_balance", "machine", "0", 28, "ffe9b8",
       theme_override_colors_font_outline_color=hx("402008"))
 
 # монета-кликер (в сцене родной размер региона, визуальный ставит скрипт)
-tbtn("coin_btn", "machine", "at_coin", (-160, -165), (320, 330))
+tbtn("coin_btn", "machine", "at_coin", (480, 165), (320, 330))
 label("click_hint", "machine", "+5 за клик", 22, "9d8fb8",
-      position="Vector2(-160, -15.73999)", size="Vector2(320, 31)",
+      position="Vector2(480, 508)", size="Vector2(320, 31)",
       horizontal_alignment=1)
 
 # play = реклама с наградой
