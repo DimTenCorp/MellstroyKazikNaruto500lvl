@@ -184,6 +184,16 @@ func _layout() -> void:
 	var s := minf(vs.x / VSIZE.x, vs.y / VSIZE.y)
 	machine.scale = Vector2(s, s)
 	machine.position = off + (vs - VSIZE * s) * 0.5
+	# страховка: монета и подсказка всегда целиком в кадре, даже если
+	# в редакторе их утащат за экран
+	var cp := coin_btn.position
+	cp.x = clampf(cp.x, 0.0, VSIZE.x - coin_btn.size.x)
+	cp.y = clampf(cp.y, 0.0, VSIZE.y - coin_btn.size.y)
+	coin_btn.position = cp
+	var hp := click_hint.position
+	hp.x = clampf(hp.x, 0.0, VSIZE.x - click_hint.size.x)
+	hp.y = clampf(hp.y, 0.0, VSIZE.y - click_hint.size.y)
+	click_hint.position = hp
 
 
 # ------------------------------------------------------------------- баланс
