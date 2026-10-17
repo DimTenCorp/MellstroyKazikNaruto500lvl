@@ -87,6 +87,7 @@ const D := {
 	"upg_line": {"ru": "%s\n%s | ур.%d/%d | цена %d", "en": "%s\n%s | lv.%d/%d | cost %d", "tr": "%s\n%s | sv.%d/%d | fiyat %d"},
 	"eff_click": {"ru": "+%d/клик", "en": "+%d/click", "tr": "+%d/tık"},
 	"eff_auto": {"ru": "+%d/с", "en": "+%d/s", "tr": "+%d/sn"},
+	"eff_mult": {"ru": "| множитель x%d", "en": "| mult x%d", "tr": "| çarpan x%d"},
 	"ad_win": {"ru": "БАБЛО ЗА РЕКЛАМУ: +%s", "en": "CASH FOR AD: +%s", "tr": "REKLAM PARASI: +%s"},
 	"ad_skip": {"ru": "РЕКЛАМА НЕ ДОСМОТРЕНА — НЕТ НАГРАДЫ",
 			"en": "AD NOT WATCHED FULLY — NO REWARD",

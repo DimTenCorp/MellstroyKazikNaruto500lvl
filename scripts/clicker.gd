@@ -110,12 +110,17 @@ func _refresh_shop() -> void:
 					_upg_cost(i)]
 
 
+## Эффект улучшения с учётом множителя перерождений: цифры в описании
+## показывают фактическую прибавку, а не базовую.
 func _upg_effect_text(u: Dictionary) -> String:
+	var m := _earn_mult()
 	var parts: Array[String] = []
 	if int(u.click) > 0:
-		parts.append(L10n.t("eff_click") % u.click)
+		parts.append(L10n.t("eff_click") % (int(u.click) * m))
 	if int(u.auto) > 0:
-		parts.append(L10n.t("eff_auto") % u.auto)
+		parts.append(L10n.t("eff_auto") % (int(u.auto) * m))
+	if m > 1:
+		parts.append(L10n.t("eff_mult") % m)
 	return " ".join(parts)
 
 
