@@ -78,6 +78,8 @@ const D := {
 		"tr": "30 SANİYE x2 TIKLAMA!"},
 	"debt_plaque": {"ru": "ДОЛГ: %s", "en": "DEBT: %s", "tr": "BORÇ: %s"},
 	"debt_plaque_paid": {"ru": "ДОЛГ ОПЛАЧЕН", "en": "DEBT PAID", "tr": "BORÇ ÖDENDİ"},
+	"record_balance": {"ru": "НОВЫЙ МАКСИМУМ БАЛАНСА: %s!", "en": "NEW BALANCE RECORD: %s!",
+		"tr": "YENİ BALANS REKORU: %s!"},
 	"enter_num_bet": {"ru": "ВПИШИ ЧИСЛО: НАПРИМЕР 90", "en": "TYPE A NUMBER: E.G. 90", "tr": "SAYI YAZ: ÖRNEĞİN 90"},
 	"enter_num_sum": {"ru": "ВПИШИ ЧИСЛО: НАПРИМЕР 5000", "en": "TYPE A NUMBER: E.G. 5000", "tr": "SAYI YAZ: ÖRNEĞİN 5000"},
 	"bet_cap": {"ru": "СТАВКА НЕ БОЛЬШЕ БАЛАНСА: %s", "en": "BET NOT ABOVE BALANCE: %s", "tr": "BAHİS BAKİYEDEN BÜYÜK OLAMAZ: %s"},

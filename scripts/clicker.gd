@@ -24,6 +24,8 @@ const COIN_REGIONS := {
 }
 
 var _balance_v := 1000
+var _max_balance := 0      ## рекорд баланса за всё время
+var _record_ms := 0        ## антиспам баннера рекорда
 ## Баланс с защитой: отрицательное значение невозможно установить —
 ## любая попытка пишется в лог и зажимается в 0 (счетчик не уйдёт в минус).
 var balance: int:
@@ -438,6 +440,7 @@ func _layout() -> void:
 func _load() -> void:
 	if _cfg.load(SAVE_PATH) == OK:
 		balance = maxi(0, int(_cfg.get_value("save", "balance", balance)))
+		_max_balance = maxi(balance, int(_cfg.get_value("save", "max_balance", 0)))
 		_rebirths = clampi(int(_cfg.get_value("save", "rebirths", 0)), 0, 99)
 		_boost_until = int(_cfg.get_value("save", "boost2x_until", 0))
 		_debt_stage = int(_cfg.get_value("save", "debt_stage", -1))
@@ -458,6 +461,7 @@ func _load() -> void:
 func _save() -> void:
 	_cfg.set_value("save", "balance", balance)
 	_cfg.set_value("save", "upg_levels", upg_levels)
+	_cfg.set_value("save", "max_balance", _max_balance)
 	_cfg.set_value("save", "rebirths", _rebirths)
 	_cfg.set_value("save", "boost2x_until", _boost_until)
 	_cfg.set_value("save", "debt_stage", _debt_stage)
@@ -567,8 +571,22 @@ func _on_ad2x() -> void:
 	_update()
 
 
+func _check_record() -> void:
+	if balance <= _max_balance:
+		return
+	_max_balance = balance
+	_save()
+	var now := Time.get_ticks_msec()
+	if now - _record_ms > 8000:
+		_record_ms = now
+		_banner(L10n.t("record_balance") % _fmt(_max_balance), Color("#ffd794"))
+		Sfx.play(self, "win")
+		_dbg("новый максимум баланса: %d" % _max_balance)
+
+
 func _update() -> void:
 	hud_balance.text = _fmt(balance)
+	_check_record()
 	click_hint.text = L10n.t("per_click") % click_gain()
 	click_stat.text = L10n.t("stat_click") % click_gain()
 	auto_stat.text = L10n.t("stat_auto") % auto_gain()
