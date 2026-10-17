@@ -23,9 +23,9 @@ const COIN_REGIONS := {
 	"tr": Rect2(719, 326, 285, 287),
 }
 
+const BALANCE_MAX := 2147483647  ## потолок: выше не растёт (защита от переполнения)
 var _balance_v := 1000
-var _max_balance := 0      ## рекорд баланса за всё время
-var _record_ms := 0        ## антиспам баннера рекорда
+var _cap_notified := false       ## баннер о достижении потолка показан
 ## Баланс с защитой: отрицательное значение невозможно установить —
 ## любая попытка пишется в лог и зажимается в 0 (счетчик не уйдёт в минус).
 var balance: int:
@@ -33,9 +33,14 @@ var balance: int:
 		return _balance_v
 	set(v):
 		if v < 0:
-			## вместо сброса: баланс остаётся при прежнем (максимальном) значении
+			## вместо сброса: баланс остаётся при прежнем значении
 			print("[balance] ОТРИЦАТЕЛЬНОЕ значение %d отклонено, остаётся %d"
 					% [v, _balance_v])
+		elif v > BALANCE_MAX:
+			## потолок: дальше баланс не растёт, переполнение невозможно
+			if _balance_v < BALANCE_MAX:
+				print("[balance] достигнут потолок %d, рост остановлен" % BALANCE_MAX)
+			_balance_v = BALANCE_MAX
 		else:
 			_balance_v = v
 var upg_levels: Array[int] = []   ## уровни улучшений (индекс = номер в UPGRADES)
@@ -440,7 +445,6 @@ func _layout() -> void:
 func _load() -> void:
 	if _cfg.load(SAVE_PATH) == OK:
 		balance = maxi(0, int(_cfg.get_value("save", "balance", balance)))
-		_max_balance = maxi(balance, int(_cfg.get_value("save", "max_balance", 0)))
 		_rebirths = clampi(int(_cfg.get_value("save", "rebirths", 0)), 0, 99)
 		_boost_until = int(_cfg.get_value("save", "boost2x_until", 0))
 		_debt_stage = int(_cfg.get_value("save", "debt_stage", -1))
@@ -461,7 +465,6 @@ func _load() -> void:
 func _save() -> void:
 	_cfg.set_value("save", "balance", balance)
 	_cfg.set_value("save", "upg_levels", upg_levels)
-	_cfg.set_value("save", "max_balance", _max_balance)
 	_cfg.set_value("save", "rebirths", _rebirths)
 	_cfg.set_value("save", "boost2x_until", _boost_until)
 	_cfg.set_value("save", "debt_stage", _debt_stage)
@@ -571,22 +574,14 @@ func _on_ad2x() -> void:
 	_update()
 
 
-func _check_record() -> void:
-	if balance <= _max_balance:
-		return
-	_max_balance = balance
-	_save()
-	var now := Time.get_ticks_msec()
-	if now - _record_ms > 8000:
-		_record_ms = now
-		_banner(L10n.t("record_balance") % _fmt(_max_balance), Color("#ffd794"))
-		Sfx.play(self, "win")
-		_dbg("новый максимум баланса: %d" % _max_balance)
-
-
 func _update() -> void:
 	hud_balance.text = _fmt(balance)
-	_check_record()
+	if balance >= BALANCE_MAX and not _cap_notified:
+		_cap_notified = true
+		_banner(L10n.t("balance_cap") % _fmt(BALANCE_MAX), Color("#ffd794"))
+		Sfx.play(self, "win")
+	elif balance < BALANCE_MAX:
+		_cap_notified = false
 	click_hint.text = L10n.t("per_click") % click_gain()
 	click_stat.text = L10n.t("stat_click") % click_gain()
 	auto_stat.text = L10n.t("stat_auto") % auto_gain()
