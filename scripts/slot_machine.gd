@@ -57,9 +57,9 @@ var rng := RandomNumberGenerator.new()
 var textures: Array[Texture2D] = []
 var reels: Array[SlotReel] = []
 
+const BALANCE_MAX := 2147483647  ## потолок: выше не растёт (защита от переполнения)
 var _balance_v := START_BALANCE
-var _max_balance := 0      ## рекорд баланса за всё время
-var _record_ms := 0        ## антиспам баннера рекорда
+var _cap_notified := false       ## баннер о достижении потолка показан
 ## Баланс с защитой: отрицательное значение невозможно установить —
 ## любая попытка пишется в лог и зажимается в 0 (счетчик не уйдёт в минус).
 var balance: int:
@@ -67,9 +67,14 @@ var balance: int:
 		return _balance_v
 	set(v):
 		if v < 0:
-			## вместо сброса: баланс остаётся при прежнем (максимальном) значении
+			## вместо сброса: баланс остаётся при прежнем значении
 			print("[balance] ОТРИЦАТЕЛЬНОЕ значение %d отклонено, остаётся %d"
 					% [v, _balance_v])
+		elif v > BALANCE_MAX:
+			## потолок: дальше баланс не растёт, переполнение невозможно
+			if _balance_v < BALANCE_MAX:
+				print("[balance] достигнут потолок %d, рост остановлен" % BALANCE_MAX)
+			_balance_v = BALANCE_MAX
 		else:
 			_balance_v = v
 var bet_line := 1  ## ставка на линию: любое число от 1 до баланса
@@ -863,22 +868,8 @@ func _do_rebirth() -> void:
 	_dbg("перерождение #%d: множитель x%d, следующий долг %d"
 			% [rebirths, earn_mult(), debt_target()])
 
-func _check_record() -> void:
-	if balance <= _max_balance:
-		return
-	_max_balance = balance
-	_save()
-	var now := Time.get_ticks_msec()
-	if now - _record_ms > 8000:
-		_record_ms = now
-		_banner(L10n.t("record_balance") % _fmt(_max_balance), Color("#ffd794"))
-		Sfx.play(self, "win")
-		_dbg("новый максимум баланса: %d" % _max_balance)
-
-
 func _update_labels() -> void:
 	balance_label.text = _fmt(balance)
-	_check_record()
 	if debt_stage < rebirths:
 		debt_plaque.text = L10n.t("debt_plaque") % _fmt(debt_target())
 	else:
@@ -1036,7 +1027,6 @@ func _load_save() -> void:
 	var cfg := ConfigFile.new()
 	if cfg.load(SAVE_PATH) == OK:
 		balance = maxi(0, int(cfg.get_value("save", "balance", START_BALANCE)))
-		_max_balance = maxi(balance, int(cfg.get_value("save", "max_balance", 0)))
 		var old_idx := clampi(int(cfg.get_value("save", "bet", 0)), 0, BETS.size() - 1)
 		bet_line = maxi(1, int(cfg.get_value("save", "bet_line", int(BETS[old_idx]))))
 		var arr: Array = cfg.get_value("save", "upg_levels", [])
@@ -1067,7 +1057,6 @@ func _save() -> void:
 	cfg.set_value("save", "speed", speed_idx)
 	cfg.set_value("save", "vol_sfx", vol_sfx)
 	cfg.set_value("save", "vol_music", vol_music)
-	cfg.set_value("save", "max_balance", _max_balance)
 	cfg.set_value("save", "rebirths", rebirths)
 	cfg.set_value("save", "debt_stage", debt_stage)
 	var err := cfg.save(SAVE_PATH)
