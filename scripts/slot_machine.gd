@@ -257,6 +257,7 @@ func _ready() -> void:
 		vol_sfx = int(v)
 		sfx_val.text = str(vol_sfx)
 		Sfx.set_volumes(vol_sfx, vol_music)
+		_save()   ## настройки звука живут в сейве сразу, переживая смены сцен
 		_apply_volumes()
 		_save()
 	)
@@ -264,6 +265,7 @@ func _ready() -> void:
 		vol_music = int(v)
 		music_val.text = str(vol_music)
 		Sfx.set_volumes(vol_sfx, vol_music)
+		_save()
 		_apply_volumes()
 		_save()
 	)
