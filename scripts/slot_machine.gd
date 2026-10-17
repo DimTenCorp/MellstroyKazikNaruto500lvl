@@ -237,6 +237,9 @@ func _ready() -> void:
 	debt_later.pressed.connect(_on_debt_later)
 	rebirth_btn.pressed.connect(_on_rebirth_btn)
 	_apply_rebirth_tex()
+	rebirth_btn.ignore_texture_size = true
+	rebirth_btn.stretch_mode = TextureButton.STRETCH_SCALE
+	rebirth_btn.custom_minimum_size = Vector2.ZERO
 	debug_btn.pressed.connect(func() -> void: _open_menu(debug_menu))
 	_setup_lang()
 	_apply_lang()

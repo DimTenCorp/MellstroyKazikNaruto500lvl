@@ -401,7 +401,7 @@ node("debt_later", "Button", "debt_popup", text='"ПОЗЖЕ"',
      theme_override_styles_hover='SubResource("sb_btn_h")',
      theme_override_styles_pressed='SubResource("sb_btn_p")')
 node("rebirth_btn", "TextureButton", "machine", visible="false",
-     ignore_texture_size="true",
+     ignore_texture_size="true", stretch_mode=0,
      position="Vector2(1153, 407)", size="Vector2(116, 133)")
 
 node("intro_btn", "Button", "intro_popup", text='"ПОНЯТНО, ПОГНАЛИ"',
