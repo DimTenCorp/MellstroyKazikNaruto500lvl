@@ -21,6 +21,12 @@ const ST_SPIN_X1 := [
 
 ## Создать шины SFX/Music (идемпотентно) и применить громкость 0..100.
 static func ensure_buses(vol_sfx: float, vol_music: float) -> void:
+	if has_vols():
+		vol_sfx = cur_sfx      ## живые значения важнее старых из сейва
+		vol_music = cur_music
+	else:
+		cur_sfx = vol_sfx
+		cur_music = vol_music
 	for b in ["SFX", "Music"]:
 		if AudioServer.get_bus_index(b) == -1:
 			AudioServer.add_bus()
@@ -31,6 +37,8 @@ static func ensure_buses(vol_sfx: float, vol_music: float) -> void:
 
 
 static func set_volumes(vol_sfx: float, vol_music: float) -> void:
+	cur_sfx = vol_sfx
+	cur_music = vol_music
 	for pair in [["SFX", vol_sfx], ["Music", vol_music]]:
 		var idx := AudioServer.get_bus_index(str(pair[0]))
 		if idx == -1:
@@ -45,6 +53,14 @@ static func set_volumes(vol_sfx: float, vol_music: float) -> void:
 ## Временная диагностика веба: печатает состояние потока и шины.
 static var _unlocked := false
 static var _spin_pl: AudioStreamPlayer = null
+## Оперативные громкости: живут поверх сейва, чтобы переходы между
+## сценами не могли их потерять (сцена читает их раньше/вместо сейва).
+static var cur_sfx := -1.0
+static var cur_music := -1.0
+
+
+static func has_vols() -> bool:
+	return cur_sfx >= 0.0
 
 
 ## Веб: дёргаем разблокировку AudioContext из шаблона экспорта

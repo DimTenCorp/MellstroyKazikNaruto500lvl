@@ -272,6 +272,10 @@ func _ready() -> void:
 		_bind_press_anim(btn)
 		btn.pressed.connect(func() -> void: Sfx.play(self, "click"))
 	_load_save()
+	if Sfx.has_vols():   ## живые громкости переживают любую смену сцены
+		vol_sfx = int(Sfx.cur_sfx)
+		vol_music = int(Sfx.cur_music)
+	print("[sfx-cfg] слот старт: vol_sfx=%d vol_music=%d" % [vol_sfx, vol_music])
 	sfx_slider.value = vol_sfx
 	music_slider.value = vol_music
 	Sfx.ensure_buses(vol_sfx, vol_music)
@@ -923,6 +927,8 @@ func _load_save() -> void:
 		speed_idx = clampi(int(cfg.get_value("save", "speed", 0)), 0, SPEEDS.size() - 1)
 		vol_sfx = clampi(int(cfg.get_value("save", "vol_sfx", 80)), 0, 100)
 		vol_music = clampi(int(cfg.get_value("save", "vol_music", 80)), 0, 100)
+		print("[sfx-cfg] слот читает сейв %s: vol_sfx=%d vol_music=%d"
+				% [SAVE_PATH, vol_sfx, vol_music])
 	if upg_levels.size() != Upgrades.UPGRADES.size():
 		upg_levels.clear()
 		for k in Upgrades.UPGRADES.size():
@@ -937,7 +943,9 @@ func _save() -> void:
 	cfg.set_value("save", "speed", speed_idx)
 	cfg.set_value("save", "vol_sfx", vol_sfx)
 	cfg.set_value("save", "vol_music", vol_music)
-	cfg.save(SAVE_PATH)
+	var err := cfg.save(SAVE_PATH)
+	if err != OK:
+		print("[sfx-cfg] ОШИБКА записи сейва %s: %d" % [SAVE_PATH, err])
 
 
 # ------------------------------------------------------------------- спины

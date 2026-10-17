@@ -169,8 +169,13 @@ func _dbg(msg: String) -> void:
 
 func _ready() -> void:
 	_load()
-	Sfx.ensure_buses(float(_cfg.get_value("save", "vol_sfx", 80)),
-			float(_cfg.get_value("save", "vol_music", 80)))
+	var vs := float(_cfg.get_value("save", "vol_sfx", 80))
+	var vm := float(_cfg.get_value("save", "vol_music", 80))
+	if Sfx.has_vols():
+		vs = Sfx.cur_sfx
+		vm = Sfx.cur_music
+	print("[sfx-cfg] кликер старт: vol_sfx=%d vol_music=%d" % [int(vs), int(vm)])
+	Sfx.ensure_buses(vs, vm)
 	coin_btn.pressed.connect(_on_coin)
 	coin_btn.pressed.connect(func() -> void:
 		_sfx_ab = 1 - _sfx_ab
