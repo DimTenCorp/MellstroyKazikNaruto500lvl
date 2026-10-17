@@ -1004,7 +1004,7 @@ func _spin(is_free: bool) -> void:
 	var grid := SlotData.make_grid(rng)
 	for reel in reels:
 		reel.start_spin()
-	Sfx.play(self, "spin")
+	Sfx.play_spin(self, SPEEDS[speed_idx])
 	var sf: float = SPEEDS[speed_idx]
 	for c in reels.size():
 		var delay: float = (0.85 + c * 0.3 + rng.randf() * 0.15) / sf

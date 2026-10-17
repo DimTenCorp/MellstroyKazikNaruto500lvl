@@ -45,6 +45,28 @@ static func set_volumes(vol_sfx: float, vol_music: float) -> void:
 			AudioServer.set_bus_volume_db(idx, linear_to_db(v / 100.0))
 
 
+## Звук прокрута зависит от скорости: x1 — вариации prokrut1/3/4,
+## x2 — prokrut3, x5 — prokrut2.
+static func play_spin(node: Node, speed: float) -> void:
+	var path: String
+	match int(speed):
+		2:
+			path = "res://audio/prokrut3.ogg"
+		5:
+			path = "res://audio/prokrut2.ogg"
+		_:
+			path = PATHS_SPIN[randi() % PATHS_SPIN.size()]
+	var st := _stream(path)
+	if st == null:
+		return
+	var pl := AudioStreamPlayer.new()
+	pl.stream = st
+	pl.bus = "SFX"
+	node.add_child(pl)
+	pl.finished.connect(pl.queue_free)
+	pl.play()
+
+
 ## what: click | spin | stop | win | buy. Проигрывание одноразовым
 ## плеером на узле сцены; плеер сам удаляется после окончания.
 static func play(node: Node, what: String) -> void:
