@@ -26,6 +26,7 @@ const COIN_REGIONS := {
 const BALANCE_MAX := 9223372036854775807  ## максимум int64: потолок больше невозможно поднять, переполнение исключено
 var _balance_v := 1000
 var _cap_notified := false       ## баннер о достижении потолка показан
+var _last_ad_reward := -1        ## кэш суммы в подписи рекламы
 ## Баланс с защитой: отрицательное значение невозможно установить —
 ## любая попытка пишется в лог и зажимается в 0 (счетчик не уйдёт в минус).
 var balance: int:
@@ -569,6 +570,11 @@ func _update_ad2x() -> void:
 	elif ad2x_btn.disabled or ad2x_btn.text != L10n.t("ad2x_btn"):
 		ad2x_btn.disabled = _watching
 		ad2x_btn.text = L10n.t("ad2x_btn")
+	## подпись под кнопкой рекламы всегда показывает актуальную сумму
+	var r := _ad_reward()
+	if r != _last_ad_reward:
+		_last_ad_reward = r
+		play_caption.text = L10n.t("ad_caption") % r
 
 
 ## Временное улучшение за рекламу: rewarded-ролик -> 30 секунд x2 клики.
