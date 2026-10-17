@@ -23,14 +23,8 @@ Bridge="*uid://cx4klxojbw6ck"
 
 window/size/viewport_width=1280
 window/size/viewport_height=720
-window/size/resizable=true
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
-window/handheld/orientation="landscape"
-
-[input_devices]
-
-pointing/emulate_touch_from_mouse=true
 
 [dotnet]
 
