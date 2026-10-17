@@ -124,6 +124,7 @@ func _on_upg(i: int) -> void:
 		_banner(L10n.t("need_money") % c, Color("#ff7b7b"))
 		return
 	balance -= c
+	Sfx.play(self, "buy")
 	upg_levels[i] += 1
 	_dbg("улучшение %s: ур.%d/%d, след. цена %d (клик %d, авто %d)" % [
 			u.name, upg_levels[i], u.max, _upg_cost(i), click_gain(), auto_gain()])
@@ -167,7 +168,12 @@ func _dbg(msg: String) -> void:
 
 func _ready() -> void:
 	_load()
+	Sfx.ensure_buses(float(_cfg.get_value("save", "vol_sfx", 80)),
+			float(_cfg.get_value("save", "vol_music", 80)))
 	coin_btn.pressed.connect(_on_coin)
+	coin_btn.pressed.connect(func() -> void: Sfx.play(self, "win"))
+	play_btn.pressed.connect(func() -> void: Sfx.play(self, "click"))
+	back_btn.pressed.connect(func() -> void: Sfx.play(self, "click"))
 	play_btn.pressed.connect(_on_play)
 	back_btn.pressed.connect(_on_back)
 	var sheet: Texture2D = load("res://img/upgrades/upgrades.png")
@@ -455,7 +461,8 @@ func _on_play() -> void:
 	_dbg("реклама завершена, rewarded=%s" % rewarded)
 	if rewarded:
 		balance += AD_REWARD
-		_dbg("награда начислена: +%d, баланс=%d" % [AD_REWARD, balance])
+		Sfx.play(self, "win")
+	_dbg("награда начислена: +%d, баланс=%d" % [AD_REWARD, balance])
 		_save()
 		_update()
 		_banner(L10n.t("ad_win") % _fmt(AD_REWARD), Color("#8dffa0"))

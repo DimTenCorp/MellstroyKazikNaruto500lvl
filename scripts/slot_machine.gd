@@ -256,21 +256,25 @@ func _ready() -> void:
 	sfx_slider.value_changed.connect(func(v: float) -> void:
 		vol_sfx = int(v)
 		sfx_val.text = str(vol_sfx)
+		Sfx.set_volumes(vol_sfx, vol_music)
 		_apply_volumes()
 		_save()
 	)
 	music_slider.value_changed.connect(func(v: float) -> void:
 		vol_music = int(v)
 		music_val.text = str(vol_music)
+		Sfx.set_volumes(vol_sfx, vol_music)
 		_apply_volumes()
 		_save()
 	)
 
 	for btn in _find_buttons(self):
 		_bind_press_anim(btn)
+		btn.pressed.connect(func() -> void: Sfx.play(self, "click"))
 	_load_save()
 	sfx_slider.value = vol_sfx
 	music_slider.value = vol_music
+	Sfx.ensure_buses(vol_sfx, vol_music)
 	sfx_val.text = str(vol_sfx)
 	music_val.text = str(vol_music)
 	_apply_volumes()
@@ -759,6 +763,7 @@ func _on_debt_ok() -> void:
 	_save()
 	_update_labels()
 	_banner(L10n.t("debt_paid") % _fmt(DEBT), Color("#8dffa0"))
+	Sfx.play(self, "win")
 	_dbg("игрок согласился: списано %d, остаток %d" % [DEBT, balance])
 
 
@@ -999,6 +1004,7 @@ func _spin(is_free: bool) -> void:
 	var grid := SlotData.make_grid(rng)
 	for reel in reels:
 		reel.start_spin()
+	Sfx.play(self, "spin")
 	var sf: float = SPEEDS[speed_idx]
 	for c in reels.size():
 		var delay: float = (0.85 + c * 0.3 + rng.randf() * 0.15) / sf
@@ -1006,6 +1012,7 @@ func _spin(is_free: bool) -> void:
 			func() -> void: reels[c].stop_at(grid[c]))
 	for reel in reels:
 		await reel.stopped
+	Sfx.play(self, "stop")
 
 	var res := SlotData.evaluate(grid, bet_line)
 	var won: int = res.total
@@ -1014,6 +1021,7 @@ func _spin(is_free: bool) -> void:
 	if won > 0:
 		balance += won
 		_save()
+		Sfx.play(self, "win")
 		_show_win_fx(res)
 		_count_up(won)
 	_update_labels()
