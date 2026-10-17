@@ -6,7 +6,6 @@ extends Control
 ## Весь UI лежит узлами в scenes/clicker.tscn.
 
 const VSIZE := Vector2(1280, 720)
-const AD_REWARD := 500
 const CLICK_BASE := 5        ## базовый заработок за клик без улучшений
 
 	 ## монет за досмотренную рекламу
@@ -196,7 +195,7 @@ func _apply_lang() -> void:
 	if at != null:
 		at.region = COIN_REGIONS[L10n.lang]
 	back_btn.text = L10n.t("back")
-	play_caption.text = L10n.t("ad_caption") % AD_REWARD
+	play_caption.text = L10n.t("ad_caption") % _ad_reward()
 	_refresh_shop()
 	_update()
 
@@ -267,7 +266,7 @@ func _ready() -> void:
 	_dbg("сцена готова, баланс=%d, язык=%s" % [balance, L10n.lang])
 	for btn in _find_buttons(self):
 		_bind_press_anim(btn)
-	play_caption.text = L10n.t("ad_caption") % AD_REWARD
+	play_caption.text = L10n.t("ad_caption") % _ad_reward()
 	_update()
 	for p in ["hud_balance", "click_hint", "auto_stat", "click_stat",
 			"play_caption", "msg_label", "hud_icon", "float_layer"]:
@@ -451,6 +450,11 @@ func _save() -> void:
 	_cfg.set_value("save", "boost2x_until", _boost_until)
 	_cfg.set_value("save", "debt_stage", _debt_stage)
 	_cfg.save(SAVE_PATH)
+
+
+## Награда за рекламу: бабло за клик × множитель перерождений.
+func _ad_reward() -> int:
+	return click_gain() * _earn_mult()
 
 
 func _update_rebirth_btn() -> void:
@@ -643,7 +647,7 @@ func _on_play() -> void:
 	var rewarded := await _watch_rewarded_ad()
 	_dbg("реклама завершена, rewarded=%s" % rewarded)
 	if rewarded:
-		var reward := AD_REWARD * _earn_mult()
+		var reward := _ad_reward()
 		balance += reward
 		Sfx.play(self, "win")
 		_dbg("награда начислена: +%d, баланс=%d" % [reward, balance])
