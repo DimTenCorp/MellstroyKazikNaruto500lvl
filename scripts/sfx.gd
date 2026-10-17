@@ -77,16 +77,9 @@ static func _one_shot(node: Node, st: AudioStream,
 		bus: String = "SFX", vol_db: float = 0.0) -> AudioStreamPlayer:
 	_unlock_web()
 	if node == null or st == null:
-		print("[sfx] ПОТОК NULL, звук пропущен")
 		return null
 	if not node.is_inside_tree():
-		print("[sfx] узел вне дерева, звук пропущен")
 		return null
-	var idx := AudioServer.get_bus_index("SFX")
-	print("[sfx] play: stream=%s len=%.2f cборка_web=%s bus_idx=%d mute=%s db=%.1f"
-			% [st.resource_path, st.get_length(), OS.has_feature("web"),
-			idx, AudioServer.is_bus_mute(idx) if idx != -1 else true,
-			AudioServer.get_bus_volume_db(idx) if idx != -1 else -80.0])
 	var pl := AudioStreamPlayer.new()
 	pl.stream = st
 	pl.bus = bus
@@ -96,7 +89,6 @@ static func _one_shot(node: Node, st: AudioStream,
 		if is_instance_valid(pl):
 			pl.queue_free())
 	pl.play()
-	print("[sfx] playing=%s bus=%s vol_db=%.0f" % [pl.playing, bus, vol_db])
 	return pl
 
 
