@@ -326,6 +326,15 @@ size = Vector2(300, 24)
 theme_override_constants/outline_size = 6
 theme_override_colors/font_outline_color = Color(0.25098, 0.12549, 0.0313725, 1)
 
+[node name="ad2x_btn" type="Button" parent="machine"]
+text = "х2 КЛИКИ"
+position = Vector2(1100, 397)
+size = Vector2(160, 60)
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("sb_btn_n")
+theme_override_styles/hover = SubResource("sb_btn_n")
+theme_override_styles/pressed = SubResource("sb_btn_n")
+
 [node name="rebirth_btn" type="Button" parent="machine"]
 text = "ПЕРЕРОЖДЕНИЕ"
 visible = false

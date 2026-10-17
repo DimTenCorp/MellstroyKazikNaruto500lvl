@@ -33,6 +33,7 @@ var _watching := false
 var _rebirths := 0      ## перерождения: заработок x2^N
 var _debt_stage := -1  ## оплаченная ступень долга
 var _rebirth_arm := false
+var _boost_until := 0     ## unix-время конца временного x2 кликов
 var _row_down := {}          ## старт нажатия в строке улучшения (драг-порог)
 var _def_rects := {}
 var _def_anchors := {}
@@ -40,6 +41,7 @@ var _def_offsets := {}
 var _def_fonts := {}
 
 const MANAGED := ["hud_icon", "hud_balance", "coin_btn", "click_hint", "rebirth_btn",
+		"ad2x_btn",
 		"auto_stat", "click_stat", "play_btn", "play_caption", "back_btn",
 		"msg_label", "upg_scroll"]
 ## В портрете логическая ширина = 1280 (масштаб по ширине), поэтому
@@ -54,6 +56,7 @@ var _banner_tw: Tween
 @onready var hud_balance: Label = $machine/hud_balance
 @onready var coin_btn: TextureButton = $machine/coin_btn
 @onready var rebirth_btn: Button = $machine/rebirth_btn
+@onready var ad2x_btn: Button = $machine/ad2x_btn
 @onready var click_hint: Label = $machine/click_hint
 @onready var play_btn: TextureButton = $machine/play_btn
 @onready var play_caption: Label = $machine/play_caption
@@ -80,8 +83,15 @@ func _debt_target() -> int:
 	return t
 
 
+func _boost_left() -> int:
+	return maxi(0, _boost_until - int(Time.get_unix_time_from_system()))
+
+
 func click_gain() -> int:
-	return (CLICK_BASE + Upgrades.click_add(upg_levels)) * _earn_mult()
+	var g := (CLICK_BASE + Upgrades.click_add(upg_levels)) * _earn_mult()
+	if _boost_left() > 0:
+		g *= 2   ## временное улучшение за рекламу: клики x2
+	return g
 
 
 func auto_gain() -> int:
@@ -161,6 +171,7 @@ func _on_upg(i: int) -> void:
 
 
 func _process(delta: float) -> void:
+	_update_ad2x()
 	var g := auto_gain()
 	if g <= 0:
 		return
@@ -201,6 +212,9 @@ func _ready() -> void:
 	coin_btn.pressed.connect(_on_coin)
 	coin_btn.pressed.connect(func() -> void: Sfx.play(self, "win"))
 	rebirth_btn.pressed.connect(_on_rebirth_press)
+	ad2x_btn.pressed.connect(_on_ad2x)
+	ad2x_btn.pressed.connect(func() -> void: Sfx.play(self, "click"))
+	_update_ad2x()
 	rebirth_btn.text = L10n.t("rebirth_btn")
 	_update_rebirth_btn()
 	play_btn.pressed.connect(func() -> void: Sfx.play(self, "click"))
@@ -315,6 +329,7 @@ func _restore_defaults() -> void:
 ## Портрет 9:16: монета по центру, реклама/выход по бокам, улучшения внизу
 ## во всю ширину; размеры через u = ширина/1280 (независимо от масштаба).
 	rebirth_btn.remove_theme_font_size_override("font_size")
+	ad2x_btn.remove_theme_font_size_override("font_size")
 
 
 func _layout_portrait(W: float, H: float) -> void:
@@ -331,6 +346,8 @@ func _layout_portrait(W: float, H: float) -> void:
 	_set_r("play_caption", m, 712 * u, 320 * u, 56 * u)
 	_set_r("back_btn", W - 380 * u, 480 * u, 356 * u, 130 * u)
 	_set_r("rebirth_btn", m, 790 * u, 230 * u, 80 * u)
+	_set_r("ad2x_btn", W - 250 * u, 630 * u, 226 * u, 90 * u)
+	ad2x_btn.add_theme_font_size_override("font_size", int(30 * u))
 	rebirth_btn.add_theme_font_size_override("font_size", int(30 * u))
 	var sh := 1016.0 * u
 	_set_r("msg_label", 0, H - sh - 90 * u, W, 80 * u)
@@ -387,6 +404,7 @@ func _load() -> void:
 	if _cfg.load(SAVE_PATH) == OK:
 		balance = int(_cfg.get_value("save", "balance", balance))
 		_rebirths = clampi(int(_cfg.get_value("save", "rebirths", 0)), 0, 99)
+		_boost_until = int(_cfg.get_value("save", "boost2x_until", 0))
 		_debt_stage = int(_cfg.get_value("save", "debt_stage", -1))
 		var arr: Array = _cfg.get_value("save", "upg_levels", [])
 		upg_levels.clear()
@@ -406,6 +424,7 @@ func _save() -> void:
 	_cfg.set_value("save", "balance", balance)
 	_cfg.set_value("save", "upg_levels", upg_levels)
 	_cfg.set_value("save", "rebirths", _rebirths)
+	_cfg.set_value("save", "boost2x_until", _boost_until)
 	_cfg.set_value("save", "debt_stage", _debt_stage)
 	_cfg.save(SAVE_PATH)
 
@@ -438,6 +457,38 @@ func _on_rebirth_press() -> void:
 	_banner(L10n.t("rebirth_done") % [_rebirths, _earn_mult(), _fmt(_debt_target())],
 			Color("#ffe9b8"))
 	Sfx.play(self, "win")
+
+
+## Кнопка временного x2: текст с остатком секунд, пока буст жив.
+func _update_ad2x() -> void:
+	var left := _boost_left()
+	if left > 0:
+		ad2x_btn.disabled = true
+		ad2x_btn.text = L10n.t("ad2x_on") % left
+	elif ad2x_btn.disabled or ad2x_btn.text != L10n.t("ad2x_btn"):
+		ad2x_btn.disabled = _watching
+		ad2x_btn.text = L10n.t("ad2x_btn")
+
+
+## Временное улучшение за рекламу: rewarded-ролик -> 30 секунд x2 клики.
+func _on_ad2x() -> void:
+	if _watching or _boost_left() > 0:
+		return
+	_watching = true
+	ad2x_btn.disabled = true
+	_dbg("запуск рекламы за временный x2 кликов")
+	var rewarded := await _watch_rewarded_ad()
+	_watching = false
+	_dbg("реклама за x2 завершена, rewarded=%s" % rewarded)
+	if rewarded:
+		_boost_until = int(Time.get_unix_time_from_system()) + 30
+		_save()
+		_banner(L10n.t("ad2x_started"), Color("#8dffa0"))
+		Sfx.play(self, "win")
+	else:
+		_banner(L10n.t("ad_skip"), Color("#ff7b7b"))
+	_update_ad2x()
+	_update()
 
 
 func _update() -> void:
