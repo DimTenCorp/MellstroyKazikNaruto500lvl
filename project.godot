@@ -23,14 +23,9 @@ Bridge="*uid://cx4klxojbw6ck"
 
 window/size/viewport_width=1280
 window/size/viewport_height=720
-window/size/resizable=true
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 window/handheld/orientation="landscape"
-
-[input_devices]
-
-pointing/emulate_touch_from_mouse=true
 
 [dotnet]
 
@@ -39,6 +34,10 @@ project/assembly_name="MellstroyKazikNaruto500lvl"
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/godot_git/plugin.cfg", "res://addons/playgama_bridge/plugin.cfg")
+
+[input_devices]
+
+pointing/emulate_touch_from_mouse=true
 
 [physics]
 

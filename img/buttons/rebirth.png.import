@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d2mx1inb0adil"
-path="res://.godot/imported/naruto(test).icon.png-5862533a5f33ea51b30bfa77678b88bd.ctex"
+uid="uid://2himrtrsrsh5"
+path="res://.godot/imported/rebirth.png-45d87114d1d19db3e35327e045fb2341.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://11111EXPORT/тест1/naruto(test).icon.png"
-dest_files=["res://.godot/imported/naruto(test).icon.png-5862533a5f33ea51b30bfa77678b88bd.ctex"]
+source_file="res://img/buttons/rebirth.png"
+dest_files=["res://.godot/imported/rebirth.png-45d87114d1d19db3e35327e045fb2341.ctex"]
 
 [params]
 
