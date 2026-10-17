@@ -4,6 +4,32 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
         <title>$GODOT_PROJECT_NAME</title>
+        <script>
+        // Анлок аудио: перехватываем создание AudioContext до старта движка
+        // и будим все контексты по первому жесту пользователя (autoplay policy).
+        (function () {
+            window.__acs = [];
+            var Orig = window.AudioContext || window.webkitAudioContext;
+            if (Orig) {
+                window.AudioContext = function (opts) {
+                    var c = new Orig(opts);
+                    window.__acs.push(c);
+                    return c;
+                };
+                window.AudioContext.prototype = Orig.prototype;
+                window.webkitAudioContext = window.AudioContext;
+            }
+            window.__unlockAudio = function () {
+                (window.__acs || []).forEach(function (c) {
+                    try { if (c.state !== "running") { c.resume(); } } catch (e) {}
+                });
+            };
+            ["pointerdown", "touchstart", "keydown", "click"].forEach(function (ev) {
+                window.addEventListener(ev, window.__unlockAudio,
+                        { capture: true, passive: true });
+            });
+        })();
+        </script>
         <style>
             html, body, #canvas {
                 margin: 0;

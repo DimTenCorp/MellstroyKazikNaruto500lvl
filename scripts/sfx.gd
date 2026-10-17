@@ -43,7 +43,21 @@ static func set_volumes(vol_sfx: float, vol_music: float) -> void:
 
 ## Одноразовый плеер на узле сцены; сам удаляется после окончания.
 ## Временная диагностика веба: печатает состояние потока и шины.
+static var _unlocked := false
+
+
+## Веб: дёргаем разблокировку AudioContext из шаблона экспорта
+## (снаппет ставится в index.html до старта движка).
+static func _unlock_web() -> void:
+	if _unlocked or not OS.has_feature("web"):
+		return
+	_unlocked = true
+	if JavaScriptBridge.has_method("eval"):
+		JavaScriptBridge.eval("window.__unlockAudio && window.__unlockAudio()")
+
+
 static func _one_shot(node: Node, st: AudioStream) -> void:
+	_unlock_web()
 	if node == null or st == null:
 		print("[sfx] ПОТОК NULL, звук пропущен")
 		return
