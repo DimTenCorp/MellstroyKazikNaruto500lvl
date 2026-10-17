@@ -3,23 +3,20 @@ extends RefCounted
 ## Звуковое сопровождение: файлы из res://audio/. Шины SFX/Music создаются
 ## один раз, громкость берётся из сейва (vol_sfx/vol_music, слайдеры меню).
 ## Не autoload: вызывается статически из обеих сцен.
+## Все потоки — preload-константы: так они гарантированно попадают
+## в веб-экспорт (.pck), в отличие от load() по строке пути.
 
-const PATH_CLICK := "res://audio/pusk.ogg"          ## клик по кнопкам
-const PATH_WIN := "res://audio/get_bablo.ogg"        ## деньги получены
-const PATH_BUY := "res://audio/buy_upgrade.ogg"      ## покупка улучшения
-const PATHS_SPIN := [                                ## прокрут (вариации)
-	"res://audio/prokrut1.ogg",
-	"res://audio/prokrut3.ogg",
-	"res://audio/prokrut4.ogg",
+const ST_CLICK := preload("res://audio/pusk.ogg")       ## клик по кнопкам
+const ST_WIN := preload("res://audio/get_bablo.ogg")     ## деньги получены
+const ST_BUY := preload("res://audio/buy_upgrade.ogg")   ## покупка улучшения
+const ST_SPIN_X2 := preload("res://audio/prokrut3.ogg")  ## прокрут x2
+const ST_SPIN_X5 := preload("res://audio/prokrut2.ogg")  ## прокрут x5
+## прокрут x1: случайная вариация
+const ST_SPIN_X1 := [
+	preload("res://audio/prokrut1.ogg"),
+	preload("res://audio/prokrut3.ogg"),
+	preload("res://audio/prokrut4.ogg"),
 ]
-
-static var _cache := {}
-
-
-static func _stream(path: String) -> AudioStream:
-	if not _cache.has(path):
-		_cache[path] = load(path)
-	return _cache[path]
 
 
 ## Создать шины SFX/Music (идемпотентно) и применить громкость 0..100.
@@ -44,51 +41,38 @@ static func set_volumes(vol_sfx: float, vol_music: float) -> void:
 			AudioServer.set_bus_volume_db(idx, linear_to_db(v / 100.0))
 
 
+## Одноразовый плеер на узле сцены; сам удаляется после окончания.
+static func _one_shot(node: Node, st: AudioStream) -> void:
+	if node == null or st == null:
+		return
+	if not node.is_inside_tree():
+		return
+	var pl := AudioStreamPlayer.new()
+	pl.stream = st
+	pl.bus = "SFX"
+	node.add_child(pl)
+	pl.finished.connect(pl.queue_free)
+	pl.play()
+
+
+## what: click | win | buy.
+static func play(node: Node, what: String) -> void:
+	match what:
+		"click":
+			_one_shot(node, ST_CLICK)
+		"win":
+			_one_shot(node, ST_WIN)
+		"buy":
+			_one_shot(node, ST_BUY)
+
+
 ## Звук прокрута зависит от скорости: x1 — вариации prokrut1/3/4,
 ## x2 — prokrut3, x5 — prokrut2.
 static func play_spin(node: Node, speed: float) -> void:
-	var path: String
 	match int(speed):
 		2:
-			path = "res://audio/prokrut3.ogg"
+			_one_shot(node, ST_SPIN_X2)
 		5:
-			path = "res://audio/prokrut2.ogg"
+			_one_shot(node, ST_SPIN_X5)
 		_:
-			path = PATHS_SPIN[randi() % PATHS_SPIN.size()]
-	var st := _stream(path)
-	if st == null:
-		return
-	var pl := AudioStreamPlayer.new()
-	pl.stream = st
-	pl.bus = "SFX"
-	node.add_child(pl)
-	pl.finished.connect(pl.queue_free)
-	pl.play()
-
-
-## what: click | spin | win | buy. Проигрывание одноразовым
-## плеером на узле сцены; плеер сам удаляется после окончания.
-static func play(node: Node, what: String) -> void:
-	if node == null or not node.is_inside_tree():
-		return
-	var path: String
-	match what:
-		"click":
-			path = PATH_CLICK
-		"spin":
-			path = PATHS_SPIN[randi() % PATHS_SPIN.size()]
-		"win":
-			path = PATH_WIN
-		"buy":
-			path = PATH_BUY
-		_:
-			return
-	var st := _stream(path)
-	if st == null:
-		return
-	var pl := AudioStreamPlayer.new()
-	pl.stream = st
-	pl.bus = "SFX"
-	node.add_child(pl)
-	pl.finished.connect(pl.queue_free)
-	pl.play()
+			_one_shot(node, ST_SPIN_X1[randi() % ST_SPIN_X1.size()])
