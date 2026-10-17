@@ -400,12 +400,8 @@ node("debt_later", "Button", "debt_popup", text='"ПОЗЖЕ"',
      theme_override_styles_normal='SubResource("sb_btn_n")',
      theme_override_styles_hover='SubResource("sb_btn_h")',
      theme_override_styles_pressed='SubResource("sb_btn_p")')
-node("rebirth_btn", "Button", "machine", text='"ПЕРЕРОЖДЕНИЕ"', visible="false",
-     position="Vector2(1153, 410)", size="Vector2(116, 60)",
-     theme_override_font_sizes_font_size=12,
-     theme_override_styles_normal='SubResource("sb_btn_n")',
-     theme_override_styles_hover='SubResource("sb_btn_h")',
-     theme_override_styles_pressed='SubResource("sb_btn_p")')
+node("rebirth_btn", "TextureButton", "machine", visible="false",
+     position="Vector2(1153, 407)", size="Vector2(116, 133)")
 
 node("intro_btn", "Button", "intro_popup", text='"ПОНЯТНО, ПОГНАЛИ"',
      position="Vector2(520, 455)", size="Vector2(240, 52)",

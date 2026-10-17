@@ -74,7 +74,7 @@ var _banner_tw: Tween
 @onready var machine: Control = $machine
 @onready var hud_balance: Label = $machine/hud_balance
 @onready var coin_btn: TextureButton = $machine/coin_btn
-@onready var rebirth_btn: Button = $machine/rebirth_btn
+@onready var rebirth_btn: TextureButton = $machine/rebirth_btn
 @onready var ad2x_btn: Button = $machine/ad2x_btn
 @onready var debt_popup: Control = $machine/debt_popup
 @onready var debt_label: Label = $machine/debt_popup/debt_label
@@ -246,7 +246,7 @@ func _ready() -> void:
 	debt_later.text = L10n.t("rebirth_later")
 	ad2x_btn.pressed.connect(func() -> void: Sfx.play(self, "click"))
 	_update_ad2x()
-	rebirth_btn.text = L10n.t("rebirth_btn")
+	_apply_rebirth_tex()
 	_update_rebirth_btn()
 	play_btn.pressed.connect(func() -> void: Sfx.play(self, "click"))
 	back_btn.pressed.connect(func() -> void: Sfx.play(self, "click"))
@@ -359,7 +359,6 @@ func _restore_defaults() -> void:
 
 ## Портрет 9:16: монета по центру, реклама/выход по бокам, улучшения внизу
 ## во всю ширину; размеры через u = ширина/1280 (независимо от масштаба).
-	rebirth_btn.remove_theme_font_size_override("font_size")
 	ad2x_btn.remove_theme_font_size_override("font_size")
 	debt_label.remove_theme_font_size_override("font_size")
 	debt_btn.remove_theme_font_size_override("font_size")
@@ -379,7 +378,7 @@ func _layout_portrait(W: float, H: float) -> void:
 	_set_r("play_btn", m, 480 * u, 230 * u, 225 * u)
 	_set_r("play_caption", m, 712 * u, 320 * u, 56 * u)
 	_set_r("back_btn", W - 380 * u, 480 * u, 356 * u, 130 * u)
-	_set_r("rebirth_btn", m, 790 * u, 230 * u, 80 * u)
+	_set_r("rebirth_btn", m, 780 * u, 190 * u, 218 * u)
 	_set_r("ad2x_btn", W - 250 * u, 630 * u, 226 * u, 90 * u)
 	_set_r("debt_popup/debt_panel", 40 * u, 450 * u, W - 80 * u, 850 * u)
 	_set_r("debt_popup/debt_label", 70 * u, 520 * u, W - 140 * u, 480 * u)
@@ -390,7 +389,6 @@ func _layout_portrait(W: float, H: float) -> void:
 	debt_btn.add_theme_font_size_override("font_size", int(30 * u))
 	debt_later.add_theme_font_size_override("font_size", int(30 * u))
 	ad2x_btn.add_theme_font_size_override("font_size", int(30 * u))
-	rebirth_btn.add_theme_font_size_override("font_size", int(30 * u))
 	var sh := 1016.0 * u
 	_set_r("msg_label", 0, H - sh - 90 * u, W, 80 * u)
 	_set_r("upg_scroll", 0, H - sh, W, sh)
@@ -476,6 +474,21 @@ func _ad_reward() -> int:
 	return click_gain() * 2
 
 
+const REBIRTH_REGIONS := {
+	"ru": Rect2(0, 0, 558, 640),
+	"en": Rect2(558, 0, 558, 640),
+	"tr": Rect2(1116, 0, 558, 640),
+}
+
+
+## Спрайт кнопки перерождения: лист из трёх карточек RU/EN/TR.
+func _apply_rebirth_tex() -> void:
+	var at := AtlasTexture.new()
+	at.atlas = load("res://img/buttons/rebirth.png")
+	at.region = REBIRTH_REGIONS[L10n.lang]
+	rebirth_btn.texture_normal = at
+
+
 func _update_rebirth_btn() -> void:
 	rebirth_btn.visible = _debt_stage == _rebirths
 
@@ -522,7 +535,7 @@ func _do_rebirth() -> void:
 	_update()
 	_update_rebirth_btn()
 	_update_ad2x()
-	rebirth_btn.text = L10n.t("rebirth_btn")
+	rebirth_btn.modulate = Color(1, 1, 1)
 	_banner(L10n.t("rebirth_done") % [_rebirths, _earn_mult(), _fmt(_debt_target())],
 			Color("#ffe9b8"))
 	Sfx.play(self, "win")
@@ -533,11 +546,12 @@ func _do_rebirth() -> void:
 func _on_rebirth_press() -> void:
 	if not _rebirth_arm:
 		_rebirth_arm = true
-		rebirth_btn.text = L10n.t("rebirth_sure")
+		rebirth_btn.modulate = Color(1.0, 0.55, 0.55)
+		_banner(L10n.t("rebirth_sure"), Color("#ffe9b8"))
 		get_tree().create_timer(3.0).timeout.connect(func() -> void:
 			if _rebirth_arm:
 				_rebirth_arm = false
-				rebirth_btn.text = L10n.t("rebirth_btn"))
+				rebirth_btn.modulate = Color(1, 1, 1))
 		return
 	_do_rebirth()
 

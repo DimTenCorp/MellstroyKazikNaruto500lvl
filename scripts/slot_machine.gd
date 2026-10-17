@@ -177,7 +177,7 @@ var _wins_tex: Texture2D
 @onready var debt_popup: Control = $machine/debt_popup
 @onready var debt_btn: Button = $machine/debt_popup/debt_btn
 @onready var debt_later: Button = $machine/debt_popup/debt_later
-@onready var rebirth_btn: Button = $machine/rebirth_btn
+@onready var rebirth_btn: TextureButton = $machine/rebirth_btn
 @onready var debt_plaque: Label = $machine/debt_plaque
 @onready var debt_label: Label = $machine/debt_popup/debt_label
 @onready var debug_menu: Control = $machine/debug_menu
@@ -236,6 +236,7 @@ func _ready() -> void:
 	debt_btn.pressed.connect(_on_debt_rebirth)
 	debt_later.pressed.connect(_on_debt_later)
 	rebirth_btn.pressed.connect(_on_rebirth_btn)
+	_apply_rebirth_tex()
 	debug_btn.pressed.connect(func() -> void: _open_menu(debug_menu))
 	_setup_lang()
 	_apply_lang()
@@ -494,7 +495,7 @@ func _restore_defaults() -> void:
 		l.add_theme_font_size_override("font_size", _def_fonts[p])
 	win_popup.scale = Vector2.ONE
 	_pop_scale = 1.0
-	for bp in ["debt_popup/debt_btn", "debt_popup/debt_later", "rebirth_btn"]:
+	for bp in ["debt_popup/debt_btn", "debt_popup/debt_later"]:
 		(machine.get_node(bp) as Button).remove_theme_font_size_override("font_size")
 	debt_plaque.remove_theme_font_size_override("font_size")
 	_cell_w = CELL
@@ -566,9 +567,7 @@ func _layout_portrait(W: float, H: float) -> void:
 	var w2 := (W - 140 * u - 20 * u) / 2.0
 	_set_r("debt_popup/debt_btn", 70 * u, 1030 * u, w2, 120 * u)
 	_set_r("debt_popup/debt_later", 70 * u + w2 + 20 * u, 1030 * u, w2, 120 * u)
-	_set_r("rebirth_btn", m, H - 930 * u, 200 * u, 200 * u)
-	(rebirth_btn as Button).add_theme_font_size_override(
-			"font_size", int(28 * u))
+	_set_r("rebirth_btn", m, H - 945 * u, 190 * u, 218 * u)
 	debt_btn.add_theme_font_size_override("font_size", int(30 * u))
 	debt_later.add_theme_font_size_override("font_size", int(30 * u))
 	_cell_w = cell
@@ -761,7 +760,7 @@ func _apply_lang() -> void:
 	debt_label.text = L10n.t("debt_text")
 	debt_btn.text = L10n.t("rebirth_now")
 	debt_later.text = L10n.t("rebirth_later")
-	rebirth_btn.text = L10n.t("rebirth_btn")
+	_apply_rebirth_tex()
 	reset_btn.text = L10n.t("reset_btn")
 	debug_btn.text = L10n.t("debug_btn")
 	var sheet: Texture2D = load(BTN_SHEETS[L10n.lang])
@@ -856,6 +855,21 @@ func _on_debt_later() -> void:
 func _on_rebirth_btn() -> void:
 	debt_label.text = L10n.t("debt_text")
 	debt_popup.visible = true
+
+
+const REBIRTH_REGIONS := {
+	"ru": Rect2(0, 0, 558, 640),
+	"en": Rect2(558, 0, 558, 640),
+	"tr": Rect2(1116, 0, 558, 640),
+}
+
+
+## Спрайт кнопки перерождения: лист из трёх карточек RU/EN/TR.
+func _apply_rebirth_tex() -> void:
+	var at := AtlasTexture.new()
+	at.atlas = load("res://img/buttons/rebirth.png")
+	at.region = REBIRTH_REGIONS[L10n.lang]
+	rebirth_btn.texture_normal = at
 
 
 func _update_rebirth_btn() -> void:

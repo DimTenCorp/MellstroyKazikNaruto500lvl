@@ -284,12 +284,8 @@ node("ad2x_btn", "Button", "machine", text='"х2 КЛИКИ"',
      theme_override_styles_normal='SubResource("sb_btn_n")',
      theme_override_styles_hover='SubResource("sb_btn_n")',
      theme_override_styles_pressed='SubResource("sb_btn_n")')
-node("rebirth_btn", "Button", "machine", text='"ПЕРЕРОЖДЕНИЕ"', visible="false",
-     position="Vector2(23, 530)", size="Vector2(120, 60)",
-     theme_override_font_sizes_font_size=14,
-     theme_override_styles_normal='SubResource("sb_btn_n")',
-     theme_override_styles_hover='SubResource("sb_btn_n")',
-     theme_override_styles_pressed='SubResource("sb_btn_n")')
+node("rebirth_btn", "TextureButton", "machine", visible="false",
+     position="Vector2(1120, 470)", size="Vector2(120, 138)")
 node("back_btn", "Button", "machine", text='"← К СЛОТАМ"',
      position="Vector2(30, 624)", size="Vector2(296, 72)",
      theme_override_font_sizes_font_size=20,
