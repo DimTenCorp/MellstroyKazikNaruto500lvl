@@ -254,6 +254,12 @@ label("click_stat", "machine", "бабло за клик: 5", 20, "ffe9b8",
       theme_override_colors_font_outline_color=hx("402008"))
 
 # возврат к слот-машине
+node("rebirth_btn", "Button", "machine", text='"ПЕРЕРОЖДЕНИЕ"', visible="false",
+     position="Vector2(23, 530)", size="Vector2(120, 60)",
+     theme_override_font_sizes_font_size=14,
+     theme_override_styles_normal='SubResource("sb_btn_n")',
+     theme_override_styles_hover='SubResource("sb_btn_h")',
+     theme_override_styles_pressed='SubResource("sb_btn_p")')
 node("back_btn", "Button", "machine", text='"← К СЛОТАМ"',
      position="Vector2(30, 624)", size="Vector2(296, 72)",
      theme_override_font_sizes_font_size=20,

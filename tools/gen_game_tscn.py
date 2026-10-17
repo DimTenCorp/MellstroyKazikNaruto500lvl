@@ -376,15 +376,28 @@ node("debt_panel", "Panel", "debt_popup",
      position="Vector2(290, 190)", size="Vector2(700, 340)",
      theme_override_styles_panel='SubResource("sb_popup")')
 label("debt_label", "debt_popup",
-      "Вы успешно раслатились с долгами, вы можете продолжить зарабатывать "
-      "деньги чтобы быть крутыми", 24, "8dffa0",
+      "Вы успешно расплатились со своими долгами и теперь вам доступно "
+      "перерождение, долг увеличится в втрое, а любой заработок вдвое", 24, "8dffa0",
       position="Vector2(320, 220)", size="Vector2(640, 200)",
       autowrap_mode=3, horizontal_alignment=1, vertical_alignment=1,
       theme_override_constants_outline_size=8,
       theme_override_colors_font_outline_color=hx("1d4d1d"))
-node("debt_btn", "Button", "debt_popup", text='"СОГЛАСЕН (−10 000 000)"',
-     position="Vector2(480, 440)", size="Vector2(320, 52)",
+node("debt_btn", "Button", "debt_popup", text='"ПЕРЕРОДИТЬСЯ"',
+     position="Vector2(320, 440)", size="Vector2(320, 52)",
      theme_override_font_sizes_font_size=20,
+     theme_override_styles_normal='SubResource("sb_btn_n")',
+     theme_override_styles_hover='SubResource("sb_btn_h")',
+     theme_override_styles_pressed='SubResource("sb_btn_p")')
+
+node("debt_later", "Button", "debt_popup", text='"ПОЗЖЕ"',
+     position="Vector2(660, 440)", size="Vector2(300, 52)",
+     theme_override_font_sizes_font_size=20,
+     theme_override_styles_normal='SubResource("sb_btn_n")',
+     theme_override_styles_hover='SubResource("sb_btn_h")',
+     theme_override_styles_pressed='SubResource("sb_btn_p")')
+node("rebirth_btn", "Button", "machine", text='"ПЕРЕРОЖДЕНИЕ"', visible="false",
+     position="Vector2(1153, 410)", size="Vector2(116, 60)",
+     theme_override_font_sizes_font_size=12,
      theme_override_styles_normal='SubResource("sb_btn_n")',
      theme_override_styles_hover='SubResource("sb_btn_h")',
      theme_override_styles_pressed='SubResource("sb_btn_p")')

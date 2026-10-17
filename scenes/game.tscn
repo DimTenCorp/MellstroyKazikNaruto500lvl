@@ -689,7 +689,7 @@ size = Vector2(700, 340)
 theme_override_styles/panel = SubResource("sb_popup")
 
 [node name="debt_label" type="Label" parent="machine/debt_popup"]
-text = "Вы успешно раслатились с долгами, вы можете продолжить зарабатывать деньги чтобы быть крутыми"
+text = "Вы успешно расплатились со своими долгами и теперь вам доступно перерождение, долг увеличится в втрое, а любой заработок вдвое"
 theme_override_font_sizes/font_size = 24
 theme_override_colors/font_color = Color(0.552941, 1, 0.627451, 1)
 position = Vector2(320, 220)
@@ -701,10 +701,29 @@ theme_override_constants/outline_size = 8
 theme_override_colors/font_outline_color = Color(0.113725, 0.301961, 0.113725, 1)
 
 [node name="debt_btn" type="Button" parent="machine/debt_popup"]
-text = "СОГЛАСЕН (−10 000 000)"
-position = Vector2(480, 440)
+text = "ПЕРЕРОДИТЬСЯ"
+position = Vector2(320, 440)
 size = Vector2(320, 52)
 theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("sb_btn_n")
+theme_override_styles/hover = SubResource("sb_btn_h")
+theme_override_styles/pressed = SubResource("sb_btn_p")
+
+[node name="debt_later" type="Button" parent="machine/debt_popup"]
+text = "ПОЗЖЕ"
+position = Vector2(660, 440)
+size = Vector2(300, 52)
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("sb_btn_n")
+theme_override_styles/hover = SubResource("sb_btn_h")
+theme_override_styles/pressed = SubResource("sb_btn_p")
+
+[node name="rebirth_btn" type="Button" parent="machine"]
+text = "ПЕРЕРОЖДЕНИЕ"
+visible = false
+position = Vector2(1153, 410)
+size = Vector2(116, 60)
+theme_override_font_sizes/font_size = 12
 theme_override_styles/normal = SubResource("sb_btn_n")
 theme_override_styles/hover = SubResource("sb_btn_h")
 theme_override_styles/pressed = SubResource("sb_btn_p")

@@ -62,6 +62,8 @@ var bet_line := 1  ## ставка на линию: любое число от 1
 var speed_idx := 0
 var vol_sfx := 80
 var vol_music := 80
+var rebirths := 0        ## число перерождений: заработок x2^N
+var debt_stage := -1     ## оплаченная ступень долга (-1 = ещё нет)
 var _fs_left := 0
 var _spinning := false
 var autospin := false
@@ -96,6 +98,7 @@ const MANAGED := [
 	"paytable_popup/popup_panel",
 	"intro_popup/intro_panel", "intro_popup/intro_label", "intro_popup/intro_btn",
 	"debt_popup/debt_panel", "debt_popup/debt_label", "debt_popup/debt_btn",
+	"debt_popup/debt_later", "rebirth_btn",
 ]
 ## В портрете логическая ширина остаётся 1280 (canvas_items масштабирует
 ## по ширине), поэтому размеры/шрифты крупнее десктопных в ~2.5 раза.
@@ -154,6 +157,8 @@ var _wins_tex: Texture2D
 @onready var lang_btn: TextureButton = $machine/bottom_bar/lang_btn
 @onready var debt_popup: Control = $machine/debt_popup
 @onready var debt_btn: Button = $machine/debt_popup/debt_btn
+@onready var debt_later: Button = $machine/debt_popup/debt_later
+@onready var rebirth_btn: Button = $machine/rebirth_btn
 @onready var debt_label: Label = $machine/debt_popup/debt_label
 @onready var debug_menu: Control = $machine/debug_menu
 @onready var dbg_input: LineEdit = $machine/debug_menu/panel/vbox/dbg_row/dbg_input
@@ -208,7 +213,9 @@ func _ready() -> void:
 	speed_btn.pressed.connect(_on_speed_pressed)
 	sound_btn.pressed.connect(func() -> void: _open_menu(sound_menu))
 	intro_btn.pressed.connect(_on_intro_ok)
-	debt_btn.pressed.connect(_on_debt_ok)
+	debt_btn.pressed.connect(_on_debt_rebirth)
+	debt_later.pressed.connect(_on_debt_later)
+	rebirth_btn.pressed.connect(_on_rebirth_btn)
 	debug_btn.pressed.connect(func() -> void: _open_menu(debug_menu))
 	_setup_lang()
 	_apply_lang()
@@ -283,6 +290,7 @@ func _ready() -> void:
 	music_val.text = str(vol_music)
 	_apply_volumes()
 	_apply_toggles()
+	_update_rebirth_btn()
 	_refresh_paytable()
 	_update_labels()
 	_setup_intro()
@@ -466,6 +474,8 @@ func _restore_defaults() -> void:
 		l.add_theme_font_size_override("font_size", _def_fonts[p])
 	win_popup.scale = Vector2.ONE
 	_pop_scale = 1.0
+	for bp in ["debt_popup/debt_btn", "debt_popup/debt_later", "rebirth_btn"]:
+		(machine.get_node(bp) as Button).remove_theme_font_size_override("font_size")
 	_cell_w = CELL
 	_gap_w = GAP
 	for c in SlotData.COLS:
@@ -531,7 +541,14 @@ func _layout_portrait(W: float, H: float) -> void:
 	_set_r("debt_popup/debt_panel", 40 * u, 450 * u, W - 80 * u, 850 * u)
 	_set_r("debt_popup/debt_label", 70 * u, 520 * u, W - 140 * u, 480 * u)
 	var dbw := minf(700.0 * u, W - 80 * u)
-	_set_r("debt_popup/debt_btn", (W - dbw) * 0.5, 1030 * u, dbw, 120 * u)
+	var w2 := (W - 140 * u - 20 * u) / 2.0
+	_set_r("debt_popup/debt_btn", 70 * u, 1030 * u, w2, 120 * u)
+	_set_r("debt_popup/debt_later", 70 * u + w2 + 20 * u, 1030 * u, w2, 120 * u)
+	_set_r("rebirth_btn", m, H - 930 * u, 200 * u, 200 * u)
+	(rebirth_btn as Button).add_theme_font_size_override(
+			"font_size", int(28 * u))
+	debt_btn.add_theme_font_size_override("font_size", int(30 * u))
+	debt_later.add_theme_font_size_override("font_size", int(30 * u))
 	_cell_w = cell
 	_gap_w = g
 	for p in PORTRAIT_FS:
@@ -720,7 +737,9 @@ func _apply_lang() -> void:
 	intro_label.text = L10n.t("intro_text")
 	intro_btn.text = L10n.t("intro_btn")
 	debt_label.text = L10n.t("debt_text")
-	debt_btn.text = L10n.t("debt_btn")
+	debt_btn.text = L10n.t("rebirth_now")
+	debt_later.text = L10n.t("rebirth_later")
+	rebirth_btn.text = L10n.t("rebirth_btn")
 	reset_btn.text = L10n.t("reset_btn")
 	debug_btn.text = L10n.t("debug_btn")
 	var sheet: Texture2D = load(BTN_SHEETS[L10n.lang])
@@ -752,24 +771,76 @@ func _on_dbg_apply() -> void:
 
 
 ## Накопил достаточно — показываем попап расплаты (один раз до согласия).
+## Долг текущей ступени: 10 млн, x3 за каждое перерождение.
+func debt_target() -> int:
+	var t := DEBT
+	for i in rebirths:
+		t *= 3
+	return t
+
+
+## Множитель любого заработка: x2 за каждое перерождение.
+func earn_mult() -> int:
+	var m := 1
+	for i in rebirths:
+		m *= 2
+	return m
+
+
+## Баланс дотянул до долга ступени: долг списывается сразу, попап
+## предлагает перерождение.
 func _check_debt() -> void:
-	if bool(_flag_get("debt_paid", false)):
+	if debt_stage >= rebirths:
 		return
-	if balance >= DEBT and not debt_popup.visible:
-		debt_popup.visible = true
-		_dbg("баланс %d >= долга %d: показан попап расплаты" % [balance, DEBT])
-
-
-func _on_debt_ok() -> void:
-	balance -= DEBT
-	_flag_set("debt_paid", true)
-	debt_popup.visible = false
+	var target := debt_target()
+	if balance < target or debt_popup.visible:
+		return
+	balance -= target
+	debt_stage = rebirths
 	_save()
 	_update_labels()
-	_banner(L10n.t("debt_paid") % _fmt(DEBT), Color("#8dffa0"))
+	_banner(L10n.t("debt_paid") % _fmt(target), Color("#8dffa0"))
 	Sfx.play(self, "win")
-	_dbg("игрок согласился: списано %d, остаток %d" % [DEBT, balance])
+	debt_label.text = L10n.t("debt_text")
+	debt_popup.visible = true
+	_dbg("баланс дотянул до долга %d: списано, показан попап перерождения" % target)
 
+
+func _on_debt_rebirth() -> void:
+	debt_popup.visible = false
+	_do_rebirth()
+
+
+func _on_debt_later() -> void:
+	debt_popup.visible = false
+	_update_rebirth_btn()
+	_dbg("перерождение отложено: кнопка осталась в интерфейсе")
+
+
+func _on_rebirth_btn() -> void:
+	debt_label.text = L10n.t("debt_text")
+	debt_popup.visible = true
+
+
+func _update_rebirth_btn() -> void:
+	rebirth_btn.visible = debt_stage == rebirths
+
+
+## Перерождение: сброс баланса и улучшений, множитель заработка x2,
+## следующий долг x3.
+func _do_rebirth() -> void:
+	rebirths += 1
+	balance = 0
+	for i in upg_levels.size():
+		upg_levels[i] = 0
+	_save()
+	_update_rebirth_btn()
+	_update_labels()
+	_banner(L10n.t("rebirth_done") % [rebirths, earn_mult(), _fmt(debt_target())],
+			Color("#ffe9b8"))
+	Sfx.play(self, "win")
+	_dbg("перерождение #%d: множитель x%d, следующий долг %d"
+			% [rebirths, earn_mult(), debt_target()])
 
 func _update_labels() -> void:
 	balance_label.text = _fmt(balance)  # число рядом с иконкой мешка денег
@@ -934,6 +1005,10 @@ func _load_save() -> void:
 		speed_idx = clampi(int(cfg.get_value("save", "speed", 0)), 0, SPEEDS.size() - 1)
 		vol_sfx = clampi(int(cfg.get_value("save", "vol_sfx", 80)), 0, 100)
 		vol_music = clampi(int(cfg.get_value("save", "vol_music", 80)), 0, 100)
+		rebirths = clampi(int(cfg.get_value("save", "rebirths", 0)), 0, 99)
+		debt_stage = int(cfg.get_value("save", "debt_stage", -1))
+	if debt_stage < 0 and bool(cfg.get_value("save", "debt_paid", false)):
+		debt_stage = 0   ## старые сейвы: долг уже был оплачен один раз
 		print("[sfx-cfg] слот читает сейв %s: vol_sfx=%d vol_music=%d"
 				% [SAVE_PATH, vol_sfx, vol_music])
 	if upg_levels.size() != Upgrades.UPGRADES.size():
@@ -950,6 +1025,8 @@ func _save() -> void:
 	cfg.set_value("save", "speed", speed_idx)
 	cfg.set_value("save", "vol_sfx", vol_sfx)
 	cfg.set_value("save", "vol_music", vol_music)
+	cfg.set_value("save", "rebirths", rebirths)
+	cfg.set_value("save", "debt_stage", debt_stage)
 	var err := cfg.save(SAVE_PATH)
 	if err != OK:
 		print("[sfx-cfg] ОШИБКА записи сейва %s: %d" % [SAVE_PATH, err])
@@ -1030,7 +1107,7 @@ func _spin(is_free: bool) -> void:
 	Sfx.stop_spin()
 
 	var res := SlotData.evaluate(grid, bet_line)
-	var won: int = res.total
+	var won: int = res.total * earn_mult()
 	_dbg("спин: выигрыш=%d, линий=%d, скаттер=%d, фриспины=%d" % [
 			won, res.line_wins.size(), res.scatter, res.free_spins])
 	if won > 0:

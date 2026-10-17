@@ -30,13 +30,16 @@ var _icons: Array[AtlasTexture] = []
 var _auto_acc := 0.0         ## накопитель секунд для авто-заработка
 var _cfg := ConfigFile.new()
 var _watching := false
+var _rebirths := 0      ## перерождения: заработок x2^N
+var _debt_stage := -1  ## оплаченная ступень долга
+var _rebirth_arm := false
 var _row_down := {}          ## старт нажатия в строке улучшения (драг-порог)
 var _def_rects := {}
 var _def_anchors := {}
 var _def_offsets := {}
 var _def_fonts := {}
 
-const MANAGED := ["hud_icon", "hud_balance", "coin_btn", "click_hint",
+const MANAGED := ["hud_icon", "hud_balance", "coin_btn", "click_hint", "rebirth_btn",
 		"auto_stat", "click_stat", "play_btn", "play_caption", "back_btn",
 		"msg_label", "upg_scroll"]
 ## В портрете логическая ширина = 1280 (масштаб по ширине), поэтому
@@ -50,6 +53,7 @@ var _banner_tw: Tween
 @onready var machine: Control = $machine
 @onready var hud_balance: Label = $machine/hud_balance
 @onready var coin_btn: TextureButton = $machine/coin_btn
+@onready var rebirth_btn: Button = $machine/rebirth_btn
 @onready var click_hint: Label = $machine/click_hint
 @onready var play_btn: TextureButton = $machine/play_btn
 @onready var play_caption: Label = $machine/play_caption
@@ -62,12 +66,26 @@ var upg_infos: Array = []  ## подписи строк списка улучш�
 @onready var float_layer: Control = $machine/float_layer
 
 
+func _earn_mult() -> int:
+	var m := 1
+	for i in _rebirths:
+		m *= 2
+	return m
+
+
+func _debt_target() -> int:
+	var t := 10000000   ## базовый долг слотов, x3 за перерождение
+	for i in _rebirths:
+		t *= 3
+	return t
+
+
 func click_gain() -> int:
-	return CLICK_BASE + Upgrades.click_add(upg_levels)
+	return (CLICK_BASE + Upgrades.click_add(upg_levels)) * _earn_mult()
 
 
 func auto_gain() -> int:
-	return Upgrades.auto_per_sec(upg_levels)
+	return Upgrades.auto_per_sec(upg_levels) * _earn_mult()
 
 
 func _upg_cost(i: int) -> int:
@@ -177,6 +195,9 @@ func _ready() -> void:
 	Sfx.ensure_buses(vs, vm)
 	coin_btn.pressed.connect(_on_coin)
 	coin_btn.pressed.connect(func() -> void: Sfx.play(self, "win"))
+	rebirth_btn.pressed.connect(_on_rebirth_press)
+	rebirth_btn.text = L10n.t("rebirth_btn")
+	_update_rebirth_btn()
 	play_btn.pressed.connect(func() -> void: Sfx.play(self, "click"))
 	back_btn.pressed.connect(func() -> void: Sfx.play(self, "click"))
 	play_btn.pressed.connect(_on_play)
@@ -288,6 +309,9 @@ func _restore_defaults() -> void:
 
 ## Портрет 9:16: монета по центру, реклама/выход по бокам, улучшения внизу
 ## во всю ширину; размеры через u = ширина/1280 (независимо от масштаба).
+	rebirth_btn.remove_theme_font_size_override("font_size")
+
+
 func _layout_portrait(W: float, H: float) -> void:
 	var u := W / 1280.0
 	var m := 24.0 * u
@@ -301,6 +325,8 @@ func _layout_portrait(W: float, H: float) -> void:
 	_set_r("play_btn", m, 480 * u, 230 * u, 225 * u)
 	_set_r("play_caption", m, 712 * u, 320 * u, 56 * u)
 	_set_r("back_btn", W - 380 * u, 480 * u, 356 * u, 130 * u)
+	_set_r("rebirth_btn", m, 790 * u, 230 * u, 80 * u)
+	rebirth_btn.add_theme_font_size_override("font_size", int(30 * u))
 	var sh := 1016.0 * u
 	_set_r("msg_label", 0, H - sh - 90 * u, W, 80 * u)
 	_set_r("upg_scroll", 0, H - sh, W, sh)
@@ -355,6 +381,8 @@ func _layout() -> void:
 func _load() -> void:
 	if _cfg.load(SAVE_PATH) == OK:
 		balance = int(_cfg.get_value("save", "balance", balance))
+		_rebirths = clampi(int(_cfg.get_value("save", "rebirths", 0)), 0, 99)
+		_debt_stage = int(_cfg.get_value("save", "debt_stage", -1))
 		var arr: Array = _cfg.get_value("save", "upg_levels", [])
 		upg_levels.clear()
 		for k in Upgrades.UPGRADES.size():
@@ -363,6 +391,8 @@ func _load() -> void:
 		upg_levels.clear()
 		for k in Upgrades.UPGRADES.size():
 			upg_levels.append(0)
+	if _debt_stage < 0 and bool(_cfg.get_value("save", "debt_paid", false)):
+		_debt_stage = 0
 
 
 ## Пишем баланс в общий сейв, остальные ключи (ставка, скорость,
@@ -370,7 +400,39 @@ func _load() -> void:
 func _save() -> void:
 	_cfg.set_value("save", "balance", balance)
 	_cfg.set_value("save", "upg_levels", upg_levels)
+	_cfg.set_value("save", "rebirths", _rebirths)
+	_cfg.set_value("save", "debt_stage", _debt_stage)
 	_cfg.save(SAVE_PATH)
+
+
+func _update_rebirth_btn() -> void:
+	rebirth_btn.visible = _debt_stage == _rebirths
+
+
+## Кнопка перерождения в кликере: первое нажатие взводит подтверждение
+## на 3 с, второе — перерождает (сброс баланса и улучшений, x2 заработок).
+func _on_rebirth_press() -> void:
+	if not _rebirth_arm:
+		_rebirth_arm = true
+		rebirth_btn.text = L10n.t("rebirth_sure")
+		get_tree().create_timer(3.0).timeout.connect(func() -> void:
+			if _rebirth_arm:
+				_rebirth_arm = false
+				rebirth_btn.text = L10n.t("rebirth_btn"))
+		return
+	_rebirth_arm = false
+	_rebirths += 1
+	balance = 0
+	for i in upg_levels.size():
+		upg_levels[i] = 0
+	_save()
+	_refresh_shop()
+	_update()
+	_update_rebirth_btn()
+	rebirth_btn.text = L10n.t("rebirth_btn")
+	_banner(L10n.t("rebirth_done") % [_rebirths, _earn_mult(), _fmt(_debt_target())],
+			Color("#ffe9b8"))
+	Sfx.play(self, "win")
 
 
 func _update() -> void:
@@ -465,13 +527,14 @@ func _on_play() -> void:
 	var rewarded := await _watch_rewarded_ad()
 	_dbg("реклама завершена, rewarded=%s" % rewarded)
 	if rewarded:
-		balance += AD_REWARD
+		var reward := AD_REWARD * _earn_mult()
+		balance += reward
 		Sfx.play(self, "win")
-		_dbg("награда начислена: +%d, баланс=%d" % [AD_REWARD, balance])
+		_dbg("награда начислена: +%d, баланс=%d" % [reward, balance])
 		_save()
 		_update()
-		_banner(L10n.t("ad_win") % _fmt(AD_REWARD), Color("#8dffa0"))
-		_float("+%d" % AD_REWARD,
+		_banner(L10n.t("ad_win") % reward, Color("#8dffa0"))
+		_float("+%d" % reward,
 				play_btn.position + play_btn.size * 0.5, Color("#8dffa0"))
 	else:
 		_banner(L10n.t("ad_skip"), Color("#ff7b7b"))
