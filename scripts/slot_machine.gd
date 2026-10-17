@@ -540,7 +540,6 @@ func _layout_portrait(W: float, H: float) -> void:
 			120 * u)
 	_set_r("debt_popup/debt_panel", 40 * u, 450 * u, W - 80 * u, 850 * u)
 	_set_r("debt_popup/debt_label", 70 * u, 520 * u, W - 140 * u, 480 * u)
-	var dbw := minf(700.0 * u, W - 80 * u)
 	var w2 := (W - 140 * u - 20 * u) / 2.0
 	_set_r("debt_popup/debt_btn", 70 * u, 1030 * u, w2, 120 * u)
 	_set_r("debt_popup/debt_later", 70 * u + w2 + 20 * u, 1030 * u, w2, 120 * u)
