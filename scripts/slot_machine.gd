@@ -57,7 +57,7 @@ var rng := RandomNumberGenerator.new()
 var textures: Array[Texture2D] = []
 var reels: Array[SlotReel] = []
 
-const BALANCE_MAX := 2147483647  ## потолок: выше не растёт (защита от переполнения)
+const BALANCE_MAX := 9223372036854775807  ## максимум int64: потолок больше невозможно поднять, переполнение исключено
 var _balance_v := START_BALANCE
 var _cap_notified := false       ## баннер о достижении потолка показан
 ## Баланс с защитой: отрицательное значение невозможно установить —
