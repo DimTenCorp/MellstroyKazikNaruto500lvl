@@ -473,10 +473,11 @@ func _save() -> void:
 	_cfg.save(SAVE_PATH)
 
 
-## Награда за рекламу: бабло за клик (с множителем перерождений) × 2,
-## но не меньше 500: берём большее из формулы и минимума.
+## Награда за рекламу: бабло за клик (с множителем перерождений,
+## БЕЗ временного x2 за рекламу) × 2, но не меньше 500.
 func _ad_reward() -> int:
-	return maxi(500, click_gain() * 2)
+	var base := (CLICK_BASE + Upgrades.click_add(upg_levels)) * _earn_mult()
+	return maxi(500, base * 2)
 
 
 const REBIRTH_REGIONS := {
