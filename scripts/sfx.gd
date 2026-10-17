@@ -42,17 +42,26 @@ static func set_volumes(vol_sfx: float, vol_music: float) -> void:
 
 
 ## Одноразовый плеер на узле сцены; сам удаляется после окончания.
+## Временная диагностика веба: печатает состояние потока и шины.
 static func _one_shot(node: Node, st: AudioStream) -> void:
 	if node == null or st == null:
+		print("[sfx] ПОТОК NULL, звук пропущен")
 		return
 	if not node.is_inside_tree():
+		print("[sfx] узел вне дерева, звук пропущен")
 		return
+	var idx := AudioServer.get_bus_index("SFX")
+	print("[sfx] play: stream=%s len=%.2f cборка_web=%s bus_idx=%d mute=%s db=%.1f"
+			% [st.resource_path, st.get_length(), OS.has_feature("web"),
+			idx, AudioServer.is_bus_mute(idx) if idx != -1 else true,
+			AudioServer.get_bus_volume_db(idx) if idx != -1 else -80.0])
 	var pl := AudioStreamPlayer.new()
 	pl.stream = st
 	pl.bus = "SFX"
 	node.add_child(pl)
 	pl.finished.connect(pl.queue_free)
 	pl.play()
+	print("[sfx] playing=%s" % pl.playing)
 
 
 ## what: click | win | buy.
