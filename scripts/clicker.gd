@@ -31,6 +31,7 @@ var _auto_acc := 0.0         ## накопитель секунд для авт�
 var _cfg := ConfigFile.new()
 var _watching := false
 var _row_down := {}          ## старт нажатия в строке улучшения (драг-порог)
+var _sfx_ab := 0             ## A/B-чередование шин SFX/Master для теста веба
 var _def_rects := {}
 var _def_anchors := {}
 var _def_offsets := {}
@@ -171,7 +172,11 @@ func _ready() -> void:
 	Sfx.ensure_buses(float(_cfg.get_value("save", "vol_sfx", 80)),
 			float(_cfg.get_value("save", "vol_music", 80)))
 	coin_btn.pressed.connect(_on_coin)
-	coin_btn.pressed.connect(func() -> void: Sfx.play(self, "win"))
+	coin_btn.pressed.connect(func() -> void:
+		_sfx_ab = 1 - _sfx_ab
+		var bus := "SFX" if _sfx_ab == 0 else "Master"
+		print("[sfx-ab] клик по монете -> шина %s" % bus)
+		Sfx.play_on_bus(self, "win", bus))
 	play_btn.pressed.connect(func() -> void: Sfx.play(self, "click"))
 	back_btn.pressed.connect(func() -> void: Sfx.play(self, "click"))
 	play_btn.pressed.connect(_on_play)
