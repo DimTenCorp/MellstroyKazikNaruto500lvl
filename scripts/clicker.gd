@@ -462,7 +462,7 @@ func _on_play() -> void:
 	if rewarded:
 		balance += AD_REWARD
 		Sfx.play(self, "win")
-	_dbg("награда начислена: +%d, баланс=%d" % [AD_REWARD, balance])
+		_dbg("награда начислена: +%d, баланс=%d" % [AD_REWARD, balance])
 		_save()
 		_update()
 		_banner(L10n.t("ad_win") % _fmt(AD_REWARD), Color("#8dffa0"))
