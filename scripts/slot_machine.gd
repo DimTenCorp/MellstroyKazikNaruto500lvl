@@ -855,10 +855,17 @@ func _on_bet_apply() -> void:
 	_set_bet_total(int(s))
 
 
+## MAX = олл-ин: вся балансовая сумма, округлённая вниз до кратной
+## числу линий (9), чтобы полная ставка не превысила баланс.
 func _on_max_bet() -> void:
 	if _spinning:
 		return
-	_set_bet(int(BETS[BETS.size() - 1]))
+	var lines := SlotData.PAYLINES.size()
+	var t := balance - balance % lines
+	if t < lines:
+		_banner(L10n.t("need_money") % lines, Color("#ff7b7b"))
+		return
+	_set_bet(t / lines)
 	_banner(L10n.t("max_bet") % _fmt(total_bet()), Color("#ffe9b8"))
 
 
