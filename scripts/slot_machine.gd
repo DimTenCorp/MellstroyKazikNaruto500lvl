@@ -927,6 +927,7 @@ func _on_bet_apply() -> void:
 
 ## MAX = олл-ин: вся балансовая сумма, округлённая вниз до кратной
 ## числу линий (9), чтобы полная ставка не превысила баланс.
+@warning_ignore("integer_division")
 func _on_max_bet() -> void:
 	if _spinning:
 		return

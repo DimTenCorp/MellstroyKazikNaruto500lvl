@@ -333,8 +333,8 @@ position = Vector2(23, 530)
 size = Vector2(120, 60)
 theme_override_font_sizes/font_size = 14
 theme_override_styles/normal = SubResource("sb_btn_n")
-theme_override_styles/hover = SubResource("sb_btn_h")
-theme_override_styles/pressed = SubResource("sb_btn_p")
+theme_override_styles/hover = SubResource("sb_btn_n")
+theme_override_styles/pressed = SubResource("sb_btn_n")
 
 [node name="back_btn" type="Button" parent="machine"]
 text = "← К СЛОТАМ"
