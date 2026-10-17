@@ -248,6 +248,9 @@ func _ready() -> void:
 	_update_ad2x()
 	_apply_rebirth_tex()
 	_update_rebirth_btn()
+	rebirth_btn.ignore_texture_size = true
+	rebirth_btn.stretch_mode = TextureButton.STRETCH_SCALE
+	rebirth_btn.custom_minimum_size = Vector2.ZERO
 	play_btn.pressed.connect(func() -> void: Sfx.play(self, "click"))
 	back_btn.pressed.connect(func() -> void: Sfx.play(self, "click"))
 	play_btn.pressed.connect(_on_play)
