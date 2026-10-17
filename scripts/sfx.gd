@@ -56,7 +56,8 @@ static func _unlock_web() -> void:
 		JavaScriptBridge.eval("window.__unlockAudio && window.__unlockAudio()")
 
 
-static func _one_shot(node: Node, st: AudioStream) -> void:
+static func _one_shot(node: Node, st: AudioStream,
+		bus: String = "SFX", vol_db: float = 0.0) -> void:
 	_unlock_web()
 	if node == null or st == null:
 		print("[sfx] ПОТОК NULL, звук пропущен")
@@ -71,31 +72,38 @@ static func _one_shot(node: Node, st: AudioStream) -> void:
 			AudioServer.get_bus_volume_db(idx) if idx != -1 else -80.0])
 	var pl := AudioStreamPlayer.new()
 	pl.stream = st
-	pl.bus = "SFX"
+	pl.bus = bus
+	pl.volume_db = vol_db
 	node.add_child(pl)
 	pl.finished.connect(pl.queue_free)
 	pl.play()
-	print("[sfx] playing=%s" % pl.playing)
+	print("[sfx] playing=%s bus=%s vol_db=%.0f" % [pl.playing, bus, vol_db])
 
 
 ## what: click | win | buy.
 static func play(node: Node, what: String) -> void:
+	play_on_bus(node, what, "SFX")
+
+
+## То же, но на заданную шину (для A/B-теста SFX против Master).
+static func play_on_bus(node: Node, what: String, bus: String) -> void:
 	match what:
 		"click":
-			_one_shot(node, ST_CLICK)
+			_one_shot(node, ST_CLICK, bus)
 		"win":
-			_one_shot(node, ST_WIN)
+			_one_shot(node, ST_WIN, bus)
 		"buy":
-			_one_shot(node, ST_BUY)
+			_one_shot(node, ST_BUY, bus)
 
 
 ## Звук прокрута зависит от скорости: x1 — вариации prokrut1/3/4,
 ## x2 — prokrut3, x5 — prokrut2.
 static func play_spin(node: Node, speed: float) -> void:
+	## prokrut*.ogg записаны тише остальных (~-23 dB) — компенсируем +20 dB.
 	match int(speed):
 		2:
-			_one_shot(node, ST_SPIN_X2)
+			_one_shot(node, ST_SPIN_X2, "SFX", 20.0)
 		5:
-			_one_shot(node, ST_SPIN_X5)
+			_one_shot(node, ST_SPIN_X5, "SFX", 20.0)
 		_:
-			_one_shot(node, ST_SPIN_X1[randi() % ST_SPIN_X1.size()])
+			_one_shot(node, ST_SPIN_X1[randi() % ST_SPIN_X1.size()], "SFX", 20.0)
