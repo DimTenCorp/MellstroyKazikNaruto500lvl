@@ -755,6 +755,9 @@ func _apply_lang() -> void:
 
 
 ## Отладочная выдача денег: пресеты или своё число в меню.
+	_update_labels()   ## плашка долга и числа тоже переводятся
+
+
 func _give_money(v: int) -> void:
 	if v <= 0:
 		return
