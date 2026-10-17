@@ -180,6 +180,16 @@ position = Vector2(98, 44)
 size = Vector2(240, 36)
 vertical_alignment = 1
 
+[node name="debt_plaque" type="Label" parent="machine"]
+text = "ДОЛГ: 10 000 000"
+theme_override_font_sizes/font_size = 20
+theme_override_colors/font_color = Color(1, 0.482353, 0.482353, 1)
+position = Vector2(1030, 18)
+size = Vector2(240, 52)
+horizontal_alignment = 2
+theme_override_constants/outline_size = 6
+theme_override_colors/font_outline_color = Color(0.192157, 0.0745098, 0.101961, 1)
+
 [node name="win_label" type="Label" parent="machine"]
 text = ""
 theme_override_font_sizes/font_size = 26

@@ -76,6 +76,8 @@ const D := {
 	"ad2x_on": {"ru": "х2 КЛИКИ: %d с", "en": "x2 CLICKS: %d s", "tr": "x2 TIKLAMA: %d s"},
 	"ad2x_started": {"ru": "х2 КЛИКИ НА 30 СЕКУНД!", "en": "x2 CLICKS FOR 30 SECONDS!",
 		"tr": "30 SANİYE x2 TIKLAMA!"},
+	"debt_plaque": {"ru": "ДОЛГ: %s", "en": "DEBT: %s", "tr": "BORÇ: %s"},
+	"debt_plaque_paid": {"ru": "ДОЛГ ОПЛАЧЕН", "en": "DEBT PAID", "tr": "BORÇ ÖDENDİ"},
 	"enter_num_bet": {"ru": "ВПИШИ ЧИСЛО: НАПРИМЕР 90", "en": "TYPE A NUMBER: E.G. 90", "tr": "SAYI YAZ: ÖRNEĞİN 90"},
 	"enter_num_sum": {"ru": "ВПИШИ ЧИСЛО: НАПРИМЕР 5000", "en": "TYPE A NUMBER: E.G. 5000", "tr": "SAYI YAZ: ÖRNEĞİN 5000"},
 	"bet_cap": {"ru": "СТАВКА НЕ БОЛЬШЕ БАЛАНСА: %s", "en": "BET NOT ABOVE BALANCE: %s", "tr": "BAHİS BAKİYEDEN BÜYÜK OLAMAZ: %s"},

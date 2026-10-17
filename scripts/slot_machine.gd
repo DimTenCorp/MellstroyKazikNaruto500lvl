@@ -98,7 +98,7 @@ const MANAGED := [
 	"paytable_popup/popup_panel",
 	"intro_popup/intro_panel", "intro_popup/intro_label", "intro_popup/intro_btn",
 	"debt_popup/debt_panel", "debt_popup/debt_label", "debt_popup/debt_btn",
-	"debt_popup/debt_later", "rebirth_btn",
+	"debt_popup/debt_later", "rebirth_btn", "debt_plaque",
 ]
 ## В портрете логическая ширина остаётся 1280 (canvas_items масштабирует
 ## по ширине), поэтому размеры/шрифты крупнее десктопных в ~2.5 раза.
@@ -159,6 +159,7 @@ var _wins_tex: Texture2D
 @onready var debt_btn: Button = $machine/debt_popup/debt_btn
 @onready var debt_later: Button = $machine/debt_popup/debt_later
 @onready var rebirth_btn: Button = $machine/rebirth_btn
+@onready var debt_plaque: Label = $machine/debt_plaque
 @onready var debt_label: Label = $machine/debt_popup/debt_label
 @onready var debug_menu: Control = $machine/debug_menu
 @onready var dbg_input: LineEdit = $machine/debug_menu/panel/vbox/dbg_row/dbg_input
@@ -476,6 +477,7 @@ func _restore_defaults() -> void:
 	_pop_scale = 1.0
 	for bp in ["debt_popup/debt_btn", "debt_popup/debt_later", "rebirth_btn"]:
 		(machine.get_node(bp) as Button).remove_theme_font_size_override("font_size")
+	debt_plaque.remove_theme_font_size_override("font_size")
 	_cell_w = CELL
 	_gap_w = GAP
 	for c in SlotData.COLS:
@@ -492,7 +494,9 @@ func _layout_portrait(W: float, H: float) -> void:
 	var cell := (gw - 4 * g) / 5.0
 	var gh := 3 * cell + 2 * g
 	_set_r("balance_icon", m, m, 150 * u, 138 * u)
-	_set_r("balance_label", m + 160 * u, m + 10 * u, W - 184 * u - m, 90 * u)
+	_set_r("balance_label", m + 160 * u, m + 10 * u, W - 434 * u - m, 90 * u)
+	_set_r("debt_plaque", W - 260 * u, 34 * u, 236 * u, 90 * u)
+	debt_plaque.add_theme_font_size_override("font_size", int(34 * u))
 	_set_r("win_label", m, 168 * u, W - 260 * u, 80 * u)
 	_set_r("freespin_label", m, 252 * u, (W - 2 * m) * 0.5, 60 * u)
 	_set_r("bottom_bar/auto_label", m + (W - 2 * m) * 0.5, 252 * u,
@@ -843,7 +847,11 @@ func _do_rebirth() -> void:
 			% [rebirths, earn_mult(), debt_target()])
 
 func _update_labels() -> void:
-	balance_label.text = _fmt(balance)  # число рядом с иконкой мешка денег
+	balance_label.text = _fmt(balance)
+	if debt_stage < rebirths:
+		debt_plaque.text = L10n.t("debt_plaque") % _fmt(debt_target())
+	else:
+		debt_plaque.text = L10n.t("debt_plaque_paid")  # число рядом с иконкой мешка денег
 	bet_label.text = L10n.t("bet_line") % bet_line
 	fullbet_label.text = L10n.t("full_bet") % total_bet()
 	_check_debt()

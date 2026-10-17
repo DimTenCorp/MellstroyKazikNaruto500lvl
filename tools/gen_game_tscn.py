@@ -212,6 +212,11 @@ label("balance_label", "machine", "0", 26, "ffe9b8",
       vertical_alignment=1)
 
 # Выигрыш пишется сверху над сеткой: поверх панели его плохо видно.
+label("debt_plaque", "machine", "ДОЛГ: 10 000 000", 20, "ff7b7b",
+      position="Vector2(1030, 18)", size="Vector2(240, 52)",
+      horizontal_alignment=2,
+      theme_override_constants_outline_size=6,
+      theme_override_colors_font_outline_color=hx("31131a"))
 label("win_label", "machine", "", 26, "8dffa0",
       position="Vector2(340, 6)", size="Vector2(600, 44)",
       horizontal_alignment=1,
