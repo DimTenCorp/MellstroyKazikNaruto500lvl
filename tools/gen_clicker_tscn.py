@@ -285,6 +285,7 @@ node("ad2x_btn", "Button", "machine", text='"х2 КЛИКИ"',
      theme_override_styles_hover='SubResource("sb_btn_n")',
      theme_override_styles_pressed='SubResource("sb_btn_n")')
 node("rebirth_btn", "TextureButton", "machine", visible="false",
+     ignore_texture_size="true",
      position="Vector2(1120, 470)", size="Vector2(120, 138)")
 node("back_btn", "Button", "machine", text='"← К СЛОТАМ"',
      position="Vector2(30, 624)", size="Vector2(296, 72)",

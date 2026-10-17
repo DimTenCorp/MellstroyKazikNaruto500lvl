@@ -387,6 +387,7 @@ theme_override_styles/pressed = SubResource("sb_btn_n")
 
 [node name="rebirth_btn" type="TextureButton" parent="machine"]
 visible = false
+ignore_texture_size = true
 position = Vector2(1120, 470)
 size = Vector2(120, 138)
 
