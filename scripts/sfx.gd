@@ -44,6 +44,7 @@ static func set_volumes(vol_sfx: float, vol_music: float) -> void:
 ## Одноразовый плеер на узле сцены; сам удаляется после окончания.
 ## Временная диагностика веба: печатает состояние потока и шины.
 static var _unlocked := false
+static var _spin_pl: AudioStreamPlayer = null
 
 
 ## Веб: дёргаем разблокировку AudioContext из шаблона экспорта
@@ -57,14 +58,14 @@ static func _unlock_web() -> void:
 
 
 static func _one_shot(node: Node, st: AudioStream,
-		bus: String = "SFX", vol_db: float = 0.0) -> void:
+		bus: String = "SFX", vol_db: float = 0.0) -> AudioStreamPlayer:
 	_unlock_web()
 	if node == null or st == null:
 		print("[sfx] ПОТОК NULL, звук пропущен")
-		return
+		return null
 	if not node.is_inside_tree():
 		print("[sfx] узел вне дерева, звук пропущен")
-		return
+		return null
 	var idx := AudioServer.get_bus_index("SFX")
 	print("[sfx] play: stream=%s len=%.2f cборка_web=%s bus_idx=%d mute=%s db=%.1f"
 			% [st.resource_path, st.get_length(), OS.has_feature("web"),
@@ -75,9 +76,12 @@ static func _one_shot(node: Node, st: AudioStream,
 	pl.bus = bus
 	pl.volume_db = vol_db
 	node.add_child(pl)
-	pl.finished.connect(pl.queue_free)
+	pl.finished.connect(func() -> void:
+		if is_instance_valid(pl):
+			pl.queue_free())
 	pl.play()
 	print("[sfx] playing=%s bus=%s vol_db=%.0f" % [pl.playing, bus, vol_db])
+	return pl
 
 
 ## what: click | win | buy.
@@ -100,10 +104,31 @@ static func play_on_bus(node: Node, what: String, bus: String) -> void:
 ## x2 — prokrut3, x5 — prokrut2.
 static func play_spin(node: Node, speed: float) -> void:
 	## prokrut*.ogg записаны тише остальных (~-23 dB) — компенсируем +20 dB.
+	stop_spin(0.0)
 	match int(speed):
 		2:
-			_one_shot(node, ST_SPIN_X2, "SFX", 20.0)
+			_spin_pl = _one_shot(node, ST_SPIN_X2, "SFX", 20.0)
 		5:
-			_one_shot(node, ST_SPIN_X5, "SFX", 20.0)
+			_spin_pl = _one_shot(node, ST_SPIN_X5, "SFX", 20.0)
 		_:
-			_one_shot(node, ST_SPIN_X1[randi() % ST_SPIN_X1.size()], "SFX", 20.0)
+			_spin_pl = _one_shot(node,
+					ST_SPIN_X1[randi() % ST_SPIN_X1.size()], "SFX", 20.0)
+
+
+## Погасить звук прокрута (когда барабаны встали раньше, чем кончился
+## файл): фейд 0.18 c (0.0 = сразу) и освобождение плеера.
+static func stop_spin(fade: float = 0.18) -> void:
+	var pl := _spin_pl
+	_spin_pl = null
+	if pl == null or not is_instance_valid(pl) or not pl.playing:
+		return
+	if fade <= 0.0:
+		pl.stop()
+		pl.queue_free()
+		return
+	var tw := pl.create_tween()
+	tw.tween_property(pl, "volume_db", -60.0, fade)
+	tw.tween_callback(func() -> void:
+		if is_instance_valid(pl):
+			pl.stop()
+			pl.queue_free())

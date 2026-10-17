@@ -1012,6 +1012,7 @@ func _spin(is_free: bool) -> void:
 			func() -> void: reels[c].stop_at(grid[c]))
 	for reel in reels:
 		await reel.stopped
+	Sfx.stop_spin()
 
 	var res := SlotData.evaluate(grid, bet_line)
 	var won: int = res.total
