@@ -31,8 +31,9 @@ var balance: int:
 		return _balance_v
 	set(v):
 		if v < 0:
-			print("[balance] ОТРИЦАТЕЛЬНОЕ значение %d отклонено, ставлю 0" % v)
-			_balance_v = 0
+			## вместо сброса: баланс остаётся при прежнем (максимальном) значении
+			print("[balance] ОТРИЦАТЕЛЬНОЕ значение %d отклонено, остаётся %d"
+					% [v, _balance_v])
 		else:
 			_balance_v = v
 var upg_levels: Array[int] = []   ## уровни улучшений (индекс = номер в UPGRADES)
