@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://cpkkdr77qsj4v"]
+[gd_scene load_steps=11 format=3 uid="uid://cpkkdr77qsj4v"]
 
 [ext_resource type="Script" path="res://scripts/clicker.gd" id="scr"]
 [ext_resource type="Texture2D" uid="uid://b56gacdjml0oy" path="res://img/upgrades/upgrades.png" id="tex_upgrades"]
@@ -17,6 +17,18 @@ corner_radius_top_left = 10
 corner_radius_top_right = 10
 corner_radius_bottom_left = 10
 corner_radius_bottom_right = 10
+
+[sub_resource type="StyleBoxFlat" id="sb_popup"]
+bg_color = Color(0.141176, 0.101961, 0.192157, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.847059, 0.705882, 0.368627, 1)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_left = 14
+corner_radius_bottom_right = 14
 
 [sub_resource type="AtlasTexture" id="at_coin"]
 atlas = ExtResource("tex_clicker")
@@ -325,6 +337,44 @@ position = Vector2(26, 127)
 size = Vector2(300, 24)
 theme_override_constants/outline_size = 6
 theme_override_colors/font_outline_color = Color(0.25098, 0.12549, 0.0313725, 1)
+
+[node name="debt_popup" type="Control" parent="machine"]
+visible = false
+
+[node name="debt_panel" type="Panel" parent="machine/debt_popup"]
+position = Vector2(290, 190)
+size = Vector2(700, 340)
+theme_override_styles/panel = SubResource("sb_popup")
+
+[node name="debt_label" type="Label" parent="machine/debt_popup"]
+text = "Вы успешно расплатились со своими долгами и теперь вам доступно перерождение, долг увеличится в втрое, а любой заработок вдвое"
+theme_override_font_sizes/font_size = 24
+theme_override_colors/font_color = Color(0.552941, 1, 0.627451, 1)
+position = Vector2(320, 220)
+size = Vector2(640, 200)
+autowrap_mode = 3
+horizontal_alignment = 1
+vertical_alignment = 1
+theme_override_constants/outline_size = 8
+theme_override_colors/font_outline_color = Color(0.113725, 0.301961, 0.113725, 1)
+
+[node name="debt_btn" type="Button" parent="machine/debt_popup"]
+text = "ПЕРЕРОДИТЬСЯ"
+position = Vector2(320, 440)
+size = Vector2(320, 52)
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("sb_btn_n")
+theme_override_styles/hover = SubResource("sb_btn_n")
+theme_override_styles/pressed = SubResource("sb_btn_n")
+
+[node name="debt_later" type="Button" parent="machine/debt_popup"]
+text = "ПОЗЖЕ"
+position = Vector2(660, 440)
+size = Vector2(300, 52)
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("sb_btn_n")
+theme_override_styles/hover = SubResource("sb_btn_n")
+theme_override_styles/pressed = SubResource("sb_btn_n")
 
 [node name="ad2x_btn" type="Button" parent="machine"]
 text = "х2 КЛИКИ"

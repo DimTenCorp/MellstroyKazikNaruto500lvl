@@ -832,6 +832,7 @@ func _do_rebirth() -> void:
 	balance = 0
 	for i in upg_levels.size():
 		upg_levels[i] = 0
+	_flag_set("boost2x_until", 0)   ## временный x2 кликов сгорает
 	_save()
 	_update_rebirth_btn()
 	_update_labels()

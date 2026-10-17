@@ -104,6 +104,7 @@ ext = ['[ext_resource type="Script" path="res://scripts/clicker.gd" '
        'path="res://img/money_icon.png" id="tex_money"]']
 
 stylebox("sb_btn_n", "3a2c4d", "7a6399", 2, 10)
+stylebox("sb_popup", "241a31", "d8b45e", 2, 14)
 for key in ("coin", "play", "bag"):
     atlassub("at_" + key, "tex_clicker", CLICKER_REGIONS[key])
 
@@ -254,6 +255,29 @@ label("click_stat", "machine", "бабло за клик: 5", 20, "ffe9b8",
       theme_override_colors_font_outline_color=hx("402008"))
 
 # возврат к слот-машине
+node("debt_popup", "Control", "machine", visible="false")
+node("debt_panel", "Panel", "debt_popup",
+     position="Vector2(290, 190)", size="Vector2(700, 340)",
+     theme_override_styles_panel='SubResource("sb_popup")')
+label("debt_label", "debt_popup",
+      "Вы успешно расплатились со своими долгами и теперь вам доступно "
+      "перерождение, долг увеличится в втрое, а любой заработок вдвое", 24, "8dffa0",
+      position="Vector2(320, 220)", size="Vector2(640, 200)",
+      autowrap_mode=3, horizontal_alignment=1, vertical_alignment=1,
+      theme_override_constants_outline_size=8,
+      theme_override_colors_font_outline_color=hx("1d4d1d"))
+node("debt_btn", "Button", "debt_popup", text='"ПЕРЕРОДИТЬСЯ"',
+     position="Vector2(320, 440)", size="Vector2(320, 52)",
+     theme_override_font_sizes_font_size=20,
+     theme_override_styles_normal='SubResource("sb_btn_n")',
+     theme_override_styles_hover='SubResource("sb_btn_n")',
+     theme_override_styles_pressed='SubResource("sb_btn_n")')
+node("debt_later", "Button", "debt_popup", text='"ПОЗЖЕ"',
+     position="Vector2(660, 440)", size="Vector2(300, 52)",
+     theme_override_font_sizes_font_size=20,
+     theme_override_styles_normal='SubResource("sb_btn_n")',
+     theme_override_styles_hover='SubResource("sb_btn_n")',
+     theme_override_styles_pressed='SubResource("sb_btn_n")')
 node("ad2x_btn", "Button", "machine", text='"х2 КЛИКИ"',
      position="Vector2(1100, 397)", size="Vector2(160, 60)",
      theme_override_font_sizes_font_size=16,

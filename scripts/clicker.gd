@@ -41,7 +41,8 @@ var _def_offsets := {}
 var _def_fonts := {}
 
 const MANAGED := ["hud_icon", "hud_balance", "coin_btn", "click_hint", "rebirth_btn",
-		"ad2x_btn",
+		"ad2x_btn", "debt_popup/debt_panel", "debt_popup/debt_label",
+		"debt_popup/debt_btn", "debt_popup/debt_later",
 		"auto_stat", "click_stat", "play_btn", "play_caption", "back_btn",
 		"msg_label", "upg_scroll"]
 ## В портрете логическая ширина = 1280 (масштаб по ширине), поэтому
@@ -57,6 +58,10 @@ var _banner_tw: Tween
 @onready var coin_btn: TextureButton = $machine/coin_btn
 @onready var rebirth_btn: Button = $machine/rebirth_btn
 @onready var ad2x_btn: Button = $machine/ad2x_btn
+@onready var debt_popup: Control = $machine/debt_popup
+@onready var debt_label: Label = $machine/debt_popup/debt_label
+@onready var debt_btn: Button = $machine/debt_popup/debt_btn
+@onready var debt_later: Button = $machine/debt_popup/debt_later
 @onready var click_hint: Label = $machine/click_hint
 @onready var play_btn: TextureButton = $machine/play_btn
 @onready var play_caption: Label = $machine/play_caption
@@ -172,6 +177,7 @@ func _on_upg(i: int) -> void:
 
 func _process(delta: float) -> void:
 	_update_ad2x()
+	_check_debt()
 	var g := auto_gain()
 	if g <= 0:
 		return
@@ -213,6 +219,13 @@ func _ready() -> void:
 	coin_btn.pressed.connect(func() -> void: Sfx.play(self, "win"))
 	rebirth_btn.pressed.connect(_on_rebirth_press)
 	ad2x_btn.pressed.connect(_on_ad2x)
+	debt_btn.pressed.connect(_on_debt_rebirth)
+	debt_later.pressed.connect(_on_debt_later)
+	debt_btn.pressed.connect(func() -> void: Sfx.play(self, "click"))
+	debt_later.pressed.connect(func() -> void: Sfx.play(self, "click"))
+	debt_label.text = L10n.t("debt_text")
+	debt_btn.text = L10n.t("rebirth_now")
+	debt_later.text = L10n.t("rebirth_later")
 	ad2x_btn.pressed.connect(func() -> void: Sfx.play(self, "click"))
 	_update_ad2x()
 	rebirth_btn.text = L10n.t("rebirth_btn")
@@ -330,6 +343,9 @@ func _restore_defaults() -> void:
 ## во всю ширину; размеры через u = ширина/1280 (независимо от масштаба).
 	rebirth_btn.remove_theme_font_size_override("font_size")
 	ad2x_btn.remove_theme_font_size_override("font_size")
+	debt_label.remove_theme_font_size_override("font_size")
+	debt_btn.remove_theme_font_size_override("font_size")
+	debt_later.remove_theme_font_size_override("font_size")
 
 
 func _layout_portrait(W: float, H: float) -> void:
@@ -347,6 +363,14 @@ func _layout_portrait(W: float, H: float) -> void:
 	_set_r("back_btn", W - 380 * u, 480 * u, 356 * u, 130 * u)
 	_set_r("rebirth_btn", m, 790 * u, 230 * u, 80 * u)
 	_set_r("ad2x_btn", W - 250 * u, 630 * u, 226 * u, 90 * u)
+	_set_r("debt_popup/debt_panel", 40 * u, 450 * u, W - 80 * u, 850 * u)
+	_set_r("debt_popup/debt_label", 70 * u, 520 * u, W - 140 * u, 480 * u)
+	var w2 := (W - 140 * u - 20 * u) / 2.0
+	_set_r("debt_popup/debt_btn", 70 * u, 1030 * u, w2, 120 * u)
+	_set_r("debt_popup/debt_later", 70 * u + w2 + 20 * u, 1030 * u, w2, 120 * u)
+	debt_label.add_theme_font_size_override("font_size", int(34 * u))
+	debt_btn.add_theme_font_size_override("font_size", int(30 * u))
+	debt_later.add_theme_font_size_override("font_size", int(30 * u))
 	ad2x_btn.add_theme_font_size_override("font_size", int(30 * u))
 	rebirth_btn.add_theme_font_size_override("font_size", int(30 * u))
 	var sh := 1016.0 * u
@@ -433,8 +457,56 @@ func _update_rebirth_btn() -> void:
 	rebirth_btn.visible = _debt_stage == _rebirths
 
 
+## Долг ступени дотянут: списание сразу + попап перерождения (как в слотах).
+func _check_debt() -> void:
+	if _debt_stage >= _rebirths:
+		return
+	var target := _debt_target()
+	if balance < target or debt_popup.visible:
+		return
+	balance -= target
+	_debt_stage = _rebirths
+	_save()
+	_update()
+	_banner(L10n.t("debt_paid") % _fmt(target), Color("#8dffa0"))
+	Sfx.play(self, "win")
+	debt_label.text = L10n.t("debt_text")
+	debt_popup.visible = true
+	_dbg("баланс дотянул до долга %d: списано, показан попап перерождения" % target)
+
+
+func _on_debt_rebirth() -> void:
+	debt_popup.visible = false
+	_do_rebirth()
+
+
+func _on_debt_later() -> void:
+	debt_popup.visible = false
+	_update_rebirth_btn()
+
+
+## Перерождение: сброс баланса, улучшений и буста x2; заработок x2, долг x3.
+func _do_rebirth() -> void:
+	_rebirth_arm = false
+	_rebirths += 1
+	balance = 0
+	for i in upg_levels.size():
+		upg_levels[i] = 0
+	_boost_until = 0   ## временный x2 кликов сгорает при перерождении
+	_save()
+	debt_popup.visible = false
+	_refresh_shop()
+	_update()
+	_update_rebirth_btn()
+	_update_ad2x()
+	rebirth_btn.text = L10n.t("rebirth_btn")
+	_banner(L10n.t("rebirth_done") % [_rebirths, _earn_mult(), _fmt(_debt_target())],
+			Color("#ffe9b8"))
+	Sfx.play(self, "win")
+
+
 ## Кнопка перерождения в кликере: первое нажатие взводит подтверждение
-## на 3 с, второе — перерождает (сброс баланса и улучшений, x2 заработок).
+## на 3 с, второе — перерождает.
 func _on_rebirth_press() -> void:
 	if not _rebirth_arm:
 		_rebirth_arm = true
@@ -444,19 +516,7 @@ func _on_rebirth_press() -> void:
 				_rebirth_arm = false
 				rebirth_btn.text = L10n.t("rebirth_btn"))
 		return
-	_rebirth_arm = false
-	_rebirths += 1
-	balance = 0
-	for i in upg_levels.size():
-		upg_levels[i] = 0
-	_save()
-	_refresh_shop()
-	_update()
-	_update_rebirth_btn()
-	rebirth_btn.text = L10n.t("rebirth_btn")
-	_banner(L10n.t("rebirth_done") % [_rebirths, _earn_mult(), _fmt(_debt_target())],
-			Color("#ffe9b8"))
-	Sfx.play(self, "win")
+	_do_rebirth()
 
 
 ## Кнопка временного x2: текст с остатком секунд, пока буст жив.
