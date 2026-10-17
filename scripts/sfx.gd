@@ -104,7 +104,7 @@ static func play_on_bus(node: Node, what: String, bus: String) -> void:
 ## x2 — prokrut3, x5 — prokrut2.
 static func play_spin(node: Node, speed: float) -> void:
 	## prokrut*.ogg записаны тише остальных (~-23 dB) — компенсируем +20 dB.
-	stop_spin(0.0)
+	stop_spin(0.5)   ## прежний прокрут уходит мягко, если спин restart
 	match int(speed):
 		2:
 			_spin_pl = _one_shot(node, ST_SPIN_X2, "SFX", 20.0)
@@ -115,19 +115,19 @@ static func play_spin(node: Node, speed: float) -> void:
 					ST_SPIN_X1[randi() % ST_SPIN_X1.size()], "SFX", 20.0)
 
 
-## Погасить звук прокрута (когда барабаны встали раньше, чем кончился
-## файл): фейд 0.18 c (0.0 = сразу) и освобождение плеера.
-static func stop_spin(fade: float = 0.18) -> void:
+## Погасить звук прокрута, если барабаны встали раньше, чем кончился
+## файл. Трогает ТОЛЬКО x2 (prokrut3 длиннее спина): x1 и x5 доигрывают
+## сами. Фейд длинный и плавный (SINE/EASE_IN), без рваного обрыва.
+static func stop_spin(fade: float = 0.9) -> void:
 	var pl := _spin_pl
 	_spin_pl = null
 	if pl == null or not is_instance_valid(pl) or not pl.playing:
 		return
-	if fade <= 0.0:
-		pl.stop()
-		pl.queue_free()
+	if pl.stream != ST_SPIN_X2:
 		return
 	var tw := pl.create_tween()
-	tw.tween_property(pl, "volume_db", -60.0, fade)
+	tw.tween_property(pl, "volume_db", -60.0, fade)\
+			.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
 	tw.tween_callback(func() -> void:
 		if is_instance_valid(pl):
 			pl.stop()
