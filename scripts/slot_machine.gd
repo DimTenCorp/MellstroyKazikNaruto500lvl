@@ -257,15 +257,13 @@ func _ready() -> void:
 		vol_sfx = int(v)
 		sfx_val.text = str(vol_sfx)
 		Sfx.set_volumes(vol_sfx, vol_music)
-		_save()   ## настройки звука живут в сейве сразу, переживая смены сцен
 		_apply_volumes()
-		_save()
+		_save()   ## настройки звука живут в сейве сразу, переживая смены сцен
 	)
 	music_slider.value_changed.connect(func(v: float) -> void:
 		vol_music = int(v)
 		music_val.text = str(vol_music)
 		Sfx.set_volumes(vol_sfx, vol_music)
-		_save()
 		_apply_volumes()
 		_save()
 	)
@@ -922,13 +920,13 @@ func _load_save() -> void:
 		upg_levels.clear()
 		for k in Upgrades.UPGRADES.size():
 			upg_levels.append(int(arr[k]) if k < arr.size() else 0)
+		speed_idx = clampi(int(cfg.get_value("save", "speed", 0)), 0, SPEEDS.size() - 1)
+		vol_sfx = clampi(int(cfg.get_value("save", "vol_sfx", 80)), 0, 100)
+		vol_music = clampi(int(cfg.get_value("save", "vol_music", 80)), 0, 100)
 	if upg_levels.size() != Upgrades.UPGRADES.size():
 		upg_levels.clear()
 		for k in Upgrades.UPGRADES.size():
 			upg_levels.append(0)
-		speed_idx = clampi(int(cfg.get_value("save", "speed", 0)), 0, SPEEDS.size() - 1)
-		vol_sfx = clampi(int(cfg.get_value("save", "vol_sfx", 80)), 0, 100)
-		vol_music = clampi(int(cfg.get_value("save", "vol_music", 80)), 0, 100)
 
 
 func _save() -> void:
