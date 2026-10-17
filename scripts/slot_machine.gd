@@ -1022,6 +1022,7 @@ func _save() -> void:
 	cfg.load(SAVE_PATH)  # сохраняем чужие ключи (уровни кликера, флаги)
 	cfg.set_value("save", "balance", balance)
 	cfg.set_value("save", "bet_line", bet_line)
+	cfg.set_value("save", "upg_levels", upg_levels)
 	cfg.set_value("save", "speed", speed_idx)
 	cfg.set_value("save", "vol_sfx", vol_sfx)
 	cfg.set_value("save", "vol_music", vol_music)
