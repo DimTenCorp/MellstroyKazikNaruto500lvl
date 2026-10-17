@@ -5,7 +5,6 @@ extends RefCounted
 ## Не autoload: вызывается статически из обеих сцен.
 
 const PATH_CLICK := "res://audio/pusk.ogg"          ## клик по кнопкам
-const PATH_STOP := "res://audio/prokrut2.ogg"        ## барабаны встали
 const PATH_WIN := "res://audio/get_bablo.ogg"        ## деньги получены
 const PATH_BUY := "res://audio/buy_upgrade.ogg"      ## покупка улучшения
 const PATHS_SPIN := [                                ## прокрут (вариации)
@@ -67,7 +66,7 @@ static func play_spin(node: Node, speed: float) -> void:
 	pl.play()
 
 
-## what: click | spin | stop | win | buy. Проигрывание одноразовым
+## what: click | spin | win | buy. Проигрывание одноразовым
 ## плеером на узле сцены; плеер сам удаляется после окончания.
 static func play(node: Node, what: String) -> void:
 	if node == null or not node.is_inside_tree():
@@ -78,8 +77,6 @@ static func play(node: Node, what: String) -> void:
 			path = PATH_CLICK
 		"spin":
 			path = PATHS_SPIN[randi() % PATHS_SPIN.size()]
-		"stop":
-			path = PATH_STOP
 		"win":
 			path = PATH_WIN
 		"buy":
