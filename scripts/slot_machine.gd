@@ -57,7 +57,18 @@ var rng := RandomNumberGenerator.new()
 var textures: Array[Texture2D] = []
 var reels: Array[SlotReel] = []
 
-var balance := START_BALANCE
+var _balance_v := START_BALANCE
+## Баланс с защитой: отрицательное значение невозможно установить —
+## любая попытка пишется в лог и зажимается в 0 (счетчик не уйдёт в минус).
+var balance: int:
+	get:
+		return _balance_v
+	set(v):
+		if v < 0:
+			print("[balance] ОТРИЦАТЕЛЬНОЕ значение %d отклонено, ставлю 0" % v)
+			_balance_v = 0
+		else:
+			_balance_v = v
 var bet_line := 1  ## ставка на линию: любое число от 1 до баланса
 var speed_idx := 0
 var vol_sfx := 80
@@ -1007,7 +1018,7 @@ func _on_speed_pressed() -> void:
 func _load_save() -> void:
 	var cfg := ConfigFile.new()
 	if cfg.load(SAVE_PATH) == OK:
-		balance = int(cfg.get_value("save", "balance", START_BALANCE))
+		balance = maxi(0, int(cfg.get_value("save", "balance", START_BALANCE)))
 		var old_idx := clampi(int(cfg.get_value("save", "bet", 0)), 0, BETS.size() - 1)
 		bet_line = maxi(1, int(cfg.get_value("save", "bet_line", int(BETS[old_idx]))))
 		var arr: Array = cfg.get_value("save", "upg_levels", [])

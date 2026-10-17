@@ -23,7 +23,18 @@ const COIN_REGIONS := {
 	"tr": Rect2(719, 326, 285, 287),
 }
 
-var balance := 1000
+var _balance_v := 1000
+## Баланс с защитой: отрицательное значение невозможно установить —
+## любая попытка пишется в лог и зажимается в 0 (счетчик не уйдёт в минус).
+var balance: int:
+	get:
+		return _balance_v
+	set(v):
+		if v < 0:
+			print("[balance] ОТРИЦАТЕЛЬНОЕ значение %d отклонено, ставлю 0" % v)
+			_balance_v = 0
+		else:
+			_balance_v = v
 var upg_levels: Array[int] = []   ## уровни улучшений (индекс = номер в UPGRADES)
 var _icons: Array[AtlasTexture] = []
 var _auto_acc := 0.0         ## накопитель секунд для авто-заработка
@@ -425,7 +436,7 @@ func _layout() -> void:
 
 func _load() -> void:
 	if _cfg.load(SAVE_PATH) == OK:
-		balance = int(_cfg.get_value("save", "balance", balance))
+		balance = maxi(0, int(_cfg.get_value("save", "balance", balance)))
 		_rebirths = clampi(int(_cfg.get_value("save", "rebirths", 0)), 0, 99)
 		_boost_until = int(_cfg.get_value("save", "boost2x_until", 0))
 		_debt_stage = int(_cfg.get_value("save", "debt_stage", -1))
