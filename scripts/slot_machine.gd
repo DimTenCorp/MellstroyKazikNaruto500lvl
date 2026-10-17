@@ -777,6 +777,17 @@ func _apply_lang() -> void:
 	_update_labels()   ## плашка долга и числа тоже переводятся
 
 
+## Число из поля ввода: строки длиннее int64 при прямом int() ломаются,
+## поэтому перегруз зажимаем в потолок BALANCE_MAX.
+func _parse_big(s: String) -> int:
+	if s.begins_with("-"):
+		return s.to_int()
+	var v := s.to_int()
+	if s.length() > 19 or v < 0:
+		return BALANCE_MAX
+	return v
+
+
 func _give_money(v: int) -> void:
 	if v <= 0:
 		return
@@ -792,7 +803,7 @@ func _on_dbg_apply() -> void:
 	if not s.is_valid_int():
 		_banner(L10n.t("enter_num_sum"), Color("#ff7b7b"))
 		return
-	_give_money(int(s))
+	_give_money(_parse_big(s))
 
 
 ## Накопил достаточно — показываем попап расплаты (один раз до согласия).
@@ -953,7 +964,7 @@ func _on_bet_apply() -> void:
 	if not s.is_valid_int():
 		_banner(L10n.t("enter_num_bet"), Color("#ff7b7b"))
 		return
-	_set_bet_total(int(s))
+	_set_bet_total(_parse_big(s))
 
 
 ## MAX = олл-ин: вся балансовая сумма, округлённая вниз до кратной
