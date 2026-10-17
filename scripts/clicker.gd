@@ -452,9 +452,9 @@ func _save() -> void:
 	_cfg.save(SAVE_PATH)
 
 
-## Награда за рекламу: бабло за клик × множитель перерождений.
+## Награда за рекламу: бабло за клик (с множителем перерождений) × 2.
 func _ad_reward() -> int:
-	return click_gain() * _earn_mult()
+	return click_gain() * 2
 
 
 func _update_rebirth_btn() -> void:
