@@ -108,7 +108,6 @@ stylebox("sb_popup", "241a31", "d8b45e", 2, 14)
 for key in ("coin", "play", "bag"):
     atlassub("at_" + key, "tex_clicker", CLICKER_REGIONS[key])
 atlassub("at_x2", "tex_clicker", (375, 25, 280, 276))  ## спрайт х2 бабла
-stylebox("sb_glow", "ffd79400", "ffd794", 6, 20)  # светящаяся рамка-указатель
 
 # ------------------------------------------------------------------ узлы
 OUT.append('\n[node name="clicker" type="Control"]')
@@ -138,10 +137,6 @@ label("hud_balance", "machine", "0", 28, "ffe9b8",
 
 # монета-кликер (в сцене родной размер региона, визуальный ставит скрипт)
 tbtn("coin_btn", "machine", "at_coin", (480, 165), (320, 330))
-node("coin_glow", "Panel", "machine",
-     position="Vector2(460, 145)", size="Vector2(360, 370)",
-     visible="false", mouse_filter=2,
-     theme_override_styles_panel='SubResource("sb_glow")')
 label("click_hint", "machine", "+5 за клик", 22, "9d8fb8",
       position="Vector2(480, 508)", size="Vector2(320, 31)",
       horizontal_alignment=1)
