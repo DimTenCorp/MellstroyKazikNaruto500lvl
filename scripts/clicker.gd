@@ -28,6 +28,7 @@ var _balance_v := SlotData.START_BALANCE
 var _cap_notified := false       ## баннер о достижении потолка показан
 var _last_ad_reward := -1        ## кэш суммы в подписи рекламы
 var _boost_was := false          ## буст x2 был активен (для баннера об окончании)
+var _glow_tw: Tween                ## пульс подсветки монеты-казика
 ## Баланс с защитой: отрицательное значение невозможно установить —
 ## любая попытка пишется в лог и зажимается в 0 (счетчик не уйдёт в минус).
 var balance: int:
@@ -61,7 +62,7 @@ var _def_offsets := {}
 var _def_fonts := {}
 
 const MANAGED := ["hud_icon", "hud_balance", "coin_btn", "click_hint", "rebirth_btn",
-		"ad2x_btn", "adx2_label", "debt_popup/debt_panel", "debt_popup/debt_label",
+		"ad2x_btn", "adx2_label", "coin_glow", "debt_popup/debt_panel", "debt_popup/debt_label",
 		"debt_popup/debt_btn", "debt_popup/debt_later",
 		"auto_stat", "click_stat", "play_btn", "play_caption", "back_btn",
 		"msg_label", "upg_scroll"]
@@ -79,6 +80,7 @@ var _banner_tw: Tween
 @onready var rebirth_btn: TextureButton = $machine/rebirth_btn
 @onready var ad2x_btn: Button = $machine/ad2x_btn
 @onready var adx2_label: Label = $machine/adx2_label
+@onready var coin_glow: Panel = $machine/coin_glow
 @onready var debt_popup: Control = $machine/debt_popup
 @onready var debt_label: Label = $machine/debt_popup/debt_label
 @onready var debt_btn: Button = $machine/debt_popup/debt_btn
@@ -258,6 +260,8 @@ func _ready() -> void:
 	back_btn.pressed.connect(func() -> void: Sfx.play(self, "click"))
 	play_btn.pressed.connect(_on_play)
 	back_btn.pressed.connect(_on_back)
+	if not bool(_cfg.get_value("save", "coin_clicked", false)):
+		_start_coin_glow()
 	var sheet: Texture2D = load("res://img/upgrades/upgrades.png")
 	for r in Upgrades.REGIONS:
 		var at := AtlasTexture.new()
@@ -380,6 +384,7 @@ func _layout_portrait(W: float, H: float) -> void:
 	_set_r("hud_icon", m, m, 150 * u, 138 * u)
 	_set_r("hud_balance", m + 160 * u, m + 10 * u, W - 184 * u - m, 90 * u)
 	_set_r("coin_btn", (W - 700 * u) * 0.5, 300 * u, 700 * u, 722 * u)
+	_set_r("coin_glow", (W - 740 * u) * 0.5, 280 * u, 740 * u, 762 * u)
 	_set_r("click_hint", (W - 700 * u) * 0.5, 1030 * u, 700 * u, 64 * u)
 	_set_r("auto_stat", m, 1100 * u, (W - 2 * m) * 0.5, 60 * u)
 	_set_r("click_stat", m + (W - 2 * m) * 0.5, 1100 * u,
@@ -674,8 +679,29 @@ func _find_buttons(root: Node) -> Array[BaseButton]:
 
 # ------------------------------------------------------------------- клики
 
+## Подсветка монеты-казика для нового игрока: пульсирует рамка, пока
+## он ни разу не кликнул по монете; потом гаснет навсегда.
+func _start_coin_glow() -> void:
+	coin_glow.visible = true
+	coin_glow.modulate = Color(1, 1, 1, 1)
+	_glow_tw = create_tween().set_loops()
+	_glow_tw.tween_property(coin_glow, "modulate:a", 0.15, 0.7)
+	_glow_tw.tween_property(coin_glow, "modulate:a", 1.0, 0.7)
+	_dbg("подсветка монеты-казика включена")
+
+
+func _stop_coin_glow() -> void:
+	coin_glow.visible = false
+	if _glow_tw != null:
+		_glow_tw.kill()
+		_glow_tw = null
+
+
 func _on_coin() -> void:
 	balance += click_gain()
+	if not bool(_cfg.get_value("save", "coin_clicked", false)):
+		_cfg.set_value("save", "coin_clicked", true)   ## новый игрок кликнунл казика
+		_stop_coin_glow()
 	_dbg("клик по монете: +%d, баланс=%d" % [click_gain(), balance])
 	_save()
 	_update()

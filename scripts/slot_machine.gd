@@ -91,7 +91,6 @@ var _auto_left := 0  ## 0 = не активна, -1 = без лимита
 var _fx_nodes: Array[Node] = []
 var _win_tween: Tween
 var _banner_tw: Tween
-var _glow_tw: Tween
 var _reset_armed := false
 var upg_levels: Array[int] = []  ## уровни улучшений кликера (для авто-бабла)
 var _lang_icons := {}
@@ -112,7 +111,7 @@ const MANAGED := [
 	"bottom_bar/bet_btn", "bottom_bar/max_btn", "bottom_bar/auto_btn",
 	"bottom_bar/speed_btn", "bottom_bar/spin_btn", "bottom_bar/paytable_btn",
 	"bottom_bar/sound_btn", "bottom_bar/lang_btn", "bottom_bar/clicker_btn",
-	"bottom_bar/clicker_glow", "debug_btn", "reset_btn", "win_popup",
+	"debug_btn", "reset_btn", "win_popup",
 	"bet_menu/panel", "auto_menu/panel", "sound_menu/panel", "debug_menu/panel",
 	"paytable_popup/popup_panel",
 	"intro_popup/intro_panel", "intro_popup/intro_label", "intro_popup/intro_btn",
@@ -170,7 +169,6 @@ var _wins_tex: Texture2D
 @onready var intro_popup: Control = $machine/intro_popup
 @onready var intro_btn: Button = $machine/intro_popup/intro_btn
 @onready var intro_label: Label = $machine/intro_popup/intro_label
-@onready var clicker_glow: Panel = $machine/bottom_bar/clicker_glow
 @onready var reset_btn: Button = $machine/reset_btn
 @onready var debug_btn: Button = $machine/debug_btn
 @onready var lang_btn: TextureButton = $machine/bottom_bar/lang_btn
@@ -321,7 +319,7 @@ func _ready() -> void:
 	for p in ["win_label", "balance_label", "freespin_label",
 			"bottom_bar/auto_label", "bottom_bar/bet_label",
 			"bottom_bar/fullbet_label", "grid_panel/msg_label",
-			"balance_icon", "bottom_bar/clicker_glow"]:
+			"balance_icon"]:
 		machine.get_node(p).mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_capture_defaults()
 	_layout()
@@ -399,13 +397,6 @@ func _setup_intro() -> void:
 		_update_labels()
 		intro_popup.visible = true
 		_dbg("первый заход: баланс обнулён, показано интро о долге 10 000 000")
-	if not bool(_flag_get("clicker_visited", false)):
-		clicker_glow.visible = true
-		clicker_glow.modulate = Color(1, 1, 1, 1)
-		_glow_tw = create_tween().set_loops()
-		_glow_tw.tween_property(clicker_glow, "modulate:a", 0.15, 0.7)
-		_glow_tw.tween_property(clicker_glow, "modulate:a", 1.0, 0.7)
-		_dbg("световое выделение кнопки кликера включено")
 
 
 ## Отладочный полный сброс: удаляет общий сейв (баланс, уровни кликера,
@@ -538,7 +529,6 @@ func _layout_portrait(W: float, H: float) -> void:
 	_set_r("bottom_bar/sound_btn", m, H - 510 * u, 200 * u, 200 * u)
 	_set_r("bottom_bar/lang_btn", W - 224 * u, H - 720 * u, 200 * u, 200 * u)
 	_set_r("bottom_bar/clicker_btn", W - 224 * u, H - 510 * u, 200 * u, 200 * u)
-	_set_r("bottom_bar/clicker_glow", W - 232 * u, H - 518 * u, 216 * u, 216 * u)
 	# частые — центр низа: ставка/макс/авто, турбо, ПУСК во всю ширину
 	var cx := m + 216 * u
 	var cw := W - 2 * m - 432 * u
@@ -1004,12 +994,6 @@ func _on_clicker_pressed() -> void:
 		_dbg("клик по мешку во время спина — игнор")
 		return
 	_dbg("переход в сцену кликера, баланс=%d" % balance)
-	if not bool(_flag_get("clicker_visited", false)):
-		_flag_set("clicker_visited", true)
-		clicker_glow.visible = false
-		if _glow_tw != null:
-			_glow_tw.kill()
-		_dbg("световое выделение снято: игрок впервые ушёл в кликер")
 	_save()
 	get_tree().change_scene_to_file("res://scenes/clicker.tscn")
 

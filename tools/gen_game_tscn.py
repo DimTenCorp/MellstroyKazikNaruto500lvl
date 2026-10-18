@@ -171,7 +171,6 @@ stylebox("sb_popup", "241a31", "d8b45e", 2, 14)
 stylebox("sb_btn_n", "3a2c4d", "7a6399", 2, 10)
 stylebox("sb_btn_h", "4a3a63", "9d86c4", 2, 10)
 stylebox("sb_btn_p", "2a1f3a", "5d4a80", 2, 10)
-stylebox("sb_glow", "ffd79400", "ffd794", 6, 20)  # светящаяся рамка-указатель
 for key in BTN_REGIONS:
     if key in ("collect", "denom"):
         continue  # кнопки ЗАБРАТЬ/НОМИНАЛ удалены заказчиком
@@ -281,10 +280,6 @@ node("lang_btn", "TextureButton", "bottom_bar",
      ignore_texture_size="true", stretch_mode=5,
      position="Vector2(13, 214)", size="Vector2(72, 76.6452)")
 tbtn("sound_btn", "bottom_bar", "at_sound", (5, 123), (86, 91.95386))
-node("clicker_glow", "Panel", "bottom_bar",
-     position="Vector2(1140, 277)", size="Vector2(140, 140)",
-     visible="false", mouse_filter=2,
-     theme_override_styles_panel='SubResource("sb_glow")')
 tbtn("clicker_btn", "bottom_bar", "at_bag", (1153, 283), (116, 120))
 
 # ---------------------------------------------------------- попап выигрыша

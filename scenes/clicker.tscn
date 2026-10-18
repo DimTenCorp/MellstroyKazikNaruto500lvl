@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://cpkkdr77qsj4v"]
+[gd_scene load_steps=13 format=3 uid="uid://cpkkdr77qsj4v"]
 
 [ext_resource type="Script" path="res://scripts/clicker.gd" id="scr"]
 [ext_resource type="Texture2D" uid="uid://b56gacdjml0oy" path="res://img/upgrades/upgrades.png" id="tex_upgrades"]
@@ -96,6 +96,25 @@ ignore_texture_size = true
 stretch_mode = 5
 position = Vector2(480, 165)
 size = Vector2(320, 330)
+
+[sub_resource type="StyleBoxFlat" id="sb_glow"]
+bg_color = Color(1, 0.843137, 0.580392, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(1, 0.843137, 0.580392, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_left = 20
+corner_radius_bottom_right = 20
+
+[node name="coin_glow" type="Panel" parent="machine"]
+position = Vector2(460, 145)
+size = Vector2(360, 370)
+visible = false
+mouse_filter = 2
+theme_override_styles/panel = SubResource("sb_glow")
 
 [node name="click_hint" type="Label" parent="machine"]
 text = "+5 за клик"
