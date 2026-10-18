@@ -78,6 +78,7 @@ var _banner_tw: Tween
 @onready var coin_btn: TextureButton = $machine/coin_btn
 @onready var rebirth_btn: TextureButton = $machine/rebirth_btn
 @onready var ad2x_btn: Button = $machine/ad2x_btn
+@onready var adx2_label: Label = $machine/adx2_label
 @onready var debt_popup: Control = $machine/debt_popup
 @onready var debt_label: Label = $machine/debt_popup/debt_label
 @onready var debt_btn: Button = $machine/debt_popup/debt_btn
