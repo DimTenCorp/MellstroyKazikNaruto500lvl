@@ -13,7 +13,7 @@ const GAP := 8.0                   ## зазор между ячейками
 const BETS := [1, 2, 5, 10, 25, 50]
 const AUTO_OPTIONS := [10, 25, 50, 100, -1]  ## -1 = без лимита
 const SPEEDS := [1.0, 2.0, 5.0]
-const START_BALANCE := 0  ## первый заход: баланс 0 (долг по сюжету)
+const START_BALANCE := SlotData.START_BALANCE  ## стартовый капитал игрока
 const DEBT := 10000000    ## сюжетный долг: 10 000 000 денег
 const DEBUG_SUMS := [1000, 10000, 100000, 1000000, 10000000]
 const SAVE_PATH := "user://slot_save.cfg"
@@ -394,7 +394,7 @@ func _setup_intro() -> void:
 	intro_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	intro_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	if not bool(_flag_get("intro_seen", false)):
-		balance = 0
+		balance = START_BALANCE
 		_save()
 		_update_labels()
 		intro_popup.visible = true
@@ -883,7 +883,7 @@ func _update_rebirth_btn() -> void:
 ## следующий долг x3.
 func _do_rebirth() -> void:
 	rebirths += 1
-	balance = 0
+	balance = START_BALANCE
 	for i in upg_levels.size():
 		upg_levels[i] = 0
 	_flag_set("boost2x_until", 0)   ## временный x2 кликов сгорает

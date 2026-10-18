@@ -24,7 +24,7 @@ const COIN_REGIONS := {
 }
 
 const BALANCE_MAX := 9223372036854775807  ## максимум int64: потолок больше невозможно поднять, переполнение исключено
-var _balance_v := 1000
+var _balance_v := SlotData.START_BALANCE
 var _cap_notified := false       ## баннер о достижении потолка показан
 var _last_ad_reward := -1        ## кэш суммы в подписи рекламы
 var _boost_was := false          ## буст x2 был активен (для баннера об окончании)
@@ -540,7 +540,7 @@ func _on_debt_later() -> void:
 func _do_rebirth() -> void:
 	_rebirth_arm = false
 	_rebirths += 1
-	balance = 0
+	balance = SlotData.START_BALANCE
 	for i in upg_levels.size():
 		upg_levels[i] = 0
 	_boost_until = 0   ## временный x2 кликов сгорает при перерождении
