@@ -61,10 +61,10 @@ corner_radius_bottom_left = 20
 
 [sub_resource type="StyleBoxFlat" id="sb_glow_round"]
 bg_color = Color(1, 0.843137, 0.580392, 0)
-border_width_left = 6
-border_width_top = 6
-border_width_right = 6
-border_width_bottom = 6
+border_width_left = 12
+border_width_top = 12
+border_width_right = 12
+border_width_bottom = 12
 border_color = Color(1, 0.843137, 0.580392, 1)
 corner_radius_top_left = 400
 corner_radius_top_right = 400

@@ -169,7 +169,7 @@ for key in KEYS:
 stylebox("sb_grid", "221730", "d8b45e", 4, 14)
 stylebox("sb_popup", "241a31", "d8b45e", 2, 14)
 stylebox("sb_glow", "ffd79400", "ffd794", 6, 20)  # светящаяся рамка-указатель
-stylebox("sb_glow_round", "ffd794", "ffd794", 6, 400, bg_a=0.0)  # круглое кольцо для ПУСКа
+stylebox("sb_glow_round", "ffd794", "ffd794", 12, 400, bg_a=0.0)  # круглое кольцо для ПУСКа, толстое
 stylebox("sb_btn_n", "3a2c4d", "7a6399", 2, 10)
 stylebox("sb_btn_h", "4a3a63", "9d86c4", 2, 10)
 stylebox("sb_btn_p", "2a1f3a", "5d4a80", 2, 10)
