@@ -483,10 +483,10 @@ func _save() -> void:
 
 
 ## Награда за рекламу: бабло за клик (с множителем перерождений,
-## БЕЗ временного x2 за рекламу) × 30, но не меньше 500.
+## БЕЗ временного x2 за рекламу) × 50, но не меньше 500.
 func _ad_reward() -> int:
 	var base := (CLICK_BASE + Upgrades.click_add(upg_levels)) * _earn_mult()
-	return maxi(500, base * 30)
+	return maxi(500, base * 50)
 
 
 const REBIRTH_REGIONS := {

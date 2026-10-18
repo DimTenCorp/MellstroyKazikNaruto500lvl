@@ -1,22 +1,17 @@
-[gd_scene load_steps=12 format=3 uid="uid://cpkkdr77qsj4v"]
+[gd_scene format=3 uid="uid://cpkkdr77qsj4v"]
 
-[ext_resource type="Script" path="res://scripts/clicker.gd" id="scr"]
-[ext_resource type="Texture2D" uid="uid://b56gacdjml0oy" path="res://img/upgrades/upgrades.png" id="tex_upgrades"]
+[ext_resource type="Script" uid="uid://25lagv7rgenr" path="res://scripts/clicker.gd" id="scr"]
 [ext_resource type="Texture2D" uid="uid://bjvofqj1cb0a6" path="res://img/background/back2.jpg" id="tex_back2"]
 [ext_resource type="Texture2D" uid="uid://b45p0biosgnhx" path="res://img/buttons_clicker.png" id="tex_clicker"]
 [ext_resource type="Texture2D" uid="uid://cbbspveqsxiel" path="res://img/money_icon.png" id="tex_money"]
 
-[sub_resource type="StyleBoxFlat" id="sb_btn_n"]
-bg_color = Color(0.227451, 0.172549, 0.301961, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.478431, 0.388235, 0.6, 1)
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_left = 10
-corner_radius_bottom_right = 10
+[sub_resource type="AtlasTexture" id="at_coin"]
+atlas = ExtResource("tex_clicker")
+region = Rect2(20, 323, 278, 287)
+
+[sub_resource type="AtlasTexture" id="at_play"]
+atlas = ExtResource("tex_clicker")
+region = Rect2(375, 25, 280, 276)
 
 [sub_resource type="StyleBoxFlat" id="sb_popup"]
 bg_color = Color(0.141176, 0.101961, 0.192157, 1)
@@ -27,409 +22,495 @@ border_width_bottom = 2
 border_color = Color(0.847059, 0.705882, 0.368627, 1)
 corner_radius_top_left = 14
 corner_radius_top_right = 14
-corner_radius_bottom_left = 14
 corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
 
-[sub_resource type="AtlasTexture" id="at_coin"]
-atlas = ExtResource("tex_clicker")
-region = Rect2(20, 323, 278, 287)
-
-[sub_resource type="AtlasTexture" id="at_play"]
-atlas = ExtResource("tex_clicker")
-region = Rect2(375, 25, 280, 276)
-
-[sub_resource type="AtlasTexture" id="at_bag"]
-atlas = ExtResource("tex_clicker")
-region = Rect2(726, 17, 274, 284)
+[sub_resource type="StyleBoxFlat" id="sb_btn_n"]
+bg_color = Color(0.227451, 0.172549, 0.301961, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.478431, 0.388235, 0.6, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
 
 [sub_resource type="AtlasTexture" id="at_x2"]
 atlas = ExtResource("tex_clicker")
 region = Rect2(375, 25, 280, 276)
 
-[node name="clicker" type="Control"]
+[node name="clicker" type="Control" unique_id=1840956527]
+layout_mode = 3
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("scr")
 
-[node name="bg" type="TextureRect" parent="."]
+[node name="bg" type="TextureRect" parent="." unique_id=1174628729]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
 texture = ExtResource("tex_back2")
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
 stretch_mode = 6
-mouse_filter = 2
 
-[node name="bg_dim" type="ColorRect" parent="."]
-color = Color(0.0784314, 0.0392157, 0.12549, 0.55)
+[node name="bg_dim" type="ColorRect" parent="." unique_id=1037283434]
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+color = Color(0.0784314, 0.0392157, 0.12549, 0.55)
 
-[node name="machine" type="Control" parent="."]
-size = Vector2(1280, 720)
+[node name="machine" type="Control" parent="." unique_id=249242527]
+anchors_preset = 0
+offset_right = 1280.0
+offset_bottom = 720.0
 
-[node name="hud_icon" type="TextureRect" parent="machine"]
+[node name="hud_icon" type="TextureRect" parent="machine" unique_id=238529265]
+layout_mode = 0
+offset_left = 30.0
+offset_top = 14.0
+offset_right = 99.57576
+offset_bottom = 78.0
+mouse_filter = 2
 texture = ExtResource("tex_money")
-position = Vector2(30, 14)
-size = Vector2(65.22727, 60)
 expand_mode = 1
 stretch_mode = 5
-mouse_filter = 2
 
-[node name="hud_balance" type="Label" parent="machine"]
-text = "0"
-theme_override_font_sizes/font_size = 28
+[node name="hud_balance" type="Label" parent="machine" unique_id=199186045]
+layout_mode = 0
+offset_left = 104.0
+offset_top = 24.0
+offset_right = 424.0
+offset_bottom = 63.0
 theme_override_colors/font_color = Color(1, 0.913725, 0.721569, 1)
-position = Vector2(104, 24)
-size = Vector2(320, 39)
-theme_override_constants/outline_size = 8
 theme_override_colors/font_outline_color = Color(0.25098, 0.12549, 0.0313725, 1)
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/font_size = 28
+text = "0"
 
-[node name="coin_btn" type="TextureButton" parent="machine"]
+[node name="coin_btn" type="TextureButton" parent="machine" unique_id=1033285059]
+layout_mode = 0
+offset_left = 480.0
+offset_top = 165.0
+offset_right = 800.0
+offset_bottom = 495.0
 texture_normal = SubResource("at_coin")
 ignore_texture_size = true
 stretch_mode = 5
-position = Vector2(480, 165)
-size = Vector2(320, 330)
 
-[node name="click_hint" type="Label" parent="machine"]
-text = "+5 за клик"
-theme_override_font_sizes/font_size = 22
+[node name="click_hint" type="Label" parent="machine" unique_id=162558649]
+layout_mode = 0
+offset_left = 480.0
+offset_top = 508.0
+offset_right = 800.0
+offset_bottom = 539.0
 theme_override_colors/font_color = Color(0.615686, 0.560784, 0.721569, 1)
-position = Vector2(480, 508)
-size = Vector2(320, 31)
+theme_override_font_sizes/font_size = 22
+text = "+5 за клик"
 horizontal_alignment = 1
 
-[node name="play_btn" type="TextureButton" parent="machine"]
+[node name="play_btn" type="TextureButton" parent="machine" unique_id=1910289936]
+layout_mode = 0
+offset_left = 17.0
+offset_top = 373.0
+offset_right = 137.81
+offset_bottom = 492.0
+scale = Vector2(0.54, 0.54)
 texture_normal = SubResource("at_play")
 ignore_texture_size = true
 stretch_mode = 5
-scale = Vector2(0.54, 0.54)
-position = Vector2(17, 373)
-size = Vector2(120.81, 119)
 
-[node name="play_caption" type="Label" parent="machine"]
-text = "РЕКЛАМА: +500"
-theme_override_font_sizes/font_size = 20
+[node name="play_caption" type="Label" parent="machine" unique_id=1713415356]
+layout_mode = 0
+offset_left = -57.0
+offset_top = 366.0
+offset_right = 213.0
+offset_bottom = 394.0
 theme_override_colors/font_color = Color(0.552941, 1, 0.627451, 1)
-position = Vector2(-57, 366)
-size = Vector2(270, 28)
+theme_override_font_sizes/font_size = 20
+text = "РЕКЛАМА: +500"
 horizontal_alignment = 1
 
-[node name="upg_scroll" type="ScrollContainer" parent="machine"]
-position = Vector2(846, 20)
-size = Vector2(422, 688)
+[node name="upg_scroll" type="ScrollContainer" parent="machine" unique_id=1077006921]
+layout_mode = 0
+offset_left = 846.0
+offset_top = 20.0
+offset_right = 1268.0
+offset_bottom = 708.0
 
-[node name="upg_vbox" type="VBoxContainer" parent="machine/upg_scroll"]
+[node name="upg_vbox" type="VBoxContainer" parent="machine/upg_scroll" unique_id=1667760058]
+layout_mode = 2
+size_flags_horizontal = 3
 mouse_filter = 2
-size_flags_horizontal = 3
 theme_override_constants/separation = 6
 
-[node name="upg0_row" type="HBoxContainer" parent="machine/upg_scroll/upg_vbox"]
+[node name="upg0_row" type="HBoxContainer" parent="machine/upg_scroll/upg_vbox" unique_id=1819370698]
+layout_mode = 2
 theme_override_constants/separation = 6
 
-[node name="upg0_btn" type="TextureButton" parent="machine/upg_scroll/upg_vbox/upg0_row"]
+[node name="upg0_btn" type="TextureButton" parent="machine/upg_scroll/upg_vbox/upg0_row" unique_id=1993637061]
+custom_minimum_size = Vector2(56, 56)
+layout_mode = 2
 ignore_texture_size = true
 stretch_mode = 5
-custom_minimum_size = Vector2(56, 56)
 
-[node name="upg0_info" type="Label" parent="machine/upg_scroll/upg_vbox/upg0_row"]
-text = ""
-theme_override_font_sizes/font_size = 13
-theme_override_colors/font_color = Color(0.615686, 0.560784, 0.721569, 1)
+[node name="upg0_info" type="Label" parent="machine/upg_scroll/upg_vbox/upg0_row" unique_id=575296862]
+layout_mode = 2
 size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.615686, 0.560784, 0.721569, 1)
+theme_override_font_sizes/font_size = 13
 vertical_alignment = 1
 
-[node name="upg1_row" type="HBoxContainer" parent="machine/upg_scroll/upg_vbox"]
+[node name="upg1_row" type="HBoxContainer" parent="machine/upg_scroll/upg_vbox" unique_id=662406416]
+layout_mode = 2
 theme_override_constants/separation = 6
 
-[node name="upg1_btn" type="TextureButton" parent="machine/upg_scroll/upg_vbox/upg1_row"]
+[node name="upg1_btn" type="TextureButton" parent="machine/upg_scroll/upg_vbox/upg1_row" unique_id=963218574]
+custom_minimum_size = Vector2(56, 56)
+layout_mode = 2
 ignore_texture_size = true
 stretch_mode = 5
-custom_minimum_size = Vector2(56, 56)
 
-[node name="upg1_info" type="Label" parent="machine/upg_scroll/upg_vbox/upg1_row"]
-text = ""
-theme_override_font_sizes/font_size = 13
-theme_override_colors/font_color = Color(0.615686, 0.560784, 0.721569, 1)
+[node name="upg1_info" type="Label" parent="machine/upg_scroll/upg_vbox/upg1_row" unique_id=2112880032]
+layout_mode = 2
 size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.615686, 0.560784, 0.721569, 1)
+theme_override_font_sizes/font_size = 13
 vertical_alignment = 1
 
-[node name="upg2_row" type="HBoxContainer" parent="machine/upg_scroll/upg_vbox"]
+[node name="upg2_row" type="HBoxContainer" parent="machine/upg_scroll/upg_vbox" unique_id=903558111]
+layout_mode = 2
 theme_override_constants/separation = 6
 
-[node name="upg2_btn" type="TextureButton" parent="machine/upg_scroll/upg_vbox/upg2_row"]
+[node name="upg2_btn" type="TextureButton" parent="machine/upg_scroll/upg_vbox/upg2_row" unique_id=45710523]
+custom_minimum_size = Vector2(56, 56)
+layout_mode = 2
 ignore_texture_size = true
 stretch_mode = 5
-custom_minimum_size = Vector2(56, 56)
 
-[node name="upg2_info" type="Label" parent="machine/upg_scroll/upg_vbox/upg2_row"]
-text = ""
-theme_override_font_sizes/font_size = 13
-theme_override_colors/font_color = Color(0.615686, 0.560784, 0.721569, 1)
+[node name="upg2_info" type="Label" parent="machine/upg_scroll/upg_vbox/upg2_row" unique_id=1484383866]
+layout_mode = 2
 size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.615686, 0.560784, 0.721569, 1)
+theme_override_font_sizes/font_size = 13
 vertical_alignment = 1
 
-[node name="upg3_row" type="HBoxContainer" parent="machine/upg_scroll/upg_vbox"]
+[node name="upg3_row" type="HBoxContainer" parent="machine/upg_scroll/upg_vbox" unique_id=1890831863]
+layout_mode = 2
 theme_override_constants/separation = 6
 
-[node name="upg3_btn" type="TextureButton" parent="machine/upg_scroll/upg_vbox/upg3_row"]
+[node name="upg3_btn" type="TextureButton" parent="machine/upg_scroll/upg_vbox/upg3_row" unique_id=1018028741]
+custom_minimum_size = Vector2(56, 56)
+layout_mode = 2
 ignore_texture_size = true
 stretch_mode = 5
-custom_minimum_size = Vector2(56, 56)
 
-[node name="upg3_info" type="Label" parent="machine/upg_scroll/upg_vbox/upg3_row"]
-text = ""
-theme_override_font_sizes/font_size = 13
-theme_override_colors/font_color = Color(0.615686, 0.560784, 0.721569, 1)
+[node name="upg3_info" type="Label" parent="machine/upg_scroll/upg_vbox/upg3_row" unique_id=882317235]
+layout_mode = 2
 size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.615686, 0.560784, 0.721569, 1)
+theme_override_font_sizes/font_size = 13
 vertical_alignment = 1
 
-[node name="upg4_row" type="HBoxContainer" parent="machine/upg_scroll/upg_vbox"]
+[node name="upg4_row" type="HBoxContainer" parent="machine/upg_scroll/upg_vbox" unique_id=1299693921]
+layout_mode = 2
 theme_override_constants/separation = 6
 
-[node name="upg4_btn" type="TextureButton" parent="machine/upg_scroll/upg_vbox/upg4_row"]
+[node name="upg4_btn" type="TextureButton" parent="machine/upg_scroll/upg_vbox/upg4_row" unique_id=2089750473]
+custom_minimum_size = Vector2(56, 56)
+layout_mode = 2
 ignore_texture_size = true
 stretch_mode = 5
-custom_minimum_size = Vector2(56, 56)
 
-[node name="upg4_info" type="Label" parent="machine/upg_scroll/upg_vbox/upg4_row"]
-text = ""
-theme_override_font_sizes/font_size = 13
-theme_override_colors/font_color = Color(0.615686, 0.560784, 0.721569, 1)
+[node name="upg4_info" type="Label" parent="machine/upg_scroll/upg_vbox/upg4_row" unique_id=389364143]
+layout_mode = 2
 size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.615686, 0.560784, 0.721569, 1)
+theme_override_font_sizes/font_size = 13
 vertical_alignment = 1
 
-[node name="upg5_row" type="HBoxContainer" parent="machine/upg_scroll/upg_vbox"]
+[node name="upg5_row" type="HBoxContainer" parent="machine/upg_scroll/upg_vbox" unique_id=1702437951]
+layout_mode = 2
 theme_override_constants/separation = 6
 
-[node name="upg5_btn" type="TextureButton" parent="machine/upg_scroll/upg_vbox/upg5_row"]
+[node name="upg5_btn" type="TextureButton" parent="machine/upg_scroll/upg_vbox/upg5_row" unique_id=212799036]
+custom_minimum_size = Vector2(56, 56)
+layout_mode = 2
 ignore_texture_size = true
 stretch_mode = 5
-custom_minimum_size = Vector2(56, 56)
 
-[node name="upg5_info" type="Label" parent="machine/upg_scroll/upg_vbox/upg5_row"]
-text = ""
-theme_override_font_sizes/font_size = 13
-theme_override_colors/font_color = Color(0.615686, 0.560784, 0.721569, 1)
+[node name="upg5_info" type="Label" parent="machine/upg_scroll/upg_vbox/upg5_row" unique_id=1932317064]
+layout_mode = 2
 size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.615686, 0.560784, 0.721569, 1)
+theme_override_font_sizes/font_size = 13
 vertical_alignment = 1
 
-[node name="upg6_row" type="HBoxContainer" parent="machine/upg_scroll/upg_vbox"]
+[node name="upg6_row" type="HBoxContainer" parent="machine/upg_scroll/upg_vbox" unique_id=675633965]
+layout_mode = 2
 theme_override_constants/separation = 6
 
-[node name="upg6_btn" type="TextureButton" parent="machine/upg_scroll/upg_vbox/upg6_row"]
+[node name="upg6_btn" type="TextureButton" parent="machine/upg_scroll/upg_vbox/upg6_row" unique_id=1858994332]
+custom_minimum_size = Vector2(56, 56)
+layout_mode = 2
 ignore_texture_size = true
 stretch_mode = 5
-custom_minimum_size = Vector2(56, 56)
 
-[node name="upg6_info" type="Label" parent="machine/upg_scroll/upg_vbox/upg6_row"]
-text = ""
-theme_override_font_sizes/font_size = 13
-theme_override_colors/font_color = Color(0.615686, 0.560784, 0.721569, 1)
+[node name="upg6_info" type="Label" parent="machine/upg_scroll/upg_vbox/upg6_row" unique_id=223779857]
+layout_mode = 2
 size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.615686, 0.560784, 0.721569, 1)
+theme_override_font_sizes/font_size = 13
 vertical_alignment = 1
 
-[node name="upg7_row" type="HBoxContainer" parent="machine/upg_scroll/upg_vbox"]
+[node name="upg7_row" type="HBoxContainer" parent="machine/upg_scroll/upg_vbox" unique_id=146211118]
+layout_mode = 2
 theme_override_constants/separation = 6
 
-[node name="upg7_btn" type="TextureButton" parent="machine/upg_scroll/upg_vbox/upg7_row"]
+[node name="upg7_btn" type="TextureButton" parent="machine/upg_scroll/upg_vbox/upg7_row" unique_id=983106243]
+custom_minimum_size = Vector2(56, 56)
+layout_mode = 2
 ignore_texture_size = true
 stretch_mode = 5
-custom_minimum_size = Vector2(56, 56)
 
-[node name="upg7_info" type="Label" parent="machine/upg_scroll/upg_vbox/upg7_row"]
-text = ""
-theme_override_font_sizes/font_size = 13
-theme_override_colors/font_color = Color(0.615686, 0.560784, 0.721569, 1)
+[node name="upg7_info" type="Label" parent="machine/upg_scroll/upg_vbox/upg7_row" unique_id=1797645137]
+layout_mode = 2
 size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.615686, 0.560784, 0.721569, 1)
+theme_override_font_sizes/font_size = 13
 vertical_alignment = 1
 
-[node name="upg8_row" type="HBoxContainer" parent="machine/upg_scroll/upg_vbox"]
+[node name="upg8_row" type="HBoxContainer" parent="machine/upg_scroll/upg_vbox" unique_id=356627908]
+layout_mode = 2
 theme_override_constants/separation = 6
 
-[node name="upg8_btn" type="TextureButton" parent="machine/upg_scroll/upg_vbox/upg8_row"]
+[node name="upg8_btn" type="TextureButton" parent="machine/upg_scroll/upg_vbox/upg8_row" unique_id=1444663438]
+custom_minimum_size = Vector2(56, 56)
+layout_mode = 2
 ignore_texture_size = true
 stretch_mode = 5
-custom_minimum_size = Vector2(56, 56)
 
-[node name="upg8_info" type="Label" parent="machine/upg_scroll/upg_vbox/upg8_row"]
-text = ""
-theme_override_font_sizes/font_size = 13
-theme_override_colors/font_color = Color(0.615686, 0.560784, 0.721569, 1)
+[node name="upg8_info" type="Label" parent="machine/upg_scroll/upg_vbox/upg8_row" unique_id=2088490748]
+layout_mode = 2
 size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.615686, 0.560784, 0.721569, 1)
+theme_override_font_sizes/font_size = 13
 vertical_alignment = 1
 
-[node name="upg9_row" type="HBoxContainer" parent="machine/upg_scroll/upg_vbox"]
+[node name="upg9_row" type="HBoxContainer" parent="machine/upg_scroll/upg_vbox" unique_id=1777902946]
+layout_mode = 2
 theme_override_constants/separation = 6
 
-[node name="upg9_btn" type="TextureButton" parent="machine/upg_scroll/upg_vbox/upg9_row"]
+[node name="upg9_btn" type="TextureButton" parent="machine/upg_scroll/upg_vbox/upg9_row" unique_id=1981963355]
+custom_minimum_size = Vector2(56, 56)
+layout_mode = 2
 ignore_texture_size = true
 stretch_mode = 5
-custom_minimum_size = Vector2(56, 56)
 
-[node name="upg9_info" type="Label" parent="machine/upg_scroll/upg_vbox/upg9_row"]
-text = ""
-theme_override_font_sizes/font_size = 13
-theme_override_colors/font_color = Color(0.615686, 0.560784, 0.721569, 1)
+[node name="upg9_info" type="Label" parent="machine/upg_scroll/upg_vbox/upg9_row" unique_id=2069043845]
+layout_mode = 2
 size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.615686, 0.560784, 0.721569, 1)
+theme_override_font_sizes/font_size = 13
 vertical_alignment = 1
 
-[node name="upg10_row" type="HBoxContainer" parent="machine/upg_scroll/upg_vbox"]
+[node name="upg10_row" type="HBoxContainer" parent="machine/upg_scroll/upg_vbox" unique_id=235667212]
+layout_mode = 2
 theme_override_constants/separation = 6
 
-[node name="upg10_btn" type="TextureButton" parent="machine/upg_scroll/upg_vbox/upg10_row"]
+[node name="upg10_btn" type="TextureButton" parent="machine/upg_scroll/upg_vbox/upg10_row" unique_id=326248413]
+custom_minimum_size = Vector2(56, 56)
+layout_mode = 2
 ignore_texture_size = true
 stretch_mode = 5
-custom_minimum_size = Vector2(56, 56)
 
-[node name="upg10_info" type="Label" parent="machine/upg_scroll/upg_vbox/upg10_row"]
-text = ""
-theme_override_font_sizes/font_size = 13
-theme_override_colors/font_color = Color(0.615686, 0.560784, 0.721569, 1)
+[node name="upg10_info" type="Label" parent="machine/upg_scroll/upg_vbox/upg10_row" unique_id=1504889894]
+layout_mode = 2
 size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.615686, 0.560784, 0.721569, 1)
+theme_override_font_sizes/font_size = 13
 vertical_alignment = 1
 
-[node name="upg11_row" type="HBoxContainer" parent="machine/upg_scroll/upg_vbox"]
+[node name="upg11_row" type="HBoxContainer" parent="machine/upg_scroll/upg_vbox" unique_id=570343404]
+layout_mode = 2
 theme_override_constants/separation = 6
 
-[node name="upg11_btn" type="TextureButton" parent="machine/upg_scroll/upg_vbox/upg11_row"]
+[node name="upg11_btn" type="TextureButton" parent="machine/upg_scroll/upg_vbox/upg11_row" unique_id=914926844]
+custom_minimum_size = Vector2(56, 56)
+layout_mode = 2
 ignore_texture_size = true
 stretch_mode = 5
-custom_minimum_size = Vector2(56, 56)
 
-[node name="upg11_info" type="Label" parent="machine/upg_scroll/upg_vbox/upg11_row"]
-text = ""
-theme_override_font_sizes/font_size = 13
-theme_override_colors/font_color = Color(0.615686, 0.560784, 0.721569, 1)
+[node name="upg11_info" type="Label" parent="machine/upg_scroll/upg_vbox/upg11_row" unique_id=924098732]
+layout_mode = 2
 size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.615686, 0.560784, 0.721569, 1)
+theme_override_font_sizes/font_size = 13
 vertical_alignment = 1
 
-[node name="upg12_row" type="HBoxContainer" parent="machine/upg_scroll/upg_vbox"]
+[node name="upg12_row" type="HBoxContainer" parent="machine/upg_scroll/upg_vbox" unique_id=1447668512]
+layout_mode = 2
 theme_override_constants/separation = 6
 
-[node name="upg12_btn" type="TextureButton" parent="machine/upg_scroll/upg_vbox/upg12_row"]
+[node name="upg12_btn" type="TextureButton" parent="machine/upg_scroll/upg_vbox/upg12_row" unique_id=1019063996]
+custom_minimum_size = Vector2(56, 56)
+layout_mode = 2
 ignore_texture_size = true
 stretch_mode = 5
-custom_minimum_size = Vector2(56, 56)
 
-[node name="upg12_info" type="Label" parent="machine/upg_scroll/upg_vbox/upg12_row"]
-text = ""
-theme_override_font_sizes/font_size = 13
-theme_override_colors/font_color = Color(0.615686, 0.560784, 0.721569, 1)
+[node name="upg12_info" type="Label" parent="machine/upg_scroll/upg_vbox/upg12_row" unique_id=1909490819]
+layout_mode = 2
 size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.615686, 0.560784, 0.721569, 1)
+theme_override_font_sizes/font_size = 13
 vertical_alignment = 1
 
-[node name="auto_stat" type="Label" parent="machine"]
+[node name="auto_stat" type="Label" parent="machine" unique_id=287080350]
+layout_mode = 0
+offset_left = 30.0
+offset_top = 91.0
+offset_right = 330.0
+offset_bottom = 115.0
+theme_override_colors/font_color = Color(1, 0.913725, 0.721569, 1)
+theme_override_colors/font_outline_color = Color(0.25098, 0.12549, 0.0313725, 1)
+theme_override_constants/outline_size = 6
+theme_override_font_sizes/font_size = 20
 text = "авт. бабло: 0/с"
-theme_override_font_sizes/font_size = 20
-theme_override_colors/font_color = Color(1, 0.913725, 0.721569, 1)
-position = Vector2(30, 91)
-size = Vector2(300, 24)
-theme_override_constants/outline_size = 6
-theme_override_colors/font_outline_color = Color(0.25098, 0.12549, 0.0313725, 1)
 
-[node name="click_stat" type="Label" parent="machine"]
+[node name="click_stat" type="Label" parent="machine" unique_id=1242168380]
+layout_mode = 0
+offset_left = 26.0
+offset_top = 127.0
+offset_right = 326.0
+offset_bottom = 151.0
+theme_override_colors/font_color = Color(1, 0.913725, 0.721569, 1)
+theme_override_colors/font_outline_color = Color(0.25098, 0.12549, 0.0313725, 1)
+theme_override_constants/outline_size = 6
+theme_override_font_sizes/font_size = 20
 text = "бабло за клик: 5"
-theme_override_font_sizes/font_size = 20
-theme_override_colors/font_color = Color(1, 0.913725, 0.721569, 1)
-position = Vector2(26, 127)
-size = Vector2(300, 24)
-theme_override_constants/outline_size = 6
-theme_override_colors/font_outline_color = Color(0.25098, 0.12549, 0.0313725, 1)
 
-[node name="debt_popup" type="Control" parent="machine"]
+[node name="debt_popup" type="Control" parent="machine" unique_id=253937299]
 visible = false
+anchors_preset = 0
 
-[node name="debt_panel" type="Panel" parent="machine/debt_popup"]
-position = Vector2(290, 190)
-size = Vector2(700, 340)
+[node name="debt_panel" type="Panel" parent="machine/debt_popup" unique_id=410609482]
+layout_mode = 0
+offset_left = 290.0
+offset_top = 190.0
+offset_right = 990.0
+offset_bottom = 530.0
 theme_override_styles/panel = SubResource("sb_popup")
 
-[node name="debt_label" type="Label" parent="machine/debt_popup"]
-text = "Вы успешно расплатились со своими долгами и теперь вам доступно перерождение, долг увеличится в втрое, а любой заработок вдвое"
-theme_override_font_sizes/font_size = 24
+[node name="debt_label" type="Label" parent="machine/debt_popup" unique_id=2125779197]
+layout_mode = 0
+offset_left = 320.0
+offset_top = 220.0
+offset_right = 1437.0
+offset_bottom = 420.0
 theme_override_colors/font_color = Color(0.552941, 1, 0.627451, 1)
-position = Vector2(320, 220)
-size = Vector2(640, 200)
-autowrap_mode = 3
+theme_override_colors/font_outline_color = Color(0.113725, 0.301961, 0.113725, 1)
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/font_size = 24
+text = "Вы успешно расплатились со своими долгами и теперь вам доступно перерождение, долг увеличится в втрое, а любой заработок вдвое"
 horizontal_alignment = 1
 vertical_alignment = 1
-theme_override_constants/outline_size = 8
-theme_override_colors/font_outline_color = Color(0.113725, 0.301961, 0.113725, 1)
+autowrap_mode = 3
 
-[node name="debt_btn" type="Button" parent="machine/debt_popup"]
+[node name="debt_btn" type="Button" parent="machine/debt_popup" unique_id=1834847724]
+layout_mode = 0
+offset_left = 320.0
+offset_top = 440.0
+offset_right = 640.0
+offset_bottom = 492.0
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("sb_btn_n")
+theme_override_styles/pressed = SubResource("sb_btn_n")
+theme_override_styles/hover = SubResource("sb_btn_n")
 text = "ПЕРЕРОДИТЬСЯ"
-position = Vector2(320, 440)
-size = Vector2(320, 52)
+
+[node name="debt_later" type="Button" parent="machine/debt_popup" unique_id=183989617]
+layout_mode = 0
+offset_left = 660.0
+offset_top = 440.0
+offset_right = 960.0
+offset_bottom = 492.0
 theme_override_font_sizes/font_size = 20
 theme_override_styles/normal = SubResource("sb_btn_n")
-theme_override_styles/hover = SubResource("sb_btn_n")
 theme_override_styles/pressed = SubResource("sb_btn_n")
-
-[node name="debt_later" type="Button" parent="machine/debt_popup"]
+theme_override_styles/hover = SubResource("sb_btn_n")
 text = "ПОЗЖЕ"
-position = Vector2(660, 440)
-size = Vector2(300, 52)
-theme_override_font_sizes/font_size = 20
-theme_override_styles/normal = SubResource("sb_btn_n")
-theme_override_styles/hover = SubResource("sb_btn_n")
-theme_override_styles/pressed = SubResource("sb_btn_n")
 
-[node name="adx2_label" type="Label" parent="machine"]
-text = "Х2 БАБЛО НА 30с"
+[node name="adx2_label" type="Label" parent="machine" unique_id=18710959]
+layout_mode = 0
+offset_top = 558.0
+offset_right = 176.0
+offset_bottom = 585.0
 theme_override_colors/font_color = Color(0.6852497, 1, 0.7079217, 1)
 theme_override_colors/font_shadow_color = Color(0.1148968, 0.11489681, 0.1148968, 1)
 theme_override_constants/shadow_offset_x = 3
 theme_override_constants/shadow_offset_y = 3
 theme_override_font_sizes/font_size = 19
-position = Vector2(0, 558)
-size = Vector2(176, 27)
+text = "Х2 БАБЛО НА 30с"
 horizontal_alignment = 1
 
-[node name="ad2x_btn" type="Button" parent="machine"]
+[node name="ad2x_btn" type="Button" parent="machine" unique_id=545711253]
+layout_mode = 0
+offset_left = -62.0
+offset_top = 386.0
+offset_right = 226.0
+offset_bottom = 670.0
+scale = Vector2(0.25, 0.25)
+theme_override_styles/normal = SubResource("sb_btn_n")
+theme_override_styles/pressed = SubResource("sb_btn_n")
+theme_override_styles/hover = SubResource("sb_btn_n")
 icon = SubResource("at_x2")
 flat = true
-scale = Vector2(0.25, 0.25)
-position = Vector2(-62, 386)
-size = Vector2(284, 280)
-theme_override_styles/normal = SubResource("sb_btn_n")
-theme_override_styles/hover = SubResource("sb_btn_n")
-theme_override_styles/pressed = SubResource("sb_btn_n")
 
-[node name="rebirth_btn" type="TextureButton" parent="machine"]
+[node name="rebirth_btn" type="TextureButton" parent="machine" unique_id=973038308]
 visible = false
+layout_mode = 0
+offset_left = 9.0
+offset_top = 211.0
+offset_right = 129.0
+offset_bottom = 349.0
 ignore_texture_size = true
 stretch_mode = 0
-position = Vector2(9, 211)
-size = Vector2(120, 138)
 
-[node name="back_btn" type="Button" parent="machine"]
-text = "← К СЛОТАМ"
-position = Vector2(30, 624)
-size = Vector2(296, 72)
+[node name="back_btn" type="Button" parent="machine" unique_id=662677055]
+layout_mode = 0
+offset_left = 30.0
+offset_top = 624.0
+offset_right = 326.0
+offset_bottom = 696.0
 theme_override_font_sizes/font_size = 20
 theme_override_styles/normal = SubResource("sb_btn_n")
-theme_override_styles/hover = SubResource("sb_btn_n")
 theme_override_styles/pressed = SubResource("sb_btn_n")
+theme_override_styles/hover = SubResource("sb_btn_n")
+text = "← К СЛОТАМ"
 
-[node name="msg_label" type="Label" parent="machine"]
-text = ""
-theme_override_font_sizes/font_size = 40
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-horizontal_alignment = 1
-position = Vector2(0, 86)
-size = Vector2(1280, 60)
-theme_override_constants/outline_size = 10
-theme_override_colors/font_outline_color = Color(0.227451, 0.113725, 0.431373, 1)
+[node name="msg_label" type="Label" parent="machine" unique_id=1245649965]
 visible = false
+layout_mode = 0
+offset_top = 86.0
+offset_right = 1280.0
+offset_bottom = 146.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0.227451, 0.113725, 0.431373, 1)
+theme_override_constants/outline_size = 10
+theme_override_font_sizes/font_size = 40
+horizontal_alignment = 1
 
-[node name="float_layer" type="Control" parent="machine"]
-position = Vector2(0, 0)
-size = Vector2(1280, 720)
+[node name="float_layer" type="Control" parent="machine" unique_id=1935551721]
+anchors_preset = 0
+offset_right = 1280.0
+offset_bottom = 720.0
 mouse_filter = 2
