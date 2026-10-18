@@ -76,6 +76,8 @@ const D := {
 	"ad2x_on": {"ru": "х2 КЛИКИ: %d с", "en": "x2 CLICKS: %d s", "tr": "x2 TIKLAMA: %d s"},
 	"ad2x_started": {"ru": "х2 КЛИКИ НА 30 СЕКУНД!", "en": "x2 CLICKS FOR 30 SECONDS!",
 		"tr": "30 SANİYE x2 TIKLAMA!"},
+	"ad2x_done": {"ru": "х2 КЛИКИ ЗАВЕРШИЛСЯ", "en": "x2 CLICKS ENDED",
+		"tr": "x2 TIKLAMA SONA ERDİ"},
 	"debt_plaque": {"ru": "ДОЛГ: %s", "en": "DEBT: %s", "tr": "BORÇ: %s"},
 	"debt_plaque_paid": {"ru": "ДОЛГ ОПЛАЧЕН", "en": "DEBT PAID", "tr": "BORÇ ÖDENDİ"},
 	"balance_cap": {"ru": "БАЛАНС ДОСТИГ МАКСИМУМА: %s! ДАЛЬШЕ НЕ РАСТЁТ",

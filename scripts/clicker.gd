@@ -27,6 +27,7 @@ const BALANCE_MAX := 9223372036854775807  ## максимум int64: потол�
 var _balance_v := 1000
 var _cap_notified := false       ## баннер о достижении потолка показан
 var _last_ad_reward := -1        ## кэш суммы в подписи рекламы
+var _boost_was := false          ## буст x2 был активен (для баннера об окончании)
 ## Баланс с защитой: отрицательное значение невозможно установить —
 ## любая попытка пишется в лог и зажимается в 0 (счетчик не уйдёт в минус).
 var balance: int:
@@ -60,7 +61,7 @@ var _def_offsets := {}
 var _def_fonts := {}
 
 const MANAGED := ["hud_icon", "hud_balance", "coin_btn", "click_hint", "rebirth_btn",
-		"ad2x_btn", "debt_popup/debt_panel", "debt_popup/debt_label",
+		"ad2x_btn", "adx2_label", "debt_popup/debt_panel", "debt_popup/debt_label",
 		"debt_popup/debt_btn", "debt_popup/debt_later",
 		"auto_stat", "click_stat", "play_btn", "play_caption", "back_btn",
 		"msg_label", "upg_scroll"]
@@ -363,7 +364,10 @@ func _restore_defaults() -> void:
 
 ## Портрет 9:16: монета по центру, реклама/выход по бокам, улучшения внизу
 ## во всю ширину; размеры через u = ширина/1280 (независимо от масштаба).
-	ad2x_btn.remove_theme_font_size_override("font_size")
+	play_btn.scale = Vector2(0.54, 0.54)
+	ad2x_btn.scale = Vector2(0.25, 0.25)
+	ad2x_btn.expand_icon = false
+	adx2_label.remove_theme_font_size_override("font_size")
 	debt_label.remove_theme_font_size_override("font_size")
 	debt_btn.remove_theme_font_size_override("font_size")
 	debt_later.remove_theme_font_size_override("font_size")
@@ -379,11 +383,16 @@ func _layout_portrait(W: float, H: float) -> void:
 	_set_r("auto_stat", m, 1100 * u, (W - 2 * m) * 0.5, 60 * u)
 	_set_r("click_stat", m + (W - 2 * m) * 0.5, 1100 * u,
 			(W - 2 * m) * 0.5, 60 * u)
+	play_btn.scale = Vector2.ONE    ## десктопные scale в портрете не нужны
+	ad2x_btn.scale = Vector2.ONE
+	ad2x_btn.expand_icon = true     ## спрайт по размеру рамки
 	_set_r("play_btn", m, 480 * u, 230 * u, 225 * u)
 	_set_r("play_caption", m, 712 * u, 320 * u, 56 * u)
 	_set_r("back_btn", W - 380 * u, 480 * u, 356 * u, 130 * u)
 	_set_r("rebirth_btn", m, 780 * u, 190 * u, 218 * u)
-	_set_r("ad2x_btn", W - 250 * u, 630 * u, 226 * u, 90 * u)
+	_set_r("ad2x_btn", W - 220 * u, 640 * u, 170 * u, 170 * u)
+	_set_r("adx2_label", W - 300 * u, 818 * u, 340 * u, 44 * u)
+	adx2_label.add_theme_font_size_override("font_size", int(24 * u))
 	_set_r("debt_popup/debt_panel", 40 * u, 450 * u, W - 80 * u, 850 * u)
 	_set_r("debt_popup/debt_label", 70 * u, 520 * u, W - 140 * u, 480 * u)
 	var w2 := (W - 140 * u - 20 * u) / 2.0
@@ -392,7 +401,6 @@ func _layout_portrait(W: float, H: float) -> void:
 	debt_label.add_theme_font_size_override("font_size", int(34 * u))
 	debt_btn.add_theme_font_size_override("font_size", int(30 * u))
 	debt_later.add_theme_font_size_override("font_size", int(30 * u))
-	ad2x_btn.add_theme_font_size_override("font_size", int(30 * u))
 	var sh := 1016.0 * u
 	_set_r("msg_label", 0, H - sh - 90 * u, W, 80 * u)
 	_set_r("upg_scroll", 0, H - sh, W, sh)
@@ -562,15 +570,20 @@ func _on_rebirth_press() -> void:
 	_do_rebirth()
 
 
-## Кнопка временного x2: текст с остатком секунд, пока буст жив.
+## Кнопка временного x2: у кнопки спрайт, поэтому текст на ней не пишем —
+## во время буста спрайт затемняется, по окончании — баннер.
 func _update_ad2x() -> void:
 	var left := _boost_left()
 	if left > 0:
 		ad2x_btn.disabled = true
-		ad2x_btn.text = L10n.t("ad2x_on") % left
-	elif ad2x_btn.disabled or ad2x_btn.text != L10n.t("ad2x_btn"):
+		ad2x_btn.modulate = Color(1, 1, 1, 0.55)
+		_boost_was = true
+	else:
+		if _boost_was:
+			_boost_was = false
+			_banner(L10n.t("ad2x_done"), Color("#ffe9b8"))
 		ad2x_btn.disabled = _watching
-		ad2x_btn.text = L10n.t("ad2x_btn")
+		ad2x_btn.modulate = Color(1, 1, 1, 1)
 	## подпись под кнопкой рекламы всегда показывает актуальную сумму
 	var r := _ad_reward()
 	if r != _last_ad_reward:

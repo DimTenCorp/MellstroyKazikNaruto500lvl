@@ -381,6 +381,17 @@ theme_override_styles/normal = SubResource("sb_btn_n")
 theme_override_styles/hover = SubResource("sb_btn_n")
 theme_override_styles/pressed = SubResource("sb_btn_n")
 
+[node name="adx2_label" type="Label" parent="machine"]
+text = "Х2 БАБЛО НА 30с"
+theme_override_colors/font_color = Color(0.6852497, 1, 0.7079217, 1)
+theme_override_colors/font_shadow_color = Color(0.1148968, 0.11489681, 0.1148968, 1)
+theme_override_constants/shadow_offset_x = 3
+theme_override_constants/shadow_offset_y = 3
+theme_override_font_sizes/font_size = 19
+position = Vector2(0, 558)
+size = Vector2(176, 27)
+horizontal_alignment = 1
+
 [node name="ad2x_btn" type="Button" parent="machine"]
 icon = SubResource("at_x2")
 flat = true
