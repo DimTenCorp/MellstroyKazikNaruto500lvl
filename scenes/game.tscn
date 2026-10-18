@@ -516,6 +516,13 @@ stretch_mode = 5
 position = Vector2(1153, 283)
 size = Vector2(116, 120)
 
+[node name="clicker_glow" type="Panel" parent="machine/bottom_bar"]
+position = Vector2(1143, 273)
+size = Vector2(136, 140)
+visible = false
+mouse_filter = 2
+theme_override_styles/panel = SubResource("sb_glow")
+
 [node name="win_popup" type="Control" parent="machine"]
 position = Vector2(364, 173)
 size = Vector2(500, 330)

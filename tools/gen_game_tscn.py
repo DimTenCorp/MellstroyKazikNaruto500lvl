@@ -286,6 +286,10 @@ node("lang_btn", "TextureButton", "bottom_bar",
      position="Vector2(13, 214)", size="Vector2(72, 76.6452)")
 tbtn("sound_btn", "bottom_bar", "at_sound", (5, 123), (86, 91.95386))
 tbtn("clicker_btn", "bottom_bar", "at_bag", (1153, 283), (116, 120))
+node("clicker_glow", "Panel", "bottom_bar",
+     position="Vector2(1143, 273)", size="Vector2(136, 140)",
+     visible="false", mouse_filter=2,
+     theme_override_styles_panel='SubResource("sb_glow")')
 
 # ---------------------------------------------------------- попап выигрыша
 node("win_popup", "Control", "machine", position="Vector2(364, 173)",

@@ -112,7 +112,7 @@ const MANAGED := [
 	"bottom_bar/bet_btn", "bottom_bar/max_btn", "bottom_bar/auto_btn",
 	"bottom_bar/speed_btn", "bottom_bar/spin_btn", "bottom_bar/paytable_btn",
 	"bottom_bar/sound_btn", "bottom_bar/lang_btn", "bottom_bar/clicker_btn",
-	"bottom_bar/spin_glow", "debug_btn", "reset_btn", "win_popup",
+	"bottom_bar/spin_glow", "bottom_bar/clicker_glow", "debug_btn", "reset_btn", "win_popup",
 	"bet_menu/panel", "auto_menu/panel", "sound_menu/panel", "debug_menu/panel",
 	"paytable_popup/popup_panel",
 	"intro_popup/intro_panel", "intro_popup/intro_label", "intro_popup/intro_btn",
@@ -171,6 +171,7 @@ var _wins_tex: Texture2D
 @onready var intro_btn: Button = $machine/intro_popup/intro_btn
 @onready var intro_label: Label = $machine/intro_popup/intro_label
 @onready var spin_glow: Panel = $machine/bottom_bar/spin_glow
+@onready var clicker_glow: Panel = $machine/bottom_bar/clicker_glow
 @onready var reset_btn: Button = $machine/reset_btn
 @onready var debug_btn: Button = $machine/debug_btn
 @onready var lang_btn: TextureButton = $machine/bottom_bar/lang_btn
@@ -321,7 +322,8 @@ func _ready() -> void:
 	for p in ["win_label", "balance_label", "freespin_label",
 			"bottom_bar/auto_label", "bottom_bar/bet_label",
 			"bottom_bar/fullbet_label", "grid_panel/msg_label",
-			"balance_icon", "bottom_bar/spin_glow"]:
+			"balance_icon", "bottom_bar/spin_glow",
+			"bottom_bar/clicker_glow"]:
 		machine.get_node(p).mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_capture_defaults()
 	_layout()
@@ -401,6 +403,8 @@ func _setup_intro() -> void:
 		_dbg("первый заход: баланс обнулён, показано интро о долге 10 000 000")
 	if not bool(_flag_get("spin_clicked", false)):
 		_start_spin_glow()
+	elif not bool(_flag_get("clicker_visited", false)):
+		_start_clicker_glow()   ## уже крутил, но в кликер ещё не заходил
 
 
 ## Отладочный полный сброс: удаляет общий сейв (баланс, уровни кликера,
@@ -543,6 +547,7 @@ func _layout_portrait(W: float, H: float) -> void:
 	_set_r("bottom_bar/speed_btn", cx, H - 500 * u, cw, 190 * u)
 	_set_r("bottom_bar/spin_btn", m, H - 290 * u, W - 2 * m, 270 * u)
 	_set_r("bottom_bar/spin_glow", m, H - 300 * u, W - 2 * m, 290 * u)
+	_set_r("bottom_bar/clicker_glow", W - 232 * u, H - 518 * u, 216 * u, 216 * u)
 	_set_r("debug_btn", W - 220 * u, 168 * u, 200 * u, 50 * u)
 	_set_r("reset_btn", W - 220 * u, 224 * u, 200 * u, 50 * u)
 	for mp in ["bet_menu/panel", "auto_menu/panel", "sound_menu/panel",
@@ -998,6 +1003,10 @@ func _on_clicker_pressed() -> void:
 	if _spinning:
 		_dbg("клик по мешку во время спина — игнор")
 		return
+	if not bool(_flag_get("clicker_visited", false)):
+		_flag_set("clicker_visited", true)
+		_stop_clicker_glow()
+		_dbg("игрок впервые ушёл в кликер: подсветка мешка снята")
 	_dbg("переход в сцену кликера, баланс=%d" % balance)
 	_save()
 	get_tree().change_scene_to_file("res://scenes/clicker.tscn")
@@ -1101,6 +1110,25 @@ func _stop_spin_glow() -> void:
 		_glow_tw = null
 
 
+## После первого прокрута: пульсирует рамка вокруг мешка — путь в кликер.
+func _start_clicker_glow() -> void:
+	if _glow_tw != null:
+		_glow_tw.kill()
+	clicker_glow.visible = true
+	clicker_glow.modulate = Color(1, 1, 1, 1)
+	_glow_tw = create_tween().set_loops()
+	_glow_tw.tween_property(clicker_glow, "modulate:a", 0.15, 0.7)
+	_glow_tw.tween_property(clicker_glow, "modulate:a", 1.0, 0.7)
+	_dbg("подсветка кнопки перехода в кликер включена")
+
+
+func _stop_clicker_glow() -> void:
+	clicker_glow.visible = false
+	if _glow_tw != null:
+		_glow_tw.kill()
+		_glow_tw = null
+
+
 func _on_spin_pressed() -> void:
 	if not bool(_flag_get("spin_clicked", false)):
 		_flag_set("spin_clicked", true)
@@ -1146,6 +1174,10 @@ func _run_session() -> void:
 			break
 		await get_tree().create_timer(0.3 if SPEEDS[speed_idx] > 1.0 else 0.6).timeout
 	_spinning = false
+	## прокрут завершён: новому игроку подсвечиваем путь в кликер
+	if not clicker_glow.visible and not bool(_flag_get("clicker_visited", false)) \
+			and bool(_flag_get("spin_clicked", false)):
+		_start_clicker_glow()
 	_dbg("сессия спинов завершена, баланс=%d" % balance)
 	_update_labels()
 
