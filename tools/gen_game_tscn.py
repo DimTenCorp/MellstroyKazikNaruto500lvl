@@ -119,9 +119,9 @@ def hbox(name, parent, sep=10, **kw):
     node(name, "HBoxContainer", parent, **props)
 
 
-def stylebox(sid, bg, border=None, width=0, radius=10):
+def stylebox(sid, bg, border=None, width=0, radius=10, bg_a=1.0):
     OUT.append(f'\n[sub_resource type="StyleBoxFlat" id="{sid}"]')
-    OUT.append(f"bg_color = {hx(bg)}")
+    OUT.append(f"bg_color = {hx(bg, bg_a)}")
     if width:
         for side in ("left", "top", "right", "bottom"):
             OUT.append(f"border_width_{side} = {width}")
@@ -169,6 +169,7 @@ for key in KEYS:
 stylebox("sb_grid", "221730", "d8b45e", 4, 14)
 stylebox("sb_popup", "241a31", "d8b45e", 2, 14)
 stylebox("sb_glow", "ffd79400", "ffd794", 6, 20)  # светящаяся рамка-указатель
+stylebox("sb_glow_round", "ffd794", "ffd794", 6, 400, bg_a=0.0)  # круглое кольцо для ПУСКа
 stylebox("sb_btn_n", "3a2c4d", "7a6399", 2, 10)
 stylebox("sb_btn_h", "4a3a63", "9d86c4", 2, 10)
 stylebox("sb_btn_p", "2a1f3a", "5d4a80", 2, 10)
@@ -279,7 +280,7 @@ tbtn("spin_btn", "bottom_bar", "at_spin", (1088, 520), (177, 192))
 node("spin_glow", "Panel", "bottom_bar",
      position="Vector2(1078, 510)", size="Vector2(197, 212)",
      visible="false", mouse_filter=2,
-     theme_override_styles_panel='SubResource("sb_glow")')
+     theme_override_styles_panel='SubResource("sb_glow_round")')
 tbtn("paytable_btn", "bottom_bar", "at_paytable", (1152, 152), (115, 127))
 node("lang_btn", "TextureButton", "bottom_bar",
      ignore_texture_size="true", stretch_mode=5,

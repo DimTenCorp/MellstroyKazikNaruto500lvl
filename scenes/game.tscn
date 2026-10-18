@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=3 uid="uid://jem4ybiqp44h"]
+[gd_scene load_steps=38 format=3 uid="uid://jem4ybiqp44h"]
 
 [ext_resource type="Script" path="res://scripts/slot_machine.gd" id="scr"]
 [ext_resource type="Script" path="res://scripts/reel.gd" id="scr_reel"]
@@ -58,6 +58,18 @@ corner_radius_top_left = 20
 corner_radius_top_right = 20
 corner_radius_bottom_right = 20
 corner_radius_bottom_left = 20
+
+[sub_resource type="StyleBoxFlat" id="sb_glow_round"]
+bg_color = Color(1, 0.843137, 0.580392, 0)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(1, 0.843137, 0.580392, 1)
+corner_radius_top_left = 400
+corner_radius_top_right = 400
+corner_radius_bottom_right = 400
+corner_radius_bottom_left = 400
 
 [sub_resource type="StyleBoxFlat" id="sb_btn_n"]
 bg_color = Color(0.227451, 0.172549, 0.301961, 1)
@@ -487,7 +499,7 @@ position = Vector2(1078, 510)
 size = Vector2(197, 212)
 visible = false
 mouse_filter = 2
-theme_override_styles/panel = SubResource("sb_glow")
+theme_override_styles/panel = SubResource("sb_glow_round")
 
 [node name="paytable_btn" type="TextureButton" parent="machine/bottom_bar"]
 texture_normal = SubResource("at_paytable")
