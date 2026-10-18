@@ -107,6 +107,7 @@ stylebox("sb_btn_n", "3a2c4d", "7a6399", 2, 10)
 stylebox("sb_popup", "241a31", "d8b45e", 2, 14)
 for key in ("coin", "play", "bag"):
     atlassub("at_" + key, "tex_clicker", CLICKER_REGIONS[key])
+atlassub("at_x2", "tex_clicker", (375, 25, 280, 276))  ## спрайт х2 бабла
 
 # ------------------------------------------------------------------ узлы
 OUT.append('\n[node name="clicker" type="Control"]')
@@ -141,9 +142,13 @@ label("click_hint", "machine", "+5 за клик", 22, "9d8fb8",
       horizontal_alignment=1)
 
 # play = реклама с наградой
-tbtn("play_btn", "machine", "at_play", (23, 397), (120.81, 119))
+node("play_btn", "TextureButton", "machine",
+     texture_normal='SubResource("at_play")',
+     ignore_texture_size="true", stretch_mode=5,
+     scale="Vector2(0.54, 0.54)",
+     position="Vector2(17, 373)", size="Vector2(120.81, 119)")
 label("play_caption", "machine", "РЕКЛАМА: +500", 20, "8dffa0",
-      position="Vector2(-48, 527)", size="Vector2(270, 28)",
+      position="Vector2(-57, 366)", size="Vector2(270, 28)",
       horizontal_alignment=1)
 
 # прокручиваемый список всех улучшений (строки — узлы сцены)
@@ -278,15 +283,16 @@ node("debt_later", "Button", "debt_popup", text='"ПОЗЖЕ"',
      theme_override_styles_normal='SubResource("sb_btn_n")',
      theme_override_styles_hover='SubResource("sb_btn_n")',
      theme_override_styles_pressed='SubResource("sb_btn_n")')
-node("ad2x_btn", "Button", "machine", text='"х2 КЛИКИ"',
-     position="Vector2(1100, 397)", size="Vector2(160, 60)",
-     theme_override_font_sizes_font_size=16,
+node("ad2x_btn", "Button", "machine",
+     icon='SubResource("at_x2")', flat="true",
+     scale="Vector2(0.25, 0.25)",
+     position="Vector2(-62, 386)", size="Vector2(284, 280)",
      theme_override_styles_normal='SubResource("sb_btn_n")',
      theme_override_styles_hover='SubResource("sb_btn_n")',
      theme_override_styles_pressed='SubResource("sb_btn_n")')
 node("rebirth_btn", "TextureButton", "machine", visible="false",
      ignore_texture_size="true", stretch_mode=0,
-     position="Vector2(1120, 470)", size="Vector2(120, 138)")
+     position="Vector2(9, 211)", size="Vector2(120, 138)")
 node("back_btn", "Button", "machine", text='"← К СЛОТАМ"',
      position="Vector2(30, 624)", size="Vector2(296, 72)",
      theme_override_font_sizes_font_size=20,
