@@ -108,6 +108,7 @@ stylebox("sb_popup", "241a31", "d8b45e", 2, 14)
 for key in ("coin", "play", "bag"):
     atlassub("at_" + key, "tex_clicker", CLICKER_REGIONS[key])
 atlassub("at_x2", "tex_clicker", (375, 25, 280, 276))  ## спрайт х2 бабла
+stylebox("sb_glow", "ffd79400", "ffd794", 6, 20)  # светящаяся рамка-указатель
 
 # ------------------------------------------------------------------ узлы
 OUT.append('\n[node name="clicker" type="Control"]')
@@ -137,7 +138,6 @@ label("hud_balance", "machine", "0", 28, "ffe9b8",
 
 # монета-кликер (в сцене родной размер региона, визуальный ставит скрипт)
 tbtn("coin_btn", "machine", "at_coin", (480, 165), (320, 330))
-stylebox("sb_glow", "ffd79400", "ffd794", 6, 20)  # светящаяся рамка-указатель
 node("coin_glow", "Panel", "machine",
      position="Vector2(460, 145)", size="Vector2(360, 370)",
      visible="false", mouse_filter=2,
@@ -324,6 +324,9 @@ node("float_layer", "Control", "machine",
 
 # ------------------------------------------------------------------ сборка
 body = "\n".join(OUT)
+## все sub_resource обязаны идти до первого node, иначе Godot считает сцену битой
+_i_node = body.find("\n[node ")
+assert _i_node == -1 or body.rfind("\n[sub_resource ") < _i_node, "sub_resource после node!"
 n_sub = body.count("\n[sub_resource ")
 n_ext = len(ext)
 header = (f"[gd_scene load_steps={n_ext + n_sub + 1} format=3 "

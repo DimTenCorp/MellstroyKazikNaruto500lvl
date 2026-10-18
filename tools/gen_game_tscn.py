@@ -610,6 +610,9 @@ for li, path in enumerate(SIM.PAYLINES):
 
 # ------------------------------------------------------------------ сборка
 body = "\n".join(OUT)
+## все sub_resource обязаны идти до первого node, иначе Godot считает сцену битой
+_i_node = body.find("\n[node ")
+assert _i_node == -1 or body.rfind("\n[sub_resource ") < _i_node, "sub_resource после node!"
 n_sub = body.count("\n[sub_resource ")
 n_ext = len(ext)
 header = (f"[gd_scene load_steps={n_ext + n_sub + 1} format=3 "

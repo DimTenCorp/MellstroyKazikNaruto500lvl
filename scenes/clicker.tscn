@@ -46,6 +46,18 @@ region = Rect2(726, 17, 274, 284)
 atlas = ExtResource("tex_clicker")
 region = Rect2(375, 25, 280, 276)
 
+[sub_resource type="StyleBoxFlat" id="sb_glow"]
+bg_color = Color(1, 0.843137, 0.580392, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(1, 0.843137, 0.580392, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_left = 20
+corner_radius_bottom_right = 20
+
 [node name="clicker" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -96,18 +108,6 @@ ignore_texture_size = true
 stretch_mode = 5
 position = Vector2(480, 165)
 size = Vector2(320, 330)
-
-[sub_resource type="StyleBoxFlat" id="sb_glow"]
-bg_color = Color(1, 0.843137, 0.580392, 1)
-border_width_left = 6
-border_width_top = 6
-border_width_right = 6
-border_width_bottom = 6
-border_color = Color(1, 0.843137, 0.580392, 1)
-corner_radius_top_left = 20
-corner_radius_top_right = 20
-corner_radius_bottom_left = 20
-corner_radius_bottom_right = 20
 
 [node name="coin_glow" type="Panel" parent="machine"]
 position = Vector2(460, 145)
