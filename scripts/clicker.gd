@@ -700,7 +700,7 @@ func _stop_coin_glow() -> void:
 func _on_coin() -> void:
 	balance += click_gain()
 	if not bool(_cfg.get_value("save", "coin_clicked", false)):
-		_cfg.set_value("save", "coin_clicked", true)   ## новый игрок кликнунл казика
+		_cfg.set_value("save", "coin_clicked", true)   ## новый игрок кликнул казика
 		_stop_coin_glow()
 	_dbg("клик по монете: +%d, баланс=%d" % [click_gain(), balance])
 	_save()
