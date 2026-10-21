@@ -380,21 +380,27 @@ func _layout_portrait(W: float, H: float) -> void:
 	var m := 24.0 * u
 	_set_r("hud_icon", m, m, 150 * u, 138 * u)
 	_set_r("hud_balance", m + 160 * u, m + 10 * u, W - 184 * u - m, 90 * u)
-	_set_r("coin_btn", (W - 700 * u) * 0.5, 300 * u, 700 * u, 722 * u)
-	_set_r("click_hint", (W - 700 * u) * 0.5, 1030 * u, 700 * u, 64 * u)
-	_set_r("auto_stat", m, 1100 * u, (W - 2 * m) * 0.5, 60 * u)
-	_set_r("click_stat", m + (W - 2 * m) * 0.5, 1100 * u,
+	_set_r("msg_label", 0, 165 * u, W, 80 * u)
+	## просьба игрока: улучшения сверху, монета снизу
+	var sc_h := H - 1260.0 * u
+	if sc_h < 300 * u:
+		sc_h = 300 * u
+	_set_r("upg_scroll", 0, 250 * u, W, sc_h)
+	_set_r("back_btn", m, H - 1000 * u, W - 2 * m, 90 * u)
+	back_btn.add_theme_font_size_override("font_size", int(30 * u))
+	_set_r("auto_stat", m, H - 900 * u, (W - 2 * m) * 0.5, 60 * u)
+	_set_r("click_stat", m + (W - 2 * m) * 0.5, H - 900 * u,
 			(W - 2 * m) * 0.5, 60 * u)
+	_set_r("coin_btn", (W - 700 * u) * 0.5, H - 830 * u, 700 * u, 722 * u)
+	_set_r("click_hint", (W - 700 * u) * 0.5, H - 100 * u, 700 * u, 64 * u)
 	play_btn.scale = Vector2.ONE    ## десктопные scale в портрете не нужны
 	ad2x_btn.scale = Vector2.ONE
 	ad2x_btn.expand_icon = true     ## спрайт по размеру рамки
-	_set_r("play_btn", m, 480 * u, 230 * u, 225 * u)
-	_set_r("play_caption", m, 712 * u, 320 * u, 56 * u)
-	_set_r("back_btn", m, 1165 * u, W - 2 * m, 90 * u)   ## под монетой, не на ней
-	back_btn.add_theme_font_size_override("font_size", int(30 * u))
-	_set_r("rebirth_btn", m, 780 * u, 190 * u, 218 * u)
-	_set_r("ad2x_btn", W - 220 * u, 640 * u, 170 * u, 170 * u)
-	_set_r("adx2_label", W - 300 * u, 818 * u, 340 * u, 44 * u)
+	_set_r("play_btn", m, H - 760 * u, 230 * u, 225 * u)
+	_set_r("play_caption", m, H - 520 * u, 320 * u, 56 * u)
+	_set_r("rebirth_btn", m, H - 440 * u, 190 * u, 218 * u)
+	_set_r("ad2x_btn", W - 220 * u, H - 760 * u, 170 * u, 170 * u)
+	_set_r("adx2_label", W - 280 * u, H - 580 * u, 300 * u, 44 * u)
 	adx2_label.add_theme_font_size_override("font_size", int(24 * u))
 	_set_r("debt_popup/debt_panel", 40 * u, 450 * u, W - 80 * u, 850 * u)
 	_set_r("debt_popup/debt_label", 70 * u, 520 * u, W - 140 * u, 480 * u)
@@ -404,9 +410,6 @@ func _layout_portrait(W: float, H: float) -> void:
 	debt_label.add_theme_font_size_override("font_size", int(34 * u))
 	debt_btn.add_theme_font_size_override("font_size", int(30 * u))
 	debt_later.add_theme_font_size_override("font_size", int(30 * u))
-	var sh := 1016.0 * u
-	_set_r("msg_label", 0, H - sh - 90 * u, W, 80 * u)
-	_set_r("upg_scroll", 0, H - sh, W, sh)
 	for p in PORTRAIT_FS:
 		var l: Label = machine.get_node(p)
 		l.add_theme_font_size_override("font_size",
