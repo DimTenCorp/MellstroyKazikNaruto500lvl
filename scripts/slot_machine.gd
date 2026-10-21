@@ -437,6 +437,7 @@ func _on_intro_ok() -> void:
 ## Авто-бабло капает и в сцене слотов: улучшения куплены в кликере,
 ## а доход общий — иначе при возврате с кликера прибавка "засыпает".
 func _process(delta: float) -> void:
+	Sfx.tick_music()
 	var g := Upgrades.auto_per_sec(upg_levels)
 	if g <= 0:
 		return

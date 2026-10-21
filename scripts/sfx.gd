@@ -79,7 +79,28 @@ static func ensure_music() -> void:
 	_music_pl.bus = "Music"
 	tree.root.add_child(_music_pl)
 	_music_pl.play()
+	_music_try = 0
 	print("[sfx] фоновая музыка запущена: %s" % st.resource_path)
+	## отложенная самопроверка: если старт не удался (веб-блокировка и т.п.) — повторить
+	tree.create_timer(0.7).timeout.connect(func() -> void:
+		if _music_pl != null and is_instance_valid(_music_pl) and not _music_pl.playing:
+			print("[sfx] музыка не играла через 0.7 c — повторяю play()")
+			_music_pl.play()
+	)
+
+
+## Вызывается из _process обеих сцен: держит музыку живой (рестарт, если
+## поток остановился или плеер погиб при смене сцены).
+static var _music_try := 0
+
+static func tick_music() -> void:
+	if _music_pl == null or not is_instance_valid(_music_pl):
+		ensure_music()
+		return
+	if not _music_pl.playing:
+		_music_try += 1
+		if _music_try % 60 == 1:   ## не чаще раза в секунду
+			_music_pl.play()
 
 
 static func has_vols() -> bool:
