@@ -369,6 +369,7 @@ func _restore_defaults() -> void:
 	ad2x_btn.scale = Vector2(0.25, 0.25)
 	ad2x_btn.expand_icon = false
 	adx2_label.remove_theme_font_size_override("font_size")
+	back_btn.remove_theme_font_size_override("font_size")
 	debt_label.remove_theme_font_size_override("font_size")
 	debt_btn.remove_theme_font_size_override("font_size")
 	debt_later.remove_theme_font_size_override("font_size")
@@ -389,7 +390,8 @@ func _layout_portrait(W: float, H: float) -> void:
 	ad2x_btn.expand_icon = true     ## спрайт по размеру рамки
 	_set_r("play_btn", m, 480 * u, 230 * u, 225 * u)
 	_set_r("play_caption", m, 712 * u, 320 * u, 56 * u)
-	_set_r("back_btn", W - 380 * u, 480 * u, 356 * u, 130 * u)
+	_set_r("back_btn", m, 1165 * u, W - 2 * m, 90 * u)   ## под монетой, не на ней
+	back_btn.add_theme_font_size_override("font_size", int(30 * u))
 	_set_r("rebirth_btn", m, 780 * u, 190 * u, 218 * u)
 	_set_r("ad2x_btn", W - 220 * u, 640 * u, 170 * u, 170 * u)
 	_set_r("adx2_label", W - 300 * u, 818 * u, 340 * u, 44 * u)
