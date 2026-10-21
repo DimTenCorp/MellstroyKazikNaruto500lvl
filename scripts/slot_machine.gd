@@ -311,6 +311,7 @@ func _ready() -> void:
 	sfx_slider.value = vol_sfx
 	music_slider.value = vol_music
 	Sfx.ensure_buses(vol_sfx, vol_music)
+	Sfx.ensure_music()
 	sfx_val.text = str(vol_sfx)
 	music_val.text = str(vol_music)
 	_apply_volumes()

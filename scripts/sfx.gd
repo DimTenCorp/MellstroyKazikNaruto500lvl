@@ -6,6 +6,7 @@ extends RefCounted
 ## Все потоки — preload-константы: так они гарантированно попадают
 ## в веб-экспорт (.pck), в отличие от load() по строке пути.
 
+const ST_MUSIC := preload("res://audio/kazik-mellstroy.mp3")  ## фоновая музыка
 const ST_CLICK := preload("res://audio/pusk.ogg")       ## клик по кнопкам
 const ST_WIN := preload("res://audio/get_bablo.ogg")     ## деньги получены
 const ST_BUY := preload("res://audio/buy_upgrade.ogg")   ## покупка улучшения
@@ -57,6 +58,28 @@ static var _spin_pl: AudioStreamPlayer = null
 ## сценами не могли их потерять (сцена читает их раньше/вместо сейва).
 static var cur_sfx := -1.0
 static var cur_music := -1.0
+
+## Фоновая музыка: один плеер на корне дерева сцен — переживает смены
+## сцен без перезапуска. Шина Music, зациклен, громкость от vol_music.
+static var _music_pl: AudioStreamPlayer = null
+
+static func ensure_music() -> void:
+	if _music_pl != null and is_instance_valid(_music_pl):
+		return
+	if AudioServer.get_bus_index("Music") == -1:
+		ensure_buses(80, 80)
+	var tree := Engine.get_main_loop() as SceneTree
+	if tree == null:
+		return
+	var st := ST_MUSIC.duplicate() as AudioStreamMP3
+	st.loop = true
+	_music_pl = AudioStreamPlayer.new()
+	_music_pl.name = "MusicPlayer"
+	_music_pl.stream = st
+	_music_pl.bus = "Music"
+	tree.root.add_child(_music_pl)
+	_music_pl.play()
+	print("[sfx] фоновая музыка запущена: %s" % st.resource_path)
 
 
 static func has_vols() -> bool:

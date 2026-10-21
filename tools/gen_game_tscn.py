@@ -198,7 +198,7 @@ node("machine", "Control", ".", size=f"Vector2({VSIZE[0]}, {VSIZE[1]})")
 # Остаток фриспинов (узел добавлен заказчиком, перенесён под machine,
 # чтобы масштабироваться вместе с макетом).
 label("freespin_label", "machine", "", 22, "7ef3ff",
-      position="Vector2(10, 140)", size="Vector2(160, 34)",
+      position="Vector2(506, 41)", size="Vector2(255, 34)",
       theme_override_constants_outline_size=8,
       theme_override_colors_font_outline_color=hx("1d3a6e"),
       visible="false")
@@ -268,9 +268,9 @@ node("bottom_bar", "Control", "machine",
 tbtn("bet_btn", "bottom_bar", "at_bet", (8, 544), (150, 166))
 tbtn("max_btn", "bottom_bar", "at_max", (168, 568), (129, 142))
 label("bet_label", "bottom_bar", "Ставка/линия: 1", 20, "ffe9b8",
-      position="Vector2(264, 48)", size="Vector2(220, 28)")
+      position="Vector2(408, 632)", size="Vector2(299, 28)")
 label("auto_label", "bottom_bar", "", 26, "7ef3ff",
-      position="Vector2(32, 112)", size="Vector2(200, 40)",
+      position="Vector2(494, 0)", size="Vector2(266, 40)",
       theme_override_constants_outline_size=8,
       theme_override_colors_font_outline_color=hx("1d3a6e"),
       visible="false")
@@ -281,14 +281,14 @@ node("spin_glow", "Panel", "bottom_bar",
      position="Vector2(1078, 510)", size="Vector2(197, 212)",
      visible="false", mouse_filter=2,
      theme_override_styles_panel='SubResource("sb_glow_round")')
-tbtn("paytable_btn", "bottom_bar", "at_paytable", (1152, 152), (115, 127))
+tbtn("paytable_btn", "bottom_bar", "at_paytable", (11, 296), (77, 85.0348))
 node("lang_btn", "TextureButton", "bottom_bar",
      ignore_texture_size="true", stretch_mode=5,
      position="Vector2(13, 214)", size="Vector2(72, 76.6452)")
 tbtn("sound_btn", "bottom_bar", "at_sound", (5, 123), (86, 91.95386))
-tbtn("clicker_btn", "bottom_bar", "at_bag", (1153, 283), (116, 120))
+tbtn("clicker_btn", "bottom_bar", "at_bag", (1153, 155), (116, 120))
 node("clicker_glow", "Panel", "bottom_bar",
-     position="Vector2(1143, 273)", size="Vector2(136, 140)",
+     position="Vector2(1143, 145)", size="Vector2(136, 140)",
      visible="false", mouse_filter=2,
      theme_override_styles_panel='SubResource("sb_glow")')
 
@@ -306,7 +306,7 @@ label("win_popup_label", "win_popup", "", 44, "ffe9b8",
 
 # полная ставка (узел заказчика fullbet_label, 79b2277)
 label("fullbet_label", "bottom_bar", "Полная ставка:", 22, "ffe9b8",
-      position="Vector2(342, 602)", size="Vector2(290, 59)",
+      position="Vector2(406, 601)", size="Vector2(299, 33)",
       theme_override_constants_outline_size=6,
       theme_override_colors_font_outline_color=hx("402008"))
 
@@ -407,7 +407,7 @@ node("debt_later", "Button", "debt_popup", text='"ПОЗЖЕ"',
      theme_override_styles_pressed='SubResource("sb_btn_p")')
 node("rebirth_btn", "TextureButton", "machine", visible="false",
      ignore_texture_size="true", stretch_mode=0,
-     position="Vector2(1153, 407)", size="Vector2(116, 133)")
+     position="Vector2(1168, 279)", size="Vector2(85, 97.4569)")
 
 node("intro_btn", "Button", "intro_popup", text='"ПОНЯТНО, ПОГНАЛИ"',
      position="Vector2(520, 455)", size="Vector2(240, 52)",

@@ -236,6 +236,7 @@ func _ready() -> void:
 		vm = Sfx.cur_music
 	print("[sfx-cfg] кликер старт: vol_sfx=%d vol_music=%d" % [int(vs), int(vm)])
 	Sfx.ensure_buses(vs, vm)
+	Sfx.ensure_music()
 	coin_btn.pressed.connect(_on_coin)
 	coin_btn.pressed.connect(func() -> void: Sfx.play(self, "win"))
 	rebirth_btn.pressed.connect(_on_rebirth_press)
