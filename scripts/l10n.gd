@@ -91,7 +91,7 @@ const D := {
 			"tr": "TOPLAM BAHİS %d DEĞERİNE YUVARLANDI (9 LİNE)"},
 	"per_click": {"ru": "+%d за клик", "en": "+%d per click", "tr": "tık başına +%d"},
 	"ad_caption": {"ru": "РЕКЛАМА: +%d", "en": "AD: +%d", "tr": "REKLAM: +%d"},
-	"back": {"ru": "← К СЛОТАМ", "en": "← TO SLOTS", "tr": "← SLOTLARA"},
+	"back": {"ru": "К СЛОТАМ", "en": "TO SLOTS", "tr": "SLOTLARA"},
 	"stat_auto": {"ru": "авт. бабло: %d/с", "en": "auto cash: %d/s", "tr": "oto para: %d/sn"},
 	"stat_click": {"ru": "бабло за клик: %d", "en": "cash per click: %d", "tr": "tık başına para: %d"},
 	"upg_max": {"ru": "%s\n%s | ур.%d/%d | МАКС", "en": "%s\n%s | lv.%d/%d | MAX", "tr": "%s\n%s | sv.%d/%d | MAKS"},
