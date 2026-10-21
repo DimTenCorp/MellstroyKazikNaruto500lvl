@@ -77,13 +77,16 @@ static func ensure_music() -> void:
 	_music_pl.name = "MusicPlayer"
 	_music_pl.stream = st
 	_music_pl.bus = "Music"
-	tree.root.add_child(_music_pl)
-	_music_pl.play()
+	## корень дерева может быть занят достройкой сцены во время _ready —
+	## поэтому добавление и старт отложенные: выполнятся, когда дерево готово
+	tree.root.add_child.call_deferred(_music_pl)
+	_music_pl.play.call_deferred()
 	_music_try = 0
-	print("[sfx] фоновая музыка запущена: %s" % st.resource_path)
+	print("[sfx] фоновая музыка ставится в дерево: %s" % st.resource_path)
 	## отложенная самопроверка: если старт не удался (веб-блокировка и т.п.) — повторить
 	tree.create_timer(0.7).timeout.connect(func() -> void:
-		if _music_pl != null and is_instance_valid(_music_pl) and not _music_pl.playing:
+		if _music_pl != null and is_instance_valid(_music_pl) \
+				and _music_pl.is_inside_tree() and not _music_pl.playing:
 			print("[sfx] музыка не играла через 0.7 c — повторяю play()")
 			_music_pl.play()
 	)
@@ -96,6 +99,13 @@ static var _music_try := 0
 static func tick_music() -> void:
 	if _music_pl == null or not is_instance_valid(_music_pl):
 		ensure_music()
+		return
+	if not _music_pl.is_inside_tree():
+		## плеер создан, но в дерево не попал (корень был занят) — досадить
+		var tree := Engine.get_main_loop() as SceneTree
+		if tree != null:
+			tree.root.add_child.call_deferred(_music_pl)
+			_music_pl.play.call_deferred()
 		return
 	if not _music_pl.playing:
 		_music_try += 1
