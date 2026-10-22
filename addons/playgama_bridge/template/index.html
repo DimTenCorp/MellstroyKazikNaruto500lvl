@@ -52,6 +52,35 @@
                 outline: none;
             }
 
+            /* правая колонка под стики-баннер: канвас её не занимает */
+            :root { --sbw: clamp(70px, 10vw, 160px); }
+            #canvas {
+                position: fixed;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                right: var(--sbw);
+                width: auto;
+                height: auto;
+            }
+            #sticky-banner {
+                position: fixed;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                width: var(--sbw);
+                overflow: hidden;
+                z-index: 40;
+            }
+            #sticky-banner * {
+                position: static !important;
+                left: auto !important;
+                top: auto !important;
+                bottom: auto !important;
+                width: 100% !important;
+                max-width: 100% !important;
+            }
+
             #status, #status-splash, #status-progress {
                 position: absolute;
                 left: 0;
@@ -109,6 +138,7 @@
         <canvas id="canvas">
             Your browser does not support the canvas tag.
         </canvas>
+        <div id="sticky-banner"></div>
 
         <noscript>
             Your browser does not support JavaScript.
@@ -180,5 +210,40 @@
             }
         </script>
 
+        <script>
+            /* Переносим баннер платформы в правую колонку, чтобы он не
+               закрывал игру: ловим новые узлы и вытаскиваем fixed-блоки. */
+            (function () {
+                var host = document.getElementById('sticky-banner');
+                if (!host) { return; }
+                function mark(el) {
+                    var cls = (typeof el.className === 'string') ? el.className : '';
+                    return ((el.id || '') + ' ' + cls + ' ' + (el.src || '')).toLowerCase();
+                }
+                function looks(el) {
+                    return /banner|sticky|advert|adv-|\/adv|yandex|game-ad/.test(mark(el));
+                }
+                function adopt(el) {
+                    if (!el || el === host || host.contains(el)) { return; }
+                    host.appendChild(el);
+                }
+                new MutationObserver(function (muts) {
+                    muts.forEach(function (m) {
+                        m.addedNodes.forEach(function (n) {
+                            if (n.nodeType === 1 && looks(n)) { adopt(n); }
+                        });
+                    });
+                }).observe(document.body, { childList: true, subtree: true });
+                setInterval(function () {
+                    var nodes = document.querySelectorAll('body iframe, body div');
+                    for (var i = 0; i < nodes.length; i++) {
+                        var el = nodes[i];
+                        if (host.contains(el)) { continue; }
+                        var cs = getComputedStyle(el);
+                        if (cs.position === 'fixed' && looks(el)) { adopt(el); }
+                    }
+                }, 1500);
+            })();
+        </script>
     </body>
 </html>                                                                                                                                                  

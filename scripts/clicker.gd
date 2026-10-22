@@ -198,6 +198,7 @@ func _on_upg(i: int) -> void:
 
 func _process(delta: float) -> void:
 	Sfx.tick_music()
+	Ads.ensure_banner()
 	_update_ad2x()
 	_check_debt()
 	var g := auto_gain()

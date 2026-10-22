@@ -438,6 +438,7 @@ func _on_intro_ok() -> void:
 ## а доход общий — иначе при возврате с кликера прибавка "засыпает".
 func _process(delta: float) -> void:
 	Sfx.tick_music()
+	Ads.ensure_banner()
 	var g := Upgrades.auto_per_sec(upg_levels)
 	if g <= 0:
 		return
